@@ -20,6 +20,8 @@
     sortKey: 'cabin',
     sortDir: 1,
     shortlist: JSON.parse(localStorage.getItem('pmc-shortlist') || '[]'),
+    ratings: {},
+    voteError: false,
   };
 
   const els = {
@@ -76,7 +78,52 @@
       renderCurrentView();
       renderDetail(null);
       renderShipInfo();
+      loadRatings();
     });
+  }
+
+  // --- Cabin ratings (thumbs up / down) -------------------------------------
+  function loadRatings() {
+    state.ratings = {};
+    fetch(`/api/ratings?ship=${encodeURIComponent(state.shipId)}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data) => {
+        state.ratings = data;
+        if (state.activeCabin) renderDetail(findCabin(state.shipId, state.activeCabin));
+      })
+      .catch(() => {
+        // Ratings API isn't live yet (e.g. local dev, or D1 not wired up) —
+        // fall back to zero counts, voting still works optimistically.
+      });
+  }
+
+  function votedValue(cabin) {
+    return localStorage.getItem(`pmc-voted-${state.shipId}-${cabin.id}`);
+  }
+
+  function castVote(cabin, vote) {
+    if (votedValue(cabin)) return;
+    localStorage.setItem(`pmc-voted-${state.shipId}-${cabin.id}`, vote);
+
+    const current = state.ratings[cabin.id] || { up: 0, down: 0 };
+    state.ratings[cabin.id] = { ...current, [vote]: current[vote] + 1 };
+    state.voteError = false;
+    renderDetail(cabin);
+
+    fetch('/api/vote', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ shipId: state.shipId, cabinId: cabin.id, vote }),
+    })
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data) => {
+        state.ratings[cabin.id] = data;
+        if (state.activeCabin === cabin.id) renderDetail(cabin);
+      })
+      .catch(() => {
+        state.voteError = true;
+        if (state.activeCabin === cabin.id) renderDetail(cabin);
+      });
   }
 
   function renderShipInfo() {
@@ -337,6 +384,8 @@
     }
     const cat = CATEGORIES[cabin.category];
     const shortlisted = state.shortlist.some((s) => s.shipId === state.shipId && s.cabinId === cabin.id);
+    const counts = state.ratings[cabin.id] || { up: 0, down: 0 };
+    const voted = votedValue(cabin);
     els.detail.innerHTML = `
       <div class="stub">
         <div class="stub-row">
@@ -353,9 +402,20 @@
           <div><dt>Motion &amp; noise</dt><dd>${quietLabel(cabin.quiet)}</dd></div>
         </dl>
         <button class="shortlist-btn" id="shortlist-btn">${shortlisted ? 'Remove from shortlist' : 'Add to shortlist'}</button>
+        <div class="rate-block">
+          <p class="rate-label">Stayed here? Rate this cabin</p>
+          <div class="rate-buttons">
+            <button class="rate-btn${voted === 'up' ? ' is-voted' : ''}" data-vote="up" ${voted ? 'disabled' : ''}>👍 <span>${counts.up}</span></button>
+            <button class="rate-btn${voted === 'down' ? ' is-voted' : ''}" data-vote="down" ${voted ? 'disabled' : ''}>👎 <span>${counts.down}</span></button>
+          </div>
+          ${state.voteError ? '<p class="rate-error">Couldn’t save your vote — try again shortly.</p>' : ''}
+        </div>
       </div>
     `;
     document.getElementById('shortlist-btn').addEventListener('click', () => toggleShortlist(cabin));
+    els.detail.querySelectorAll('.rate-btn').forEach((btn) => {
+      btn.addEventListener('click', () => castVote(cabin, btn.dataset.vote));
+    });
   }
 
   function toggleShortlist(cabin) {
@@ -427,4 +487,5 @@
   renderCurrentView();
   renderDetail(null);
   renderShortlist();
+  loadRatings();
 })();

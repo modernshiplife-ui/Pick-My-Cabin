@@ -1,0 +1,7 @@
+wrangler.jsonc
+schema.sql
+worker/
+.git/
+.github/
+.claude/
+.gitignore

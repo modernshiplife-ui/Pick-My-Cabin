@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS votes (
+  ship_id TEXT NOT NULL,
+  cabin_id TEXT NOT NULL,
+  up INTEGER NOT NULL DEFAULT 0,
+  down INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (ship_id, cabin_id)
+);

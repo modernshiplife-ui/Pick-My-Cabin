@@ -518,6 +518,47 @@ tr.is-active td { background: rgba(166,25,46,0.16); }
 
 .shortlist-btn:hover { filter: brightness(1.12); }
 
+.rate-block {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--ink-3);
+}
+
+.rate-label {
+  margin: 0 0 8px;
+  font-size: 0.76rem;
+  color: var(--ivory-dim);
+}
+
+.rate-buttons { display: flex; gap: 8px; }
+
+.rate-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  background: var(--ink);
+  border: 1px solid var(--ink-3);
+  border-radius: 6px;
+  color: var(--ivory);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.rate-btn:hover:not(:disabled) { border-color: var(--gold-dim); }
+.rate-btn:disabled { cursor: default; opacity: 0.7; }
+.rate-btn.is-voted { border-color: var(--gold); color: var(--gold-bright); }
+
+.rate-error {
+  margin: 8px 0 0;
+  font-size: 0.72rem;
+  color: var(--red-bright);
+}
+
 .tray-empty { color: var(--ivory-dim); font-size: 0.82rem; font-style: italic; }
 
 .tray-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
