@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pick My Cabin — Cunard fleet cabin finder</title>
+<meta name="description" content="Locate and compare cabins across the Cunard fleet, deck by deck, from a clear top-down plan of every ship." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0B0C'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23B8964F' font-family='Georgia,serif'%3E⚓%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">⚓</span>
+    <span class="brand-text">Pick&nbsp;My&nbsp;Cabin</span>
+  </div>
+  <div class="topbar-controls">
+    <label class="ship-picker">
+      <span>Ship</span>
+      <select id="ship-select" aria-label="Choose ship"></select>
+    </label>
+    <div class="view-toggle" id="view-toggle" role="group" aria-label="Plan view">
+      <button data-view="map" aria-pressed="true">Map</button>
+      <button data-view="list" aria-pressed="false">List</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <p class="eyebrow">Cunard fleet · Cabin finder</p>
+  <h1>Find the right cabin, without the guesswork.</h1>
+  <p class="hero-sub">Look down over every deck on Queen Mary 2, Queen Victoria, Queen Elizabeth and Queen Anne, compare cabins side by side, and keep a shortlist of your favourites.</p>
+</section>
+
+<main class="app">
+  <nav class="rungs-col" aria-label="Select deck">
+    <div id="deck-rungs" class="rungs"></div>
+  </nav>
+
+  <section class="plan-col">
+    <div class="plan-header">
+      <div>
+        <h2 id="active-deck-label">Deck</h2>
+        <p id="active-deck-sub" class="muted"></p>
+      </div>
+      <div class="filters">
+        <div id="category-legend" class="legend"></div>
+        <button id="quiet-toggle" class="pill-toggle" aria-pressed="false">Quiet cabins only</button>
+      </div>
+    </div>
+
+    <div id="map-view" class="map-view">
+      <div class="plan-wrap">
+        <svg id="deck-plan" role="img" aria-label="Deck plan showing cabin locations"></svg>
+        <div id="cabin-tooltip" class="tooltip" hidden></div>
+      </div>
+    </div>
+
+    <div id="list-view" class="list-view" hidden>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th data-sort="cabin" data-dir="asc">Cabin</th>
+              <th data-sort="deck">Deck</th>
+              <th data-sort="category">Category</th>
+              <th data-sort="size">Size</th>
+              <th>Sleeps</th>
+              <th>Lift &amp; stairs</th>
+            </tr>
+          </thead>
+          <tbody id="list-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <aside class="side-col">
+    <div class="panel">
+      <h3>Cabin details</h3>
+      <div id="cabin-detail"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Shortlist <span id="shortlist-count">0</span></h3>
+        <button id="copy-summary" class="text-btn" hidden>Copy shortlist</button>
+      </div>
+      <div id="shortlist-tray"></div>
+    </div>
+  </aside>
+</main>
+
+<footer class="site-footer">
+  <p><strong>Pick My Cabin</strong> · pickmycabin.com</p>
+  <p class="muted">Independent cabin-finder for Cunard passengers. Not affiliated with or endorsed by Cunard Line. Cabin locations shown are illustrative placeholders pending a licensed deck-plan data source — confirm details before booking.</p>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
