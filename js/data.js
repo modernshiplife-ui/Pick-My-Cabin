@@ -98,6 +98,48 @@ function buildShip(seedBase, id, name, decksSpec) {
   return { id, name, decks };
 }
 
+// General published ship specifications (tonnage, length, passenger counts,
+// etc.) — publicly available facts, sourced independently of any Cunard
+// deck-plan diagrams. Not cabin-level data.
+const SHIP_INFO = {
+  qm2: {
+    tagline: 'The last true ocean liner',
+    entered: '2004',
+    tonnage: '149,215 GT',
+    length: '345 m (1,132 ft)',
+    passengers: '2,695',
+    decks: '14 passenger decks, 18 total',
+    builder: 'Chantiers de l’Atlantique, France',
+  },
+  qv: {
+    tagline: 'The smallest ship in the fleet',
+    entered: '2007',
+    tonnage: '90,049 GT',
+    length: '294 m (964 ft)',
+    passengers: '2,081',
+    decks: '12 passenger decks, 16 total',
+    builder: 'Fincantieri, Italy',
+  },
+  qe: {
+    tagline: 'Art Deco-inspired sister ship to Queen Victoria',
+    entered: '2010',
+    tonnage: '90,901 GT',
+    length: '294 m (965 ft)',
+    passengers: '2,092',
+    decks: '12 passenger decks, 16 total',
+    builder: 'Fincantieri, Italy',
+  },
+  qa: {
+    tagline: 'The newest ship in the fleet',
+    entered: '2024',
+    tonnage: '114,188 GT',
+    length: '323 m (1,058 ft)',
+    passengers: 'Up to 3,000',
+    decks: '13 passenger decks',
+    builder: 'Fincantieri, Italy',
+  },
+};
+
 const SHIPS = [
   buildShip(101, 'qm2', 'Queen Mary 2', [
     { number: 6, cabinsPerSide: 24 },

@@ -35,6 +35,7 @@
     quietToggle: document.getElementById('quiet-toggle'),
     deckLabel: document.getElementById('active-deck-label'),
     deckSub: document.getElementById('active-deck-sub'),
+    shipInfo: document.getElementById('ship-info'),
     detail: document.getElementById('cabin-detail'),
     shortlistTray: document.getElementById('shortlist-tray'),
     shortlistCount: document.getElementById('shortlist-count'),
@@ -74,7 +75,27 @@
       renderRungs();
       renderCurrentView();
       renderDetail(null);
+      renderShipInfo();
     });
+  }
+
+  function renderShipInfo() {
+    const info = SHIP_INFO[state.shipId];
+    if (!info) {
+      els.shipInfo.innerHTML = '';
+      return;
+    }
+    els.shipInfo.innerHTML = `
+      <p class="ship-tagline">${info.tagline}</p>
+      <dl class="stub-grid">
+        <div><dt>Entered service</dt><dd>${info.entered}</dd></div>
+        <div><dt>Gross tonnage</dt><dd>${info.tonnage}</dd></div>
+        <div><dt>Length</dt><dd>${info.length}</dd></div>
+        <div><dt>Passengers</dt><dd>${info.passengers}</dd></div>
+        <div><dt>Decks</dt><dd>${info.decks}</dd></div>
+        <div><dt>Builder</dt><dd>${info.builder}</dd></div>
+      </dl>
+    `;
   }
 
   function setView(view) {
@@ -400,6 +421,7 @@
   });
 
   renderShipSelect();
+  renderShipInfo();
   renderRungs();
   renderLegend();
   renderCurrentView();
