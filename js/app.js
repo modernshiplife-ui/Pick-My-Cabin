@@ -52,10 +52,9 @@
   }
 
   function reviewsForShip(shipId) {
-    const demo = DEMO_REVIEWS.filter((r) => r.shipId === shipId);
     const local = state.localReviews.filter((r) => r.shipId === shipId);
     const remote = state.remoteReviews[shipId] || [];
-    return [...remote, ...local, ...demo];
+    return [...remote, ...local];
   }
 
   function reviewTimestamp(r) {
@@ -66,7 +65,7 @@
 
   function recentReviews(limit) {
     if (state.globalRecent) return state.globalRecent.slice(0, limit);
-    const combined = [...state.localReviews, ...DEMO_REVIEWS];
+    const combined = [...state.localReviews];
     combined.sort((a, b) => reviewTimestamp(b) - reviewTimestamp(a));
     return combined.slice(0, limit);
   }
@@ -74,8 +73,7 @@
   function reviewCardHtml(r, { showShipName } = {}) {
     const ship = showShipName ? shipById(r.shipId) : null;
     return `
-      <article class="review-card${r.demo ? ' is-demo' : ''}${showShipName ? ' is-clickable' : ''}"${showShipName ? ` data-ship="${r.shipId}"` : ''}>
-        ${r.demo ? '<span class="demo-badge">Example</span>' : ''}
+      <article class="review-card${showShipName ? ' is-clickable' : ''}"${showShipName ? ` data-ship="${r.shipId}"` : ''}>
         <div class="review-card-head">
           <span class="review-cabin">${ship ? `${ship.name} · ` : ''}Cabin ${r.cabin}</span>
           <span class="review-rating">${r.rating === 'up' ? '👍' : '👎'}</span>
@@ -89,13 +87,33 @@
   function renderRecentReviews() {
     const reviews = recentReviews(6);
     if (reviews.length === 0) {
-      els.recentReviews.innerHTML = '';
+      els.recentReviews.innerHTML = '<p class="empty-note">No reviews yet — be the first to add one.</p>';
       return;
     }
-    els.recentReviews.innerHTML = reviews.map((r) => reviewCardHtml(r, { showShipName: true })).join('');
+
+    const [first, ...rest] = reviews;
+    let html = reviewCardHtml(first, { showShipName: true });
+    if (rest.length > 0) {
+      html += `<button type="button" class="text-btn recent-toggle" id="recent-toggle">Show ${rest.length} more recent review${rest.length === 1 ? '' : 's'}</button>`;
+      html += `<div class="recent-more" id="recent-more" hidden>${rest.map((r) => reviewCardHtml(r, { showShipName: true })).join('')}</div>`;
+    }
+    els.recentReviews.innerHTML = html;
+
     els.recentReviews.querySelectorAll('.review-card[data-ship]').forEach((card) => {
       card.addEventListener('click', () => showShip(card.dataset.ship));
     });
+
+    const toggle = document.getElementById('recent-toggle');
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        const more = document.getElementById('recent-more');
+        const expanded = !more.hidden;
+        more.hidden = expanded;
+        toggle.textContent = expanded
+          ? `Show ${rest.length} more recent review${rest.length === 1 ? '' : 's'}`
+          : 'Show fewer';
+      });
+    }
   }
 
   function loadGlobalRecent() {
@@ -106,7 +124,7 @@
         renderRecentReviews();
       })
       .catch(() => {
-        // No live backend yet — local + example reviews still populate this.
+        // No live backend yet — local reviews still populate this.
       });
   }
 
