@@ -13,4 +13,13 @@
       "database_id": "ba51f626-9880-495d-9162-d6a795e6a088"
     }
   ]
+  // r2_buckets: uncomment once a bucket named "pickmycabin-photos" exists —
+  // referencing a bucket that doesn't exist yet blocks deploys, same as the
+  // D1 database_id did earlier.
+  // ,"r2_buckets": [
+  //   {
+  //     "binding": "PHOTOS",
+  //     "bucket_name": "pickmycabin-photos"
+  //   }
+  // ]
 }

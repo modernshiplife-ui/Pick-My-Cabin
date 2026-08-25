@@ -6,6 +6,7 @@
     selectedShipId: null,
     selectedRating: null,
     selectedTags: new Set(),
+    selectedPhotos: [], // { file, previewUrl }
     remoteReviews: {}, // shipId -> array, fetched from the API when available
     globalRecent: null, // recent reviews across all ships, fetched from the API when available
     localReviews: JSON.parse(localStorage.getItem('pmc-reviews') || '[]'),
@@ -41,7 +42,12 @@
     reviewSubmit: document.getElementById('review-submit'),
     reviewStatus: document.getElementById('review-status'),
     recentReviews: document.getElementById('recent-reviews'),
+    reviewPhotos: document.getElementById('review-photos'),
+    photoPreviews: document.getElementById('photo-previews'),
+    photoAddBtn: document.getElementById('photo-add-btn'),
   };
+
+  const MAX_PHOTOS = 4;
 
   function saveLocalReviews() {
     localStorage.setItem('pmc-reviews', JSON.stringify(state.localReviews));
@@ -80,6 +86,7 @@
         </div>
         ${r.tags && r.tags.length ? `<div class="review-tags">${r.tags.map((t) => `<span>${t}</span>`).join('')}</div>` : ''}
         ${r.comment ? `<p class="review-comment">${escapeHtml(r.comment)}</p>` : ''}
+        ${r.photos && r.photos.length ? `<div class="review-photos">${r.photos.map((key) => `<a href="/photos/${encodeURIComponent(key)}" target="_blank" rel="noopener"><img src="/photos/${encodeURIComponent(key)}" alt="Cabin photo" loading="lazy" /></a>`).join('')}</div>` : ''}
         <p class="review-meta">${escapeHtml(r.author || 'Anonymous')} · ${r.when || 'recently'}</p>
       </article>`;
   }
@@ -320,20 +327,77 @@
     els.reviewSubmit.disabled = !(els.reviewCabin.value.trim() && state.selectedRating);
   }
 
+  // --- Photos ----------------------------------------------------------
+  function renderPhotoPreviews() {
+    els.photoPreviews.innerHTML = state.selectedPhotos
+      .map(
+        (p, i) => `
+        <div class="photo-preview">
+          <img src="${p.previewUrl}" alt="" />
+          <button type="button" class="photo-remove" data-index="${i}" aria-label="Remove photo">&times;</button>
+        </div>`
+      )
+      .join('');
+    els.photoPreviews.querySelectorAll('.photo-remove').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = Number(btn.dataset.index);
+        URL.revokeObjectURL(state.selectedPhotos[i].previewUrl);
+        state.selectedPhotos.splice(i, 1);
+        renderPhotoPreviews();
+      });
+    });
+    els.photoAddBtn.hidden = state.selectedPhotos.length >= MAX_PHOTOS;
+  }
+
+  els.reviewPhotos.addEventListener('change', () => {
+    const files = Array.from(els.reviewPhotos.files || []);
+    const room = MAX_PHOTOS - state.selectedPhotos.length;
+    files.slice(0, room).forEach((file) => {
+      state.selectedPhotos.push({ file, previewUrl: URL.createObjectURL(file) });
+    });
+    els.reviewPhotos.value = '';
+    renderPhotoPreviews();
+  });
+
+  function uploadPhoto({ file }) {
+    return fetch('/api/photos', { method: 'POST', headers: { 'content-type': file.type }, body: file })
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data) => data.key);
+  }
+
   function resetForm() {
     els.reviewForm.reset();
     state.selectedRating = null;
     state.selectedTags = new Set();
+    state.selectedPhotos.forEach((p) => URL.revokeObjectURL(p.previewUrl));
+    state.selectedPhotos = [];
     els.reviewForm.querySelectorAll('.rating-pick .rate-btn').forEach((b) => b.classList.remove('is-selected'));
     renderTagPick();
+    renderPhotoPreviews();
     updateSubmitState();
     els.reviewStatus.textContent = '';
     els.reviewStatus.className = 'form-note';
   }
 
-  els.reviewForm.addEventListener('submit', (e) => {
+  els.reviewForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const shipId = state.selectedShipId;
+    const hasPhotos = state.selectedPhotos.length > 0;
+
+    els.reviewSubmit.disabled = true;
+    els.reviewStatus.textContent = hasPhotos ? 'Uploading photos…' : 'Saving…';
+    els.reviewStatus.className = 'form-note';
+
+    let photoKeys = [];
+    let photoUploadFailed = false;
+    if (hasPhotos) {
+      try {
+        photoKeys = await Promise.all(state.selectedPhotos.map(uploadPhoto));
+      } catch {
+        photoUploadFailed = true;
+      }
+    }
+
     const review = {
       id: `local-${Date.now()}`,
       shipId,
@@ -342,6 +406,7 @@
       tags: Array.from(state.selectedTags),
       comment: els.reviewComment.value.trim(),
       author: els.reviewAuthor.value.trim() || 'Anonymous',
+      photos: photoKeys,
       when: 'Just now',
       ts: Date.now(),
     };
@@ -352,7 +417,9 @@
     renderShipGrid();
     renderRecentReviews();
     resetForm();
-    els.reviewStatus.textContent = 'Saved on this device — thank you!';
+    els.reviewStatus.textContent = photoUploadFailed
+      ? 'Saved — but photos couldn’t be uploaded right now.'
+      : 'Saved — thank you!';
     els.reviewStatus.className = 'form-note is-success';
 
     fetch('/api/reviews', {

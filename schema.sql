@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS reviews (
   tags TEXT NOT NULL DEFAULT '[]',
   comment TEXT NOT NULL DEFAULT '',
   author TEXT NOT NULL DEFAULT 'Anonymous',
+  photos TEXT NOT NULL DEFAULT '[]',
   created_at TEXT NOT NULL
 );
 

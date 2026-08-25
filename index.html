@@ -94,6 +94,14 @@
         <span>Name or initials <em>(optional)</em></span>
         <input id="review-author" type="text" placeholder="Anonymous" />
       </label>
+      <div class="photo-pick">
+        <span>Photos <em>(optional, up to 4)</em></span>
+        <div class="photo-previews" id="photo-previews"></div>
+        <label class="photo-add-btn" id="photo-add-btn">
+          + Add photos
+          <input id="review-photos" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden />
+        </label>
+      </div>
       <button type="submit" class="cta-btn" id="review-submit" disabled>Submit review</button>
       <p class="form-note" id="review-status"></p>
     </form>

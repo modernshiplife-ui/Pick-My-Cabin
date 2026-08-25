@@ -402,6 +402,74 @@ textarea { resize: vertical; }
 .form-note { min-height: 1.2em; font-size: 0.8rem; margin: 0; color: var(--ivory-dim); }
 .form-note.is-success { color: var(--coral-bright); }
 
+.photo-pick { display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; color: var(--ivory-dim); }
+
+.photo-previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.photo-preview {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--ink-3);
+}
+
+.photo-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.photo-remove {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  line-height: 16px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(14, 36, 41, 0.85);
+  color: var(--ivory);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.photo-add-btn[hidden] { display: none; }
+
+.photo-add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border: 1px dashed var(--ink-3);
+  border-radius: 6px;
+  color: var(--ivory-dim);
+  font-size: 0.82rem;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.photo-add-btn:hover { border-color: var(--coral); color: var(--ivory); }
+
+.review-photos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.review-photos img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+}
+
 /* --- Footer -------------------------------------------------------------- */
 
 .site-footer {
