@@ -17,6 +17,12 @@ export default {
     if (url.pathname.startsWith('/photos/') && request.method === 'GET') {
       return handleGetPhoto(url, env);
     }
+    if (url.pathname === '/api/visits' && request.method === 'GET') {
+      return handleGetVisits(env);
+    }
+    if (url.pathname === '/api/visits' && request.method === 'POST') {
+      return handleIncrementVisits(env);
+    }
 
     return env.ASSETS.fetch(request);
   },
@@ -133,6 +139,19 @@ async function handleGetPhoto(url, env) {
       'cache-control': 'public, max-age=31536000, immutable',
     },
   });
+}
+
+async function handleGetVisits(env) {
+  const row = await env.DB.prepare('SELECT value FROM stats WHERE key = ?').bind('visits').first();
+  return json({ count: row ? row.value : 0 });
+}
+
+async function handleIncrementVisits(env) {
+  await env.DB.prepare(
+    "INSERT INTO stats (key, value) VALUES ('visits', 1) ON CONFLICT(key) DO UPDATE SET value = value + 1"
+  ).run();
+  const row = await env.DB.prepare('SELECT value FROM stats WHERE key = ?').bind('visits').first();
+  return json({ count: row ? row.value : 0 });
 }
 
 function formatWhen(iso) {

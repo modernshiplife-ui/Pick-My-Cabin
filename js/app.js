@@ -45,6 +45,7 @@
     reviewPhotos: document.getElementById('review-photos'),
     photoPreviews: document.getElementById('photo-previews'),
     photoAddBtn: document.getElementById('photo-add-btn'),
+    visitorCount: document.getElementById('visitor-count'),
   };
 
   const MAX_PHOTOS = 4;
@@ -132,6 +133,29 @@
       })
       .catch(() => {
         // No live backend yet — local reviews still populate this.
+      });
+  }
+
+  // --- Visitor count ---------------------------------------------------
+  function showVisitorCount(count) {
+    els.visitorCount.textContent = `${count.toLocaleString()} visitors`;
+    els.visitorCount.hidden = false;
+  }
+
+  function loadVisitorCount() {
+    const alreadyCounted = localStorage.getItem('pmc-counted');
+    const request = alreadyCounted
+      ? fetch('/api/visits')
+      : fetch('/api/visits', { method: 'POST' });
+
+    request
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data) => {
+        if (!alreadyCounted) localStorage.setItem('pmc-counted', '1');
+        showVisitorCount(data.count);
+      })
+      .catch(() => {
+        // No live backend yet — just leave the counter hidden.
       });
   }
 
@@ -454,4 +478,5 @@
   renderTagPick();
   renderRecentReviews();
   loadGlobalRecent();
+  loadVisitorCount();
 })();

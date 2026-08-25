@@ -66,6 +66,17 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
 .brand-text { font-family: var(--font-display); font-size: 1.1rem; color: var(--ivory); }
 .brand-tagline { margin: 0; font-size: 0.82rem; color: var(--ivory-dim); }
 
+.visitor-count[hidden] { display: none; }
+
+.visitor-count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--yellow);
+  white-space: nowrap;
+}
+
 /* --- Hero -------------------------------------------------------------- */
 
 .hero { padding: 44px 24px 28px; max-width: 760px; }
