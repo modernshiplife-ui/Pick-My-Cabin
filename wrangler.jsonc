@@ -5,12 +5,14 @@
   "assets": {
     "directory": "./",
     "binding": "ASSETS"
-  },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "pickmycabin",
-      "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID"
-    }
-  ]
+  }
+  // d1_databases: add back once a real D1 database exists (see schema.sql) —
+  // a placeholder database_id here blocks Cloudflare from deploying at all.
+  // "d1_databases": [
+  //   {
+  //     "binding": "DB",
+  //     "database_name": "pickmycabin",
+  //     "database_id": "YOUR_REAL_D1_DATABASE_ID"
+  //   }
+  // ]
 }
