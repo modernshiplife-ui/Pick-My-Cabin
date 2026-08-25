@@ -2,7 +2,7 @@
   const state = {
     view: 'home',
     query: '',
-    activeLines: new Set(LINES.map((l) => l.id)),
+    activeLine: null, // null = all lines; otherwise a single line id
     selectedShipId: null,
     selectedRating: null,
     selectedTags: new Set(),
@@ -131,20 +131,27 @@
   // --- Home: search + browse ------------------------------------------------
   function renderLineFilters() {
     els.lineFilters.innerHTML = '';
+
+    const allChip = document.createElement('button');
+    allChip.className = 'chip';
+    allChip.textContent = 'All lines';
+    allChip.setAttribute('aria-pressed', String(state.activeLine === null));
+    allChip.addEventListener('click', () => {
+      state.activeLine = null;
+      renderLineFilters();
+      renderShipGrid();
+    });
+    els.lineFilters.appendChild(allChip);
+
     LINES.forEach((line) => {
       const chip = document.createElement('button');
       chip.className = 'chip';
       chip.dataset.line = line.id;
-      chip.setAttribute('aria-pressed', 'true');
+      chip.setAttribute('aria-pressed', String(state.activeLine === line.id));
       chip.textContent = line.name;
       chip.addEventListener('click', () => {
-        if (state.activeLines.has(line.id)) {
-          state.activeLines.delete(line.id);
-          chip.setAttribute('aria-pressed', 'false');
-        } else {
-          state.activeLines.add(line.id);
-          chip.setAttribute('aria-pressed', 'true');
-        }
+        state.activeLine = line.id;
+        renderLineFilters();
         renderShipGrid();
       });
       els.lineFilters.appendChild(chip);
@@ -154,7 +161,7 @@
   function renderShipGrid() {
     const q = state.query.trim().toLowerCase();
     const matches = allShips().filter((ship) => {
-      if (!state.activeLines.has(ship.lineId)) return false;
+      if (state.activeLine && ship.lineId !== state.activeLine) return false;
       if (!q) return true;
       const line = lineById(ship.lineId);
       return ship.name.toLowerCase().includes(q) || (line && line.name.toLowerCase().includes(q));
