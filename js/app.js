@@ -1,491 +1,299 @@
 (function () {
-  // Top-down orientation: bow at the top of the canvas, stern at the bottom,
-  // port column on the left, starboard on the right — like looking straight
-  // down at the deck, not a side elevation.
-  const PLAN = { colW: 132, gap: 96, yBow: 70, yStern: 900, viewW: 560 };
-  const SORTERS = {
-    cabin: (a, b) => a.id.localeCompare(b.id),
-    deck: (a, b) => a.deck - b.deck || a.id.localeCompare(b.id),
-    category: (a, b) => a.category.localeCompare(b.category),
-    size: (a, b) => a.sqft - b.sqft,
+  const state = {
+    view: 'home',
+    query: '',
+    activeLines: new Set(LINES.map((l) => l.id)),
+    selectedShipId: null,
+    selectedRating: null,
+    selectedTags: new Set(),
+    remoteReviews: {}, // shipId -> array, fetched from the API when available
+    localReviews: JSON.parse(localStorage.getItem('pmc-reviews') || '[]'),
+    addedShips: JSON.parse(localStorage.getItem('pmc-added-ships') || '[]'),
   };
 
-  const state = {
-    shipId: SHIPS[0].id,
-    deckIndex: 0,
-    view: 'map',
-    activeCabin: null,
-    activeFilters: new Set(Object.keys(CATEGORIES)),
-    quietOnly: false,
-    sortKey: 'cabin',
-    sortDir: 1,
-    shortlist: JSON.parse(localStorage.getItem('pmc-shortlist') || '[]'),
-    ratings: {},
-    voteError: false,
-  };
+  const allShips = () => SHIPS.concat(state.addedShips);
+  const shipById = (id) => allShips().find((s) => s.id === id);
+  const lineById = (id) => LINES.find((l) => l.id === id);
 
   const els = {
-    shipSelect: document.getElementById('ship-select'),
-    viewToggle: document.getElementById('view-toggle'),
-    rungs: document.getElementById('deck-rungs'),
-    plan: document.getElementById('deck-plan'),
-    planView: document.getElementById('map-view'),
-    listView: document.getElementById('list-view'),
-    listBody: document.getElementById('list-body'),
-    tooltip: document.getElementById('cabin-tooltip'),
-    legend: document.getElementById('category-legend'),
-    quietToggle: document.getElementById('quiet-toggle'),
-    deckLabel: document.getElementById('active-deck-label'),
-    deckSub: document.getElementById('active-deck-sub'),
-    shipInfo: document.getElementById('ship-info'),
-    detail: document.getElementById('cabin-detail'),
-    shortlistTray: document.getElementById('shortlist-tray'),
-    shortlistCount: document.getElementById('shortlist-count'),
-    copySummaryBtn: document.getElementById('copy-summary'),
+    search: document.getElementById('global-search'),
+    lineFilters: document.getElementById('line-filters'),
+    shipGrid: document.getElementById('ship-grid'),
+    noResults: document.getElementById('no-results'),
+    noResultsQuery: document.getElementById('no-results-query'),
+    addShipToggle: document.getElementById('add-ship-toggle'),
+    addShipForm: document.getElementById('add-ship-form'),
+    addShipLine: document.getElementById('add-ship-line'),
+    addShipName: document.getElementById('add-ship-name'),
+    homeView: document.getElementById('home-view'),
+    shipView: document.getElementById('ship-view'),
+    backToHome: document.getElementById('back-to-home'),
+    shipLineLabel: document.getElementById('ship-line-label'),
+    shipTitle: document.getElementById('ship-title'),
+    ratingSummary: document.getElementById('rating-summary'),
+    reviewsList: document.getElementById('reviews-list'),
+    reviewForm: document.getElementById('review-form'),
+    reviewCabin: document.getElementById('review-cabin'),
+    tagPick: document.getElementById('tag-pick'),
+    reviewComment: document.getElementById('review-comment'),
+    reviewAuthor: document.getElementById('review-author'),
+    reviewSubmit: document.getElementById('review-submit'),
+    reviewStatus: document.getElementById('review-status'),
   };
 
-  function ship() {
-    return SHIPS.find((s) => s.id === state.shipId);
+  function saveLocalReviews() {
+    localStorage.setItem('pmc-reviews', JSON.stringify(state.localReviews));
   }
 
-  function deck() {
-    return ship().decks[state.deckIndex];
+  function saveAddedShips() {
+    localStorage.setItem('pmc-added-ships', JSON.stringify(state.addedShips));
   }
 
-  function saveShortlist() {
-    localStorage.setItem('pmc-shortlist', JSON.stringify(state.shortlist));
+  function reviewsForShip(shipId) {
+    const demo = DEMO_REVIEWS.filter((r) => r.shipId === shipId);
+    const local = state.localReviews.filter((r) => r.shipId === shipId);
+    const remote = state.remoteReviews[shipId] || [];
+    return [...remote, ...local, ...demo];
   }
 
-  function findCabin(shipId, cabinId) {
-    const s = SHIPS.find((x) => x.id === shipId);
-    if (!s) return null;
-    for (const d of s.decks) {
-      const found = d.cabins.find((c) => c.id === cabinId);
-      if (found) return found;
-    }
-    return null;
-  }
-
-  // --- Ship + view controls -------------------------------------------------
-  function renderShipSelect() {
-    els.shipSelect.innerHTML = SHIPS.map((s) => `<option value="${s.id}">${s.name}</option>`).join('');
-    els.shipSelect.value = state.shipId;
-    els.shipSelect.addEventListener('change', () => {
-      state.shipId = els.shipSelect.value;
-      state.deckIndex = 0;
-      state.activeCabin = null;
-      renderRungs();
-      renderCurrentView();
-      renderDetail(null);
-      renderShipInfo();
-      loadRatings();
-    });
-  }
-
-  // --- Cabin ratings (thumbs up / down) -------------------------------------
-  function loadRatings() {
-    state.ratings = {};
-    fetch(`/api/ratings?ship=${encodeURIComponent(state.shipId)}`)
-      .then((r) => (r.ok ? r.json() : Promise.reject()))
-      .then((data) => {
-        state.ratings = data;
-        if (state.activeCabin) renderDetail(findCabin(state.shipId, state.activeCabin));
-      })
-      .catch(() => {
-        // Ratings API isn't live yet (e.g. local dev, or D1 not wired up) —
-        // fall back to zero counts, voting still works optimistically.
-      });
-  }
-
-  function votedValue(cabin) {
-    return localStorage.getItem(`pmc-voted-${state.shipId}-${cabin.id}`);
-  }
-
-  function castVote(cabin, vote) {
-    if (votedValue(cabin)) return;
-    localStorage.setItem(`pmc-voted-${state.shipId}-${cabin.id}`, vote);
-
-    const current = state.ratings[cabin.id] || { up: 0, down: 0 };
-    state.ratings[cabin.id] = { ...current, [vote]: current[vote] + 1 };
-    state.voteError = false;
-    renderDetail(cabin);
-
-    fetch('/api/vote', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ shipId: state.shipId, cabinId: cabin.id, vote }),
-    })
-      .then((r) => (r.ok ? r.json() : Promise.reject()))
-      .then((data) => {
-        state.ratings[cabin.id] = data;
-        if (state.activeCabin === cabin.id) renderDetail(cabin);
-      })
-      .catch(() => {
-        state.voteError = true;
-        if (state.activeCabin === cabin.id) renderDetail(cabin);
-      });
-  }
-
-  function renderShipInfo() {
-    const info = SHIP_INFO[state.shipId];
-    if (!info) {
-      els.shipInfo.innerHTML = '';
-      return;
-    }
-    els.shipInfo.innerHTML = `
-      <p class="ship-tagline">${info.tagline}</p>
-      <dl class="stub-grid">
-        <div><dt>Entered service</dt><dd>${info.entered}</dd></div>
-        <div><dt>Gross tonnage</dt><dd>${info.tonnage}</dd></div>
-        <div><dt>Length</dt><dd>${info.length}</dd></div>
-        <div><dt>Passengers</dt><dd>${info.passengers}</dd></div>
-        <div><dt>Decks</dt><dd>${info.decks}</dd></div>
-        <div><dt>Builder</dt><dd>${info.builder}</dd></div>
-      </dl>
-    `;
-  }
-
-  function setView(view) {
-    state.view = view;
-    els.viewToggle.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === view)));
-    els.planView.hidden = view !== 'map';
-    els.listView.hidden = view !== 'list';
-    renderCurrentView();
-  }
-
-  els.viewToggle.querySelectorAll('button').forEach((b) => {
-    b.addEventListener('click', () => setView(b.dataset.view));
-  });
-
-  function renderCurrentView() {
-    if (state.view === 'map') renderPlan();
-    else renderList();
-  }
-
-  // --- Deck rungs (cutaway elevation selector) -----------------------------
-  function renderRungs() {
-    const decks = ship().decks;
-    els.rungs.innerHTML = '';
-    decks.slice().reverse().forEach((d) => {
-      const btn = document.createElement('button');
-      btn.className = 'rung';
-      btn.style.setProperty('--rung-width', `${92 - (d.index / (decks.length - 1)) * 40}%`);
-      btn.dataset.deckIndex = d.index;
-      btn.setAttribute('aria-pressed', d.index === state.deckIndex ? 'true' : 'false');
-      btn.innerHTML = `<span class="rung-num">${d.number}</span>`;
-      btn.setAttribute('aria-label', `Deck ${d.number}`);
-      btn.addEventListener('click', () => setDeck(d.index));
-      els.rungs.appendChild(btn);
-    });
-  }
-
-  function setDeck(index) {
-    state.deckIndex = index;
-    state.activeCabin = null;
-    renderRungs();
-    renderCurrentView();
-    renderDetail(null);
-  }
-
-  // --- Filters shared by map + list ------------------------------------------
-  function categoryVisible(cat) {
-    return state.activeFilters.has(cat);
-  }
-
-  function cabinDimmed(cabin) {
-    if (!categoryVisible(cabin.category)) return true;
-    if (state.quietOnly && cabin.quiet < 0.55) return true;
-    return false;
-  }
-
-  // --- Map view (top-down) --------------------------------------------------
-  function yForPos(pos) {
-    // pos: 0 stern .. 1 bow. Bow renders near the top (small y).
-    return PLAN.yStern - pos * (PLAN.yStern - PLAN.yBow);
-  }
-
-  function renderPlan() {
-    const d = deck();
-    els.deckLabel.textContent = `Deck ${d.number}`;
-    els.deckSub.textContent = `${d.cabins.length} cabins · ${ship().name}`;
-
-    const cabinsPerSide = d.cabins.length / 2;
-    const cabinLen = ((PLAN.yStern - PLAN.yBow) / cabinsPerSide) * 0.82;
-    const portX = 40;
-    const starboardX = 40 + PLAN.colW + PLAN.gap;
-    const hullLeft = portX - 24;
-    const hullRight = starboardX + PLAN.colW + 24;
-    const midX = (hullLeft + hullRight) / 2;
-    const viewH = PLAN.yStern + 90;
-
-    const parts = [];
-
-    // Hull outline: pointed bow at top, rounded stern at bottom.
-    parts.push(
-      `<path class="hull" d="M ${hullLeft} ${PLAN.yBow + 140} L ${hullLeft} ${PLAN.yStern} A 90,40 0 0 0 ${hullRight} ${PLAN.yStern} L ${hullRight} ${PLAN.yBow + 140} Q ${hullRight} ${PLAN.yBow - 60} ${midX} ${PLAN.yBow - 60} Q ${hullLeft} ${PLAN.yBow - 60} ${hullLeft} ${PLAN.yBow + 140} Z" />`
-    );
-    parts.push(`<line class="corridor" x1="${midX}" y1="${PLAN.yBow - 20}" x2="${midX}" y2="${PLAN.yStern - 10}" />`);
-    parts.push(`<text class="bow-label" x="${midX}" y="${PLAN.yBow - 66}">BOW — FORWARD</text>`);
-    parts.push(`<text class="stern-label" x="${midX}" y="${PLAN.yStern + 46}">STERN — AFT</text>`);
-
-    const midY = yForPos(0.5);
-    parts.push(
-      `<g class="shaft"><rect x="${midX - 42}" y="${midY - 20}" width="84" height="40" rx="3" /><line x1="${midX - 36}" y1="${midY}" x2="${midX + 36}" y2="${midY}" /><line x1="${midX - 14}" y1="${midY - 10}" x2="${midX - 14}" y2="${midY + 10}" /><line x1="${midX + 14}" y1="${midY - 10}" x2="${midX + 14}" y2="${midY + 10}" /></g>`
-    );
-
-    d.cabins.forEach((cabin) => {
-      const y = yForPos(cabin.pos) - cabinLen / 2;
-      const x = cabin.side === 'port' ? portX : starboardX;
-      const dimmed = cabinDimmed(cabin);
-      const active = state.activeCabin === cabin.id;
-      const shortlisted = state.shortlist.some((s) => s.shipId === state.shipId && s.cabinId === cabin.id);
-      const cat = CATEGORIES[cabin.category];
-      const showLabel = cabinLen >= 20;
-      parts.push(
-        `<g class="cabin${dimmed ? ' is-dim' : ''}${active ? ' is-active' : ''}${shortlisted ? ' is-shortlisted' : ''}" data-id="${cabin.id}">` +
-          `<rect x="${x}" y="${y.toFixed(1)}" width="${PLAN.colW}" height="${cabinLen.toFixed(1)}" rx="3" fill="${cat.color}" />` +
-          (showLabel
-            ? `<text class="cabin-label" x="${x + PLAN.colW / 2}" y="${(y + cabinLen / 2 + 4).toFixed(1)}" fill="${cat.text}">${cabin.id}</text>`
-            : '') +
-          `</g>`
-      );
-    });
-
-    parts.push(`<text class="col-label" x="${portX + PLAN.colW / 2}" y="${PLAN.yBow - 34}">PORT</text>`);
-    parts.push(`<text class="col-label" x="${starboardX + PLAN.colW / 2}" y="${PLAN.yBow - 34}">STARBOARD</text>`);
-
-    parts.push(
-      `<g class="compass" transform="translate(${hullLeft + 6},${PLAN.yStern - 30})"><circle r="16" /><line x1="0" y1="-16" x2="0" y2="16" /><line x1="-16" y1="0" x2="16" y2="0" /><text y="-20">N</text></g>`
-    );
-
-    els.plan.setAttribute('viewBox', `0 0 ${PLAN.viewW} ${viewH}`);
-    els.plan.innerHTML = parts.join('');
-
-    els.plan.querySelectorAll('.cabin').forEach((g) => {
-      const cabin = findCabin(state.shipId, g.dataset.id);
-      g.addEventListener('mouseenter', (e) => showTooltip(e, cabin));
-      g.addEventListener('mousemove', (e) => moveTooltip(e));
-      g.addEventListener('mouseleave', hideTooltip);
-      g.addEventListener('click', () => selectCabin(cabin));
-      g.addEventListener('focus', (e) => showTooltip(e, cabin));
-      g.addEventListener('blur', hideTooltip);
-      g.setAttribute('tabindex', '0');
-      g.setAttribute('role', 'button');
-      g.setAttribute('aria-label', `Cabin ${cabin.id}, ${CATEGORIES[cabin.category].label}, ${cabin.sqft} square feet`);
-    });
-  }
-
-  function showTooltip(e, cabin) {
-    els.tooltip.hidden = false;
-    els.tooltip.innerHTML = `<strong>${cabin.id}</strong><span>${CATEGORIES[cabin.category].label} · ${cabin.sqft} sq ft</span>`;
-    moveTooltip(e);
-  }
-
-  function moveTooltip(e) {
-    const rect = els.plan.parentElement.getBoundingClientRect();
-    const x = (e.clientX ?? rect.left) - rect.left;
-    const y = (e.clientY ?? rect.top) - rect.top;
-    els.tooltip.style.left = `${x + 14}px`;
-    els.tooltip.style.top = `${y + 14}px`;
-  }
-
-  function hideTooltip() {
-    els.tooltip.hidden = true;
-  }
-
-  // --- List view -----------------------------------------------------------
-  function renderList() {
-    const d = deck();
-    els.deckLabel.textContent = `Deck ${d.number}`;
-    els.deckSub.textContent = `${d.cabins.length} cabins · ${ship().name}`;
-
-    const rows = deck()
-      .cabins.filter((c) => !cabinDimmed(c))
-      .slice()
-      .sort((a, b) => state.sortDir * SORTERS[state.sortKey](a, b));
-
-    els.listBody.innerHTML = rows
-      .map((c) => {
-        const shortlisted = state.shortlist.some((s) => s.shipId === state.shipId && s.cabinId === c.id);
-        const active = state.activeCabin === c.id;
-        return `
-        <tr data-id="${c.id}" class="${active ? 'is-active' : ''}${shortlisted ? ' is-shortlisted' : ''}">
-          <td class="mono">${c.id}</td>
-          <td>${c.deck}</td>
-          <td><span class="cat-dot" style="background:${CATEGORIES[c.category].color}"></span>${CATEGORIES[c.category].label}</td>
-          <td>${c.sqft} sqft</td>
-          <td>${c.occupancy}</td>
-          <td>${c.elevatorWalk}</td>
-        </tr>`;
-      })
-      .join('');
-
-    els.listBody.querySelectorAll('tr').forEach((row) => {
-      row.addEventListener('click', () => selectCabin(findCabin(state.shipId, row.dataset.id)));
-    });
-  }
-
-  document.querySelectorAll('#list-view th[data-sort]').forEach((th) => {
-    th.addEventListener('click', () => {
-      const key = th.dataset.sort;
-      if (state.sortKey === key) state.sortDir *= -1;
-      else {
-        state.sortKey = key;
-        state.sortDir = 1;
-      }
-      document.querySelectorAll('#list-view th[data-sort]').forEach((h) => h.removeAttribute('data-dir'));
-      th.setAttribute('data-dir', state.sortDir === 1 ? 'asc' : 'desc');
-      renderList();
-    });
-  });
-
-  // --- Legend / filters --------------------------------------------------
-  function renderLegend() {
-    els.legend.innerHTML = '';
-    Object.entries(CATEGORIES).forEach(([key, cat]) => {
+  // --- Home: search + browse ------------------------------------------------
+  function renderLineFilters() {
+    els.lineFilters.innerHTML = '';
+    LINES.forEach((line) => {
       const chip = document.createElement('button');
       chip.className = 'chip';
-      chip.dataset.cat = key;
+      chip.dataset.line = line.id;
       chip.setAttribute('aria-pressed', 'true');
-      chip.innerHTML = `<span class="chip-swatch" style="background:${cat.color}"></span>${cat.label}`;
-      chip.addEventListener('click', () => toggleFilter(key, chip));
-      els.legend.appendChild(chip);
+      chip.textContent = line.name;
+      chip.addEventListener('click', () => {
+        if (state.activeLines.has(line.id)) {
+          state.activeLines.delete(line.id);
+          chip.setAttribute('aria-pressed', 'false');
+        } else {
+          state.activeLines.add(line.id);
+          chip.setAttribute('aria-pressed', 'true');
+        }
+        renderShipGrid();
+      });
+      els.lineFilters.appendChild(chip);
     });
   }
 
-  function toggleFilter(key, chip) {
-    if (state.activeFilters.has(key)) {
-      state.activeFilters.delete(key);
-      chip.setAttribute('aria-pressed', 'false');
-    } else {
-      state.activeFilters.add(key);
-      chip.setAttribute('aria-pressed', 'true');
-    }
-    renderCurrentView();
-  }
-
-  // --- Cabin detail --------------------------------------------------------
-  function selectCabin(cabin) {
-    state.activeCabin = cabin.id;
-    renderCurrentView();
-    renderDetail(cabin);
-  }
-
-  function quietLabel(score) {
-    if (score > 0.7) return 'Quietest on this deck';
-    if (score > 0.45) return 'Typical motion & noise';
-    return 'Expect more motion / noise';
-  }
-
-  function renderDetail(cabin) {
-    if (!cabin) {
-      els.detail.innerHTML = `<p class="detail-empty">Select a cabin to see its details here.</p>`;
-      return;
-    }
-    const cat = CATEGORIES[cabin.category];
-    const shortlisted = state.shortlist.some((s) => s.shipId === state.shipId && s.cabinId === cabin.id);
-    const counts = state.ratings[cabin.id] || { up: 0, down: 0 };
-    const voted = votedValue(cabin);
-    els.detail.innerHTML = `
-      <div class="stub">
-        <div class="stub-row">
-          <span class="stub-id">${cabin.id}</span>
-          <span class="stub-cat" style="color:${cat.color}">${cat.label}</span>
-        </div>
-        <dl class="stub-grid">
-          <div><dt>Ship</dt><dd>${ship().name}</dd></div>
-          <div><dt>Deck</dt><dd>${cabin.deck}</dd></div>
-          <div><dt>Side</dt><dd>${cabin.side === 'port' ? 'Port' : 'Starboard'}</dd></div>
-          <div><dt>Size</dt><dd>${cabin.sqft} sq ft</dd></div>
-          <div><dt>Sleeps</dt><dd>${cabin.occupancy}</dd></div>
-          <div><dt>Lift &amp; stairs</dt><dd>${cabin.elevatorWalk} walk</dd></div>
-          <div><dt>Motion &amp; noise</dt><dd>${quietLabel(cabin.quiet)}</dd></div>
-        </dl>
-        <button class="shortlist-btn" id="shortlist-btn">${shortlisted ? 'Remove from shortlist' : 'Add to shortlist'}</button>
-        <div class="rate-block">
-          <p class="rate-label">Stayed here? Rate this cabin</p>
-          <div class="rate-buttons">
-            <button class="rate-btn${voted === 'up' ? ' is-voted' : ''}" data-vote="up" ${voted ? 'disabled' : ''}>👍 <span>${counts.up}</span></button>
-            <button class="rate-btn${voted === 'down' ? ' is-voted' : ''}" data-vote="down" ${voted ? 'disabled' : ''}>👎 <span>${counts.down}</span></button>
-          </div>
-          ${state.voteError ? '<p class="rate-error">Couldn’t save your vote — try again shortly.</p>' : ''}
-        </div>
-      </div>
-    `;
-    document.getElementById('shortlist-btn').addEventListener('click', () => toggleShortlist(cabin));
-    els.detail.querySelectorAll('.rate-btn').forEach((btn) => {
-      btn.addEventListener('click', () => castVote(cabin, btn.dataset.vote));
+  function renderShipGrid() {
+    const q = state.query.trim().toLowerCase();
+    const matches = allShips().filter((ship) => {
+      if (!state.activeLines.has(ship.lineId)) return false;
+      if (!q) return true;
+      const line = lineById(ship.lineId);
+      return ship.name.toLowerCase().includes(q) || (line && line.name.toLowerCase().includes(q));
     });
-  }
 
-  function toggleShortlist(cabin) {
-    const i = state.shortlist.findIndex((s) => s.shipId === state.shipId && s.cabinId === cabin.id);
-    if (i === -1) state.shortlist.push({ shipId: state.shipId, cabinId: cabin.id });
-    else state.shortlist.splice(i, 1);
-    saveShortlist();
-    renderShortlist();
-    renderCurrentView();
-    if (state.activeCabin === cabin.id) renderDetail(cabin);
-  }
-
-  function renderShortlist() {
-    els.shortlistCount.textContent = state.shortlist.length;
-    if (state.shortlist.length === 0) {
-      els.shortlistTray.innerHTML = `<p class="tray-empty">Cabins you shortlist will line up here for comparison.</p>`;
-      els.copySummaryBtn.hidden = true;
+    els.noResults.hidden = matches.length > 0;
+    els.noResultsQuery.textContent = state.query;
+    els.addShipForm.hidden = true;
+    if (matches.length === 0) {
+      els.shipGrid.innerHTML = '';
       return;
     }
-    els.copySummaryBtn.hidden = false;
-    const rows = state.shortlist
-      .map((s) => ({ ship: SHIPS.find((x) => x.id === s.shipId), cabin: findCabin(s.shipId, s.cabinId) }))
-      .filter((r) => r.cabin)
-      .map(
-        ({ ship: sh, cabin: c }) => `
-        <li>
-          <span class="tray-swatch" style="background:${CATEGORIES[c.category].color}"></span>
-          <span class="tray-id">${c.id}</span>
-          <span class="tray-ship">${sh.name}</span>
-          <span class="tray-cat">${CATEGORIES[c.category].label}</span>
-          <button aria-label="Remove ${c.id} from shortlist" data-ship="${sh.id}" data-id="${c.id}">&times;</button>
-        </li>`
-      )
+
+    els.shipGrid.innerHTML = matches
+      .map((ship) => {
+        const reviews = reviewsForShip(ship.id);
+        const up = reviews.filter((r) => r.rating === 'up').length;
+        const down = reviews.filter((r) => r.rating === 'down').length;
+        const line = lineById(ship.lineId);
+        const countLabel = reviews.length === 0 ? 'No reviews yet' : `${up}👍 ${down}👎`;
+        return `
+          <button class="ship-card" data-id="${ship.id}">
+            <span class="ship-card-line">${line ? line.name : ''}</span>
+            <span class="ship-card-name">${ship.name}</span>
+            <span class="ship-card-count">${countLabel}</span>
+          </button>`;
+      })
       .join('');
-    els.shortlistTray.innerHTML = `<ul class="tray-list">${rows}</ul>`;
-    els.shortlistTray.querySelectorAll('button[data-id]').forEach((btn) => {
-      btn.addEventListener('click', () => toggleShortlist(findCabin(btn.dataset.ship, btn.dataset.id)));
+
+    els.shipGrid.querySelectorAll('.ship-card').forEach((card) => {
+      card.addEventListener('click', () => showShip(card.dataset.id));
     });
   }
 
-  els.copySummaryBtn.addEventListener('click', async () => {
-    const lines = state.shortlist
-      .map((s) => ({ ship: SHIPS.find((x) => x.id === s.shipId), cabin: findCabin(s.shipId, s.cabinId) }))
-      .filter((r) => r.cabin)
-      .map(
-        ({ ship: sh, cabin: c }) =>
-          `${sh.name} · Cabin ${c.id} · Deck ${c.deck} · ${CATEGORIES[c.category].label} · ${c.sqft} sq ft`
-      );
-    const text = `Cabin shortlist — ${BRAND.site}\n\n${lines.join('\n')}`;
-    try {
-      await navigator.clipboard.writeText(text);
-      els.copySummaryBtn.textContent = 'Copied';
-      setTimeout(() => (els.copySummaryBtn.textContent = 'Copy shortlist'), 1600);
-    } catch (e) {
-      els.copySummaryBtn.textContent = 'Copy failed — select & copy manually';
+  els.search.addEventListener('input', () => {
+    state.query = els.search.value;
+    renderShipGrid();
+  });
+
+  els.addShipToggle.addEventListener('click', () => {
+    els.addShipLine.innerHTML = LINES.map((l) => `<option value="${l.id}">${l.name}</option>`).join('');
+    els.addShipName.value = state.query;
+    els.addShipForm.hidden = false;
+  });
+
+  els.addShipForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = els.addShipName.value.trim();
+    if (!name) return;
+    const id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-' + Date.now().toString(36);
+    const ship = { id, lineId: els.addShipLine.value, name };
+    state.addedShips.push(ship);
+    saveAddedShips();
+    showShip(id);
+  });
+
+  // --- Ship view -------------------------------------------------------------
+  function showShip(shipId) {
+    state.selectedShipId = shipId;
+    state.selectedRating = null;
+    state.selectedTags = new Set();
+    els.homeView.hidden = true;
+    els.shipView.hidden = false;
+    document.getElementById('hero').classList.add('is-compact');
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    renderShipView();
+    loadRemoteReviews(shipId);
+    resetForm();
+  }
+
+  els.backToHome.addEventListener('click', () => {
+    els.shipView.hidden = true;
+    els.homeView.hidden = false;
+    document.getElementById('hero').classList.remove('is-compact');
+    state.selectedShipId = null;
+  });
+
+  function renderShipView() {
+    const ship = shipById(state.selectedShipId);
+    if (!ship) return;
+    const line = lineById(ship.lineId);
+    els.shipLineLabel.textContent = line ? line.name : '';
+    els.shipTitle.textContent = ship.name;
+
+    const reviews = reviewsForShip(ship.id);
+    const up = reviews.filter((r) => r.rating === 'up').length;
+    const down = reviews.filter((r) => r.rating === 'down').length;
+    els.ratingSummary.innerHTML = `
+      <span class="summary-up">👍 <strong>${up}</strong></span>
+      <span class="summary-down">👎 <strong>${down}</strong></span>
+    `;
+
+    if (reviews.length === 0) {
+      els.reviewsList.innerHTML = `<p class="empty-note">No reviews yet for ${ship.name} — be the first to add one.</p>`;
+    } else {
+      els.reviewsList.innerHTML = reviews
+        .map(
+          (r) => `
+        <article class="review-card${r.demo ? ' is-demo' : ''}">
+          ${r.demo ? '<span class="demo-badge">Example</span>' : ''}
+          <div class="review-card-head">
+            <span class="review-cabin">Cabin ${r.cabin}</span>
+            <span class="review-rating">${r.rating === 'up' ? '👍' : '👎'}</span>
+          </div>
+          ${r.tags && r.tags.length ? `<div class="review-tags">${r.tags.map((t) => `<span>${t}</span>`).join('')}</div>` : ''}
+          ${r.comment ? `<p class="review-comment">${escapeHtml(r.comment)}</p>` : ''}
+          <p class="review-meta">${escapeHtml(r.author || 'Anonymous')} · ${r.when || 'recently'}</p>
+        </article>`
+        )
+        .join('');
     }
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function loadRemoteReviews(shipId) {
+    fetch(`/api/reviews?ship=${encodeURIComponent(shipId)}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data) => {
+        state.remoteReviews[shipId] = Array.isArray(data) ? data : [];
+        if (state.selectedShipId === shipId) {
+          renderShipView();
+          renderShipGrid();
+        }
+      })
+      .catch(() => {
+        // API/D1 not live yet — local + example reviews still work fine.
+      });
+  }
+
+  // --- Review form -------------------------------------------------------
+  function renderTagPick() {
+    els.tagPick.innerHTML = TAGS.map((tag) => `<button type="button" class="chip" data-tag="${tag}" aria-pressed="false">${tag}</button>`).join('');
+    els.tagPick.querySelectorAll('.chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const tag = chip.dataset.tag;
+        if (state.selectedTags.has(tag)) {
+          state.selectedTags.delete(tag);
+          chip.setAttribute('aria-pressed', 'false');
+        } else {
+          state.selectedTags.add(tag);
+          chip.setAttribute('aria-pressed', 'true');
+        }
+      });
+    });
+  }
+
+  els.reviewForm.querySelectorAll('.rating-pick .rate-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      state.selectedRating = btn.dataset.vote;
+      els.reviewForm.querySelectorAll('.rating-pick .rate-btn').forEach((b) => b.classList.toggle('is-selected', b === btn));
+      updateSubmitState();
+    });
   });
 
-  els.quietToggle.addEventListener('click', () => {
-    state.quietOnly = !state.quietOnly;
-    els.quietToggle.setAttribute('aria-pressed', String(state.quietOnly));
-    renderCurrentView();
+  els.reviewCabin.addEventListener('input', updateSubmitState);
+
+  function updateSubmitState() {
+    els.reviewSubmit.disabled = !(els.reviewCabin.value.trim() && state.selectedRating);
+  }
+
+  function resetForm() {
+    els.reviewForm.reset();
+    state.selectedRating = null;
+    state.selectedTags = new Set();
+    els.reviewForm.querySelectorAll('.rating-pick .rate-btn').forEach((b) => b.classList.remove('is-selected'));
+    renderTagPick();
+    updateSubmitState();
+    els.reviewStatus.textContent = '';
+    els.reviewStatus.className = 'form-note';
+  }
+
+  els.reviewForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const shipId = state.selectedShipId;
+    const review = {
+      id: `local-${Date.now()}`,
+      shipId,
+      cabin: els.reviewCabin.value.trim(),
+      rating: state.selectedRating,
+      tags: Array.from(state.selectedTags),
+      comment: els.reviewComment.value.trim(),
+      author: els.reviewAuthor.value.trim() || 'Anonymous',
+      when: 'Just now',
+    };
+
+    state.localReviews.unshift(review);
+    saveLocalReviews();
+    renderShipView();
+    renderShipGrid();
+    resetForm();
+    els.reviewStatus.textContent = 'Saved on this device — thank you!';
+    els.reviewStatus.className = 'form-note is-success';
+
+    fetch('/api/reviews', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(review),
+    })
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .catch(() => {
+        // No live backend yet — the local copy above still shows immediately.
+      });
   });
 
-  renderShipSelect();
-  renderShipInfo();
-  renderRungs();
-  renderLegend();
-  renderCurrentView();
-  renderDetail(null);
-  renderShortlist();
-  loadRatings();
+  // --- Init ------------------------------------------------------------------
+  renderLineFilters();
+  renderShipGrid();
+  renderTagPick();
 })();

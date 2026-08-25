@@ -2,33 +2,41 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    if (url.pathname === '/api/ratings' && request.method === 'GET') {
-      return handleRatings(url, env);
+    if (url.pathname === '/api/reviews' && request.method === 'GET') {
+      return handleGetReviews(url, env);
     }
-    if (url.pathname === '/api/vote' && request.method === 'POST') {
-      return handleVote(request, env);
+    if (url.pathname === '/api/reviews' && request.method === 'POST') {
+      return handlePostReview(request, env);
     }
 
     return env.ASSETS.fetch(request);
   },
 };
 
-async function handleRatings(url, env) {
+async function handleGetReviews(url, env) {
   const shipId = url.searchParams.get('ship');
   if (!shipId) return json({ error: 'ship is required' }, 400);
 
-  const { results } = await env.DB.prepare('SELECT cabin_id, up, down FROM votes WHERE ship_id = ?')
+  const { results } = await env.DB.prepare(
+    'SELECT id, cabin, rating, tags, comment, author, created_at FROM reviews WHERE ship_id = ? ORDER BY created_at DESC'
+  )
     .bind(shipId)
     .all();
 
-  const out = {};
-  for (const row of results) {
-    out[row.cabin_id] = { up: row.up, down: row.down };
-  }
+  const out = results.map((r) => ({
+    id: r.id,
+    shipId,
+    cabin: r.cabin,
+    rating: r.rating,
+    tags: JSON.parse(r.tags || '[]'),
+    comment: r.comment,
+    author: r.author,
+    when: formatWhen(r.created_at),
+  }));
   return json(out);
 }
 
-async function handleVote(request, env) {
+async function handlePostReview(request, env) {
   let body;
   try {
     body = await request.json();
@@ -36,24 +44,35 @@ async function handleVote(request, env) {
     return json({ error: 'invalid JSON body' }, 400);
   }
 
-  const { shipId, cabinId, vote } = body || {};
-  if (!shipId || !cabinId || (vote !== 'up' && vote !== 'down')) {
-    return json({ error: 'shipId, cabinId and vote (up|down) are required' }, 400);
+  const { shipId, cabin, rating, tags, comment, author } = body || {};
+  if (!shipId || !cabin || (rating !== 'up' && rating !== 'down')) {
+    return json({ error: 'shipId, cabin and rating (up|down) are required' }, 400);
   }
 
-  const column = vote === 'up' ? 'up' : 'down';
+  const id = crypto.randomUUID();
+  const createdAt = new Date().toISOString();
+
   await env.DB.prepare(
-    `INSERT INTO votes (ship_id, cabin_id, up, down) VALUES (?, ?, ?, ?)
-     ON CONFLICT(ship_id, cabin_id) DO UPDATE SET ${column} = ${column} + 1`
+    'INSERT INTO reviews (id, ship_id, cabin, rating, tags, comment, author, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
   )
-    .bind(shipId, cabinId, vote === 'up' ? 1 : 0, vote === 'down' ? 1 : 0)
+    .bind(id, shipId, cabin, rating, JSON.stringify(Array.isArray(tags) ? tags : []), comment || '', author || 'Anonymous', createdAt)
     .run();
 
-  const row = await env.DB.prepare('SELECT up, down FROM votes WHERE ship_id = ? AND cabin_id = ?')
-    .bind(shipId, cabinId)
-    .first();
+  return json({
+    id,
+    shipId,
+    cabin,
+    rating,
+    tags: Array.isArray(tags) ? tags : [],
+    comment: comment || '',
+    author: author || 'Anonymous',
+    when: 'Just now',
+  });
+}
 
-  return json(row);
+function formatWhen(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 }
 
 function json(data, status = 200) {
