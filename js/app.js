@@ -129,6 +129,11 @@
   }
 
   // --- Home: search + browse ------------------------------------------------
+  function scrollToShipGrid() {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    els.shipGrid.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  }
+
   function renderLineFilters() {
     els.lineFilters.innerHTML = '';
 
@@ -140,6 +145,7 @@
       state.activeLine = null;
       renderLineFilters();
       renderShipGrid();
+      scrollToShipGrid();
     });
     els.lineFilters.appendChild(allChip);
 
@@ -153,6 +159,7 @@
         state.activeLine = line.id;
         renderLineFilters();
         renderShipGrid();
+        scrollToShipGrid();
       });
       els.lineFilters.appendChild(chip);
     });
