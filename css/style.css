@@ -9,6 +9,7 @@
   --coral: #E2683D;
   --coral-bright: #F0855F;
   --slate: #5C7A80;
+  --yellow: #F2C94C;
 
   --font-display: 'Source Serif 4', Georgia, serif;
   --font-body: 'Karla', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -444,16 +445,17 @@ textarea { resize: vertical; }
   align-items: center;
   justify-content: center;
   padding: 8px 12px;
-  border: 1px dashed var(--ink-3);
+  border: 1px dashed var(--yellow);
   border-radius: 6px;
-  color: var(--ivory-dim);
+  color: var(--yellow);
+  font-weight: 600;
   font-size: 0.82rem;
   cursor: pointer;
   align-self: flex-start;
-  transition: border-color 0.15s ease, color 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
-.photo-add-btn:hover { border-color: var(--coral); color: var(--ivory); }
+.photo-add-btn:hover { background: var(--yellow); color: var(--ink); }
 
 .review-photos {
   display: flex;
