@@ -15,7 +15,15 @@ export default {
 
 async function handleGetReviews(url, env) {
   const shipId = url.searchParams.get('ship');
-  if (!shipId) return json({ error: 'ship is required' }, 400);
+
+  // No ship filter — return the most recent reviews across every ship, for
+  // the home page's "most recent reviews" feed.
+  if (!shipId) {
+    const { results } = await env.DB.prepare(
+      'SELECT id, ship_id, cabin, rating, tags, comment, author, created_at FROM reviews ORDER BY created_at DESC LIMIT 6'
+    ).all();
+    return json(results.map((r) => rowToReview(r, r.ship_id)));
+  }
 
   const { results } = await env.DB.prepare(
     'SELECT id, cabin, rating, tags, comment, author, created_at FROM reviews WHERE ship_id = ? ORDER BY created_at DESC'
@@ -23,7 +31,11 @@ async function handleGetReviews(url, env) {
     .bind(shipId)
     .all();
 
-  const out = results.map((r) => ({
+  return json(results.map((r) => rowToReview(r, shipId)));
+}
+
+function rowToReview(r, shipId) {
+  return {
     id: r.id,
     shipId,
     cabin: r.cabin,
@@ -32,8 +44,7 @@ async function handleGetReviews(url, env) {
     comment: r.comment,
     author: r.author,
     when: formatWhen(r.created_at),
-  }));
-  return json(out);
+  };
 }
 
 async function handlePostReview(request, env) {

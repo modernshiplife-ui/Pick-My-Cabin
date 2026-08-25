@@ -132,6 +132,23 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
    fully legible when off (they mean "not chosen yet"). */
 .line-filters .chip[aria-pressed="false"] { opacity: 0.4; }
 
+.recent-section { margin-bottom: 26px; }
+
+.recent-section h2 {
+  font-size: 1rem;
+  color: var(--ivory);
+  margin-bottom: 12px;
+}
+
+.recent-reviews-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.review-card.is-clickable { cursor: pointer; transition: transform 0.15s ease; }
+.review-card.is-clickable:hover { transform: translateY(-2px); }
+
 .ship-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));

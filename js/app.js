@@ -7,6 +7,7 @@
     selectedRating: null,
     selectedTags: new Set(),
     remoteReviews: {}, // shipId -> array, fetched from the API when available
+    globalRecent: null, // recent reviews across all ships, fetched from the API when available
     localReviews: JSON.parse(localStorage.getItem('pmc-reviews') || '[]'),
     addedShips: JSON.parse(localStorage.getItem('pmc-added-ships') || '[]'),
   };
@@ -39,6 +40,7 @@
     reviewAuthor: document.getElementById('review-author'),
     reviewSubmit: document.getElementById('review-submit'),
     reviewStatus: document.getElementById('review-status'),
+    recentReviews: document.getElementById('recent-reviews'),
   };
 
   function saveLocalReviews() {
@@ -54,6 +56,58 @@
     const local = state.localReviews.filter((r) => r.shipId === shipId);
     const remote = state.remoteReviews[shipId] || [];
     return [...remote, ...local, ...demo];
+  }
+
+  function reviewTimestamp(r) {
+    if (r.ts) return r.ts;
+    const parsed = Date.parse(r.when);
+    return isNaN(parsed) ? 0 : parsed;
+  }
+
+  function recentReviews(limit) {
+    if (state.globalRecent) return state.globalRecent.slice(0, limit);
+    const combined = [...state.localReviews, ...DEMO_REVIEWS];
+    combined.sort((a, b) => reviewTimestamp(b) - reviewTimestamp(a));
+    return combined.slice(0, limit);
+  }
+
+  function reviewCardHtml(r, { showShipName } = {}) {
+    const ship = showShipName ? shipById(r.shipId) : null;
+    return `
+      <article class="review-card${r.demo ? ' is-demo' : ''}${showShipName ? ' is-clickable' : ''}"${showShipName ? ` data-ship="${r.shipId}"` : ''}>
+        ${r.demo ? '<span class="demo-badge">Example</span>' : ''}
+        <div class="review-card-head">
+          <span class="review-cabin">${ship ? `${ship.name} · ` : ''}Cabin ${r.cabin}</span>
+          <span class="review-rating">${r.rating === 'up' ? '👍' : '👎'}</span>
+        </div>
+        ${r.tags && r.tags.length ? `<div class="review-tags">${r.tags.map((t) => `<span>${t}</span>`).join('')}</div>` : ''}
+        ${r.comment ? `<p class="review-comment">${escapeHtml(r.comment)}</p>` : ''}
+        <p class="review-meta">${escapeHtml(r.author || 'Anonymous')} · ${r.when || 'recently'}</p>
+      </article>`;
+  }
+
+  function renderRecentReviews() {
+    const reviews = recentReviews(6);
+    if (reviews.length === 0) {
+      els.recentReviews.innerHTML = '';
+      return;
+    }
+    els.recentReviews.innerHTML = reviews.map((r) => reviewCardHtml(r, { showShipName: true })).join('');
+    els.recentReviews.querySelectorAll('.review-card[data-ship]').forEach((card) => {
+      card.addEventListener('click', () => showShip(card.dataset.ship));
+    });
+  }
+
+  function loadGlobalRecent() {
+    fetch('/api/reviews')
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data) => {
+        state.globalRecent = Array.isArray(data) ? data : [];
+        renderRecentReviews();
+      })
+      .catch(() => {
+        // No live backend yet — local + example reviews still populate this.
+      });
   }
 
   // --- Home: search + browse ------------------------------------------------
@@ -178,21 +232,7 @@
     if (reviews.length === 0) {
       els.reviewsList.innerHTML = `<p class="empty-note">No reviews yet for ${ship.name} — be the first to add one.</p>`;
     } else {
-      els.reviewsList.innerHTML = reviews
-        .map(
-          (r) => `
-        <article class="review-card${r.demo ? ' is-demo' : ''}">
-          ${r.demo ? '<span class="demo-badge">Example</span>' : ''}
-          <div class="review-card-head">
-            <span class="review-cabin">Cabin ${r.cabin}</span>
-            <span class="review-rating">${r.rating === 'up' ? '👍' : '👎'}</span>
-          </div>
-          ${r.tags && r.tags.length ? `<div class="review-tags">${r.tags.map((t) => `<span>${t}</span>`).join('')}</div>` : ''}
-          ${r.comment ? `<p class="review-comment">${escapeHtml(r.comment)}</p>` : ''}
-          <p class="review-meta">${escapeHtml(r.author || 'Anonymous')} · ${r.when || 'recently'}</p>
-        </article>`
-        )
-        .join('');
+      els.reviewsList.innerHTML = reviews.map((r) => reviewCardHtml(r)).join('');
     }
   }
 
@@ -271,12 +311,14 @@
       comment: els.reviewComment.value.trim(),
       author: els.reviewAuthor.value.trim() || 'Anonymous',
       when: 'Just now',
+      ts: Date.now(),
     };
 
     state.localReviews.unshift(review);
     saveLocalReviews();
     renderShipView();
     renderShipGrid();
+    renderRecentReviews();
     resetForm();
     els.reviewStatus.textContent = 'Saved on this device — thank you!';
     els.reviewStatus.className = 'form-note is-success';
@@ -296,4 +338,6 @@
   renderLineFilters();
   renderShipGrid();
   renderTagPick();
+  renderRecentReviews();
+  loadGlobalRecent();
 })();
