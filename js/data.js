@@ -16,6 +16,7 @@ const LINES = [
   { id: 'ncl', name: 'Norwegian Cruise Line' },
   { id: 'disney', name: 'Disney Cruise Line' },
   { id: 'viking', name: 'Viking Ocean Cruises' },
+  { id: 'po-cruises', name: 'P&O Cruises' },
 ];
 
 const SHIPS = [
@@ -52,6 +53,9 @@ const SHIPS = [
   { id: 'viking-saturn', lineId: 'viking', name: 'Viking Saturn' },
   { id: 'viking-neptune', lineId: 'viking', name: 'Viking Neptune' },
   { id: 'viking-vela', lineId: 'viking', name: 'Viking Vela' },
+  { id: 'iona', lineId: 'po-cruises', name: 'Iona' },
+  { id: 'arvia', lineId: 'po-cruises', name: 'Arvia' },
+  { id: 'britannia', lineId: 'po-cruises', name: 'Britannia' },
 ];
 
 const TAGS = [
