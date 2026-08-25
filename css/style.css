@@ -128,9 +128,13 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
 
 .chip[aria-pressed="true"] { color: var(--ivory); border-color: var(--coral); }
 
-/* Line filters fade when off (they mean "hidden"); tag-pick chips stay
-   fully legible when off (they mean "not chosen yet"). */
-.line-filters .chip[aria-pressed="false"] { opacity: 0.4; }
+.line-filters .chip { color: var(--ivory); }
+.line-filters .chip[aria-pressed="true"] {
+  background: var(--coral);
+  border-color: var(--coral);
+  color: var(--ink);
+  font-weight: 600;
+}
 
 .recent-section { margin-bottom: 26px; max-width: 640px; }
 
