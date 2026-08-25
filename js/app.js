@@ -246,11 +246,26 @@
     resetForm();
   }
 
-  els.backToHome.addEventListener('click', () => {
+  function goHome({ reset } = {}) {
     els.shipView.hidden = true;
     els.homeView.hidden = false;
     document.getElementById('hero').classList.remove('is-compact');
     state.selectedShipId = null;
+    if (reset) {
+      state.query = '';
+      els.search.value = '';
+      state.activeLine = null;
+      renderLineFilters();
+      renderShipGrid();
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+  }
+
+  els.backToHome.addEventListener('click', () => goHome());
+
+  document.getElementById('brand-home-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    goHome({ reset: true });
   });
 
   function renderShipView() {

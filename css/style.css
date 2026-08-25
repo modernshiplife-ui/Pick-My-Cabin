@@ -53,7 +53,15 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
   flex-wrap: wrap;
 }
 
-.brand { display: flex; align-items: center; gap: 8px; }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.brand:hover { opacity: 0.8; }
 .brand-mark { color: var(--coral); font-size: 1.2rem; }
 .brand-text { font-family: var(--font-display); font-size: 1.1rem; color: var(--ivory); }
 .brand-tagline { margin: 0; font-size: 0.82rem; color: var(--ivory-dim); }
