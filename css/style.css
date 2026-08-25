@@ -127,7 +127,10 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
 }
 
 .chip[aria-pressed="true"] { color: var(--ivory); border-color: var(--coral); }
-.chip[aria-pressed="false"] { opacity: 0.4; }
+
+/* Line filters fade when off (they mean "hidden"); tag-pick chips stay
+   fully legible when off (they mean "not chosen yet"). */
+.line-filters .chip[aria-pressed="false"] { opacity: 0.4; }
 
 .ship-grid {
   display: grid;
@@ -381,7 +384,8 @@ textarea { resize: vertical; }
 .rating-pick .rate-btn.is-selected { border-color: var(--coral); color: var(--coral-bright); }
 
 .tag-pick { display: flex; flex-wrap: wrap; gap: 6px; }
-.tag-pick .chip { font-size: 0.76rem; padding: 4px 10px; }
+.tag-pick .chip { font-size: 0.76rem; padding: 4px 10px; color: var(--ivory); border-color: var(--ink-3); }
+.tag-pick .chip:hover { border-color: var(--coral); }
 
 .form-note { min-height: 1.2em; font-size: 0.8rem; margin: 0; color: var(--ivory-dim); }
 .form-note.is-success { color: var(--coral-bright); }
