@@ -670,3 +670,171 @@ const DRINKS_PACKAGES = {
   },
 };
 
+// General reference only — package names, inclusions and prices change often
+// and vary by ship, sailing length and promotion. Always confirm current
+// details directly with the line before booking.
+const WIFI_PLANS = {
+  cunard: {
+    tiers: [
+      {
+        name: 'Essential Internet Plan',
+        price: '~$18–22/day',
+        includes: 'Browsing, email and messaging.',
+      },
+      {
+        name: 'Premium Internet Plan',
+        price: '~$24–30/day',
+        includes: 'Adds streaming-capable speed for video and calls.',
+      },
+    ],
+    note: 'World Club loyalty tiers get an internet credit toward a package (Gold $45, Platinum $80, Diamond $135 per person) rather than free WiFi outright. Booking for the full voyage in advance is cheaper than day rates.',
+  },
+  'royal-caribbean': {
+    tiers: [
+      {
+        name: 'VOOM Surf',
+        price: 'Lower-cost, browsing-only tier',
+        includes: 'Email, messaging and web browsing — no streaming.',
+      },
+      {
+        name: 'VOOM Surf + Stream',
+        price: '~$20–29/device/day',
+        includes: 'Adds streaming, video calls and social media on top of Surf.',
+      },
+    ],
+    note: 'Sold per device, up to 4 per account. Star Class and Sky Suite guests get complimentary Surf + Stream, one device per person. Pre-booking is meaningfully cheaper than buying onboard.',
+  },
+  celebrity: {
+    tiers: [
+      {
+        name: 'Basic WiFi',
+        price: 'Bundled free with Always Included fares',
+        includes: 'Email and light browsing — streaming and social media are blocked.',
+      },
+      {
+        name: 'Premium WiFi',
+        price: '~$27–35/device/day',
+        includes: 'Streaming, video calls and social media, powered by Starlink.',
+      },
+    ],
+    note: 'Basic WiFi is bundled into the "Always Included" fare alongside the Classic Drinks Package and gratuities — the same bundle covered on the Drinks Packages page. It\'s generally no longer sold as a standalone purchase.',
+  },
+  princess: {
+    tiers: [
+      {
+        name: 'MedallionNet Classic',
+        price: '~$25/device/day standalone',
+        includes: 'Standard-speed WiFi, one device.',
+      },
+      {
+        name: 'MedallionNet Max',
+        price: 'Included with Princess Premier',
+        includes: 'Higher-bandwidth WiFi for up to 4 devices per guest — not sold as a standalone purchase.',
+      },
+    ],
+    note: 'Follows the same Princess Plus / Princess Premier bundles as the Drinks Packages page: Plus includes MedallionNet Classic (1 device), Premier upgrades to MedallionNet Max (4 devices).',
+  },
+  msc: {
+    tiers: [
+      {
+        name: 'Browse',
+        price: '~$16/person/day',
+        includes: 'Email, browsing, messaging and social scrolling.',
+      },
+      {
+        name: 'Browse & Stream',
+        price: '~$21/person/day',
+        includes: 'Adds video calls, streaming and social posting.',
+      },
+    ],
+    note: 'Usually sold as a full-voyage package rather than daily, and pricing swings with promotions. Voyagers Club Blue Diamond members get one free Browse package per cruise; all members get a small discount.',
+  },
+  'holland-america': {
+    tiers: [
+      {
+        name: 'Surf',
+        price: '~$18–31/day',
+        includes: 'Basic browsing, email and messaging.',
+      },
+      {
+        name: 'Premium',
+        price: '~$24–36/day',
+        includes: 'Adds calling and video calling — still no streaming.',
+      },
+    ],
+    note: 'Surf WiFi (1 device per guest) is included free with the "Have It All" fare bundle — the same bundle covered on the Drinks Packages page. A separate "Stream" tier also exists for full streaming; confirm current details directly with HAL.',
+  },
+  regent: {
+    included: true,
+    note: "Regent's all-inclusive fare covers unlimited Starlink WiFi — one login per suite as standard, up to 4 for Concierge Suite and above. No package to buy.",
+  },
+  silversea: {
+    included: true,
+    note: "Silversea's all-inclusive fare covers unlimited WiFi for every suite, with a faster \"Premium\" tier for higher suite categories at no extra cost. No package to buy.",
+  },
+  oceania: {
+    tiers: [
+      {
+        name: 'Extra logins',
+        price: '~$25/device/day',
+        includes: 'Additional simultaneous logins beyond the two included as standard.',
+      },
+      {
+        name: 'Premium streaming upgrade',
+        price: '~$15–20/day',
+        includes: 'Adds streaming speed on top of the included connection.',
+      },
+    ],
+    note: 'Unlimited WiFi (2 logins per stateroom as standard) is already included free in every fare under Oceania\'s "Your World Included" pricing — these are optional paid upgrades on top of that, not a package required to get online.',
+  },
+  ncl: {
+    tiers: [
+      {
+        name: 'Voyage Wi-Fi Pass',
+        price: '$29.99/day',
+        includes: 'Browsing, email and messaging.',
+      },
+      {
+        name: 'Streaming Voyage Wi-Fi Pass',
+        price: '$39.99/day',
+        includes: 'Adds audio/video streaming and VPN access.',
+      },
+    ],
+    note: "Free at Sea (NCL's bundled perks, covered on the Drinks Packages page) includes WiFi minutes rather than unlimited access — 75, 150 or 300 minutes per person depending on cruise length — and those minutes don't support streaming.",
+  },
+  disney: {
+    tiers: [
+      {
+        name: 'Internet Package',
+        price: '$30/device/day',
+        includes: 'Unlimited data for browsing, social media, email and short-form video.',
+      },
+      {
+        name: 'Internet + Streaming Package',
+        price: '$49/device/day',
+        includes: 'Adds full video and music streaming (Disney+, Hulu, Spotify and similar) at a faster speed.',
+      },
+    ],
+    note: 'Priced per device rather than per person or cabin, with up to 4 devices per purchase. A 20% discount applies for buying the full voyage in advance.',
+  },
+  viking: {
+    included: true,
+    note: 'WiFi is free and unlimited for every guest, with no tiers or streaming restrictions — Viking markets this as a deliberate point of difference from other lines.',
+  },
+  'po-cruises': {
+    tiers: [
+      {
+        name: 'Essential Wi-Fi',
+        price: '~£14–20/day',
+        includes: 'Browsing, email, social media and messaging.',
+      },
+      {
+        name: 'Ultimate Wi-Fi',
+        price: '~£20–30/day',
+        includes: 'Adds streaming and voice/video calls, plus free access to The Times online.',
+      },
+    ],
+    note: 'Length-of-cruise purchase is meaningfully cheaper than paying day by day. From March 2026, P&O also offers an optional all-inclusive bundle on 5+ night cruises that folds WiFi in alongside drinks — check current terms, as this may overlap with the package on the Drinks Packages page.',
+  },
+};
+

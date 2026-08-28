@@ -32,6 +32,7 @@
     <a href="#" id="guide-link" class="nav-link">Cabin guide</a>
     <a href="#" id="destinations-link" class="nav-link">Destinations</a>
     <a href="#" id="drinks-link" class="nav-link">Drinks packages</a>
+    <a href="#" id="wifi-link" class="nav-link">WiFi plans</a>
   </nav>
   <div class="topbar-right">
     <span class="share-icons topbar-share" id="topbar-share"></span>
@@ -51,16 +52,29 @@
         <button type="submit" class="cta-btn" id="deckplan-submit">Search</button>
       </form>
       <p class="deckplan-search-note" id="deckplan-note" hidden></p>
-      <a href="#" id="landing-drinks-link" class="drinks-promo-link">
-        <span class="drinks-promo-icon">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M7 3h10l-1 7a4 4 0 0 1-8 0Z" />
-            <path d="M12 14v6" />
-            <path d="M8 20h8" />
-          </svg>
-        </span>
-        <span>Compare drinks packages</span>
-      </a>
+      <div class="landing-promo-links">
+        <a href="#" id="landing-drinks-link" class="landing-promo-link">
+          <span class="landing-promo-icon landing-promo-icon-drinks">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 3h10l-1 7a4 4 0 0 1-8 0Z" />
+              <path d="M12 14v6" />
+              <path d="M8 20h8" />
+            </svg>
+          </span>
+          <span>Compare drinks packages</span>
+        </a>
+        <a href="#" id="landing-wifi-link" class="landing-promo-link">
+          <span class="landing-promo-icon landing-promo-icon-wifi">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2 8.5a15.5 15.5 0 0 1 20 0" />
+              <path d="M5.5 12.5a10.5 10.5 0 0 1 13 0" />
+              <path d="M9 16.5a5.5 5.5 0 0 1 6 0" />
+              <circle cx="12" cy="20" r="1" fill="currentColor" stroke="none" />
+            </svg>
+          </span>
+          <span>Compare WiFi plans</span>
+        </a>
+      </div>
     </div>
     <h1>Real reviews for every cabin, on every cruise line.</h1>
     <p class="landing-tagline">A simple guide to the world of cruise cabins.</p>
@@ -340,6 +354,16 @@
   </section>
 
   <div class="drinks-grid" id="drinks-grid"></div>
+</main>
+
+<main id="wifi-view" class="drinks-view" hidden>
+  <section class="guide-hero">
+    <p class="eyebrow">WiFi plans</p>
+    <h1>How do cruise line WiFi plans compare?</h1>
+    <p class="guide-intro">A general comparison of what each line's internet package typically includes. Names, inclusions and prices change often and vary by ship, sailing and promotion — always confirm current details with the line or your travel agent before booking.</p>
+  </section>
+
+  <div class="drinks-grid" id="wifi-grid"></div>
 </main>
 
 <footer class="site-footer">

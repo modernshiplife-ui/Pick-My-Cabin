@@ -253,35 +253,45 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
 
 .landing-cta-row .cta-btn { padding: 12px 28px; }
 
-.drinks-promo-link {
+.landing-promo-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  margin-top: 16px;
+}
+
+.landing-promo-link {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin-top: 16px;
   color: var(--ivory-dim);
   text-decoration: none;
   font-size: 0.9rem;
   transition: color 0.15s ease;
 }
 
-.drinks-promo-link:hover { color: var(--ivory); }
+.landing-promo-link:hover { color: var(--ivory); }
 
-.drinks-promo-link span:last-child { text-decoration: underline; text-underline-offset: 3px; }
+.landing-promo-link span:last-child { text-decoration: underline; text-underline-offset: 3px; }
 
-.drinks-promo-icon {
+.landing-promo-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #7B2D26;
   color: var(--ivory);
   flex-shrink: 0;
   transition: transform 0.15s ease, filter 0.15s ease;
 }
 
-.drinks-promo-link:hover .drinks-promo-icon { transform: translateY(-2px); filter: brightness(1.15); }
+.landing-promo-icon-drinks { background: #7B2D26; }
+.landing-promo-icon-wifi { background: #2B5F8A; }
+
+.landing-promo-link:hover .landing-promo-icon { transform: translateY(-2px); filter: brightness(1.15); }
 
 .landing-stats {
   font-family: var(--font-mono);

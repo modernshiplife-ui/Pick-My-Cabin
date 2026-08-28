@@ -89,6 +89,10 @@
     drinksLink: document.getElementById('drinks-link'),
     drinksView: document.getElementById('drinks-view'),
     drinksGrid: document.getElementById('drinks-grid'),
+    wifiLink: document.getElementById('wifi-link'),
+    wifiView: document.getElementById('wifi-view'),
+    wifiGrid: document.getElementById('wifi-grid'),
+    landingWifiLink: document.getElementById('landing-wifi-link'),
     quizPromoLink: document.getElementById('quiz-promo-link'),
     quizView: document.getElementById('quiz-view'),
     quizBack: document.getElementById('quiz-back'),
@@ -318,6 +322,7 @@
     els.lineGuideView.hidden = true;
     els.destinationsView.hidden = true;
     els.drinksView.hidden = true;
+    els.wifiView.hidden = true;
     els.quizView.hidden = true;
     els.topbarShare.hidden = true;
   }
@@ -574,18 +579,11 @@
     els.landingStats.textContent = `${LINES.length} cruise lines · ${shipCount.toLocaleString()} ships tracked`;
   }
 
-  // --- Drinks packages -----------------------------------------------------
-  function showDrinks() {
-    hideAllViews();
-    els.drinksView.hidden = false;
-    els.hero.hidden = true;
-    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
-  }
-
-  function renderDrinksGrid() {
-    els.drinksGrid.innerHTML = LINES.filter((line) => DRINKS_PACKAGES[line.id])
+  // --- Package comparison grids (drinks, WiFi) ------------------------------
+  function renderPackageGrid(gridEl, packages) {
+    gridEl.innerHTML = LINES.filter((line) => packages[line.id])
       .map((line) => {
-        const d = DRINKS_PACKAGES[line.id];
+        const d = packages[line.id];
         if (d.included) {
           return `
             <article class="drinks-card drinks-card-included">
@@ -599,7 +597,7 @@
           return `
             <article class="drinks-card drinks-card-included drinks-card-nopackage">
               <p class="drinks-card-line">${line.name}</p>
-              <p class="drinks-card-included-badge drinks-card-nopackage-badge">No package sold</p>
+              <p class="drinks-card-included-badge drinks-card-nopackage-badge">${d.noPackageLabel || 'No package sold'}</p>
               <p class="drinks-card-note">${d.note}</p>
             </article>
           `;
@@ -625,6 +623,30 @@
         `;
       })
       .join('');
+  }
+
+  // --- Drinks packages -----------------------------------------------------
+  function showDrinks() {
+    hideAllViews();
+    els.drinksView.hidden = false;
+    els.hero.hidden = true;
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  function renderDrinksGrid() {
+    renderPackageGrid(els.drinksGrid, DRINKS_PACKAGES);
+  }
+
+  // --- WiFi plans ------------------------------------------------------------
+  function showWifi() {
+    hideAllViews();
+    els.wifiView.hidden = false;
+    els.hero.hidden = true;
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  function renderWifiGrid() {
+    renderPackageGrid(els.wifiGrid, WIFI_PLANS);
   }
 
   // --- Deck plan search --------------------------------------------------
@@ -731,6 +753,11 @@
     showDrinks();
   });
 
+  els.landingWifiLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showWifi();
+  });
+
   els.destinationsLink.addEventListener('click', (e) => {
     e.preventDefault();
     showDestinations();
@@ -739,6 +766,11 @@
   els.drinksLink.addEventListener('click', (e) => {
     e.preventDefault();
     showDrinks();
+  });
+
+  els.wifiLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showWifi();
   });
 
   els.guideBack.addEventListener('click', () => goHome());
@@ -1001,6 +1033,7 @@
   renderDestFilters();
   renderDestShipGrid();
   renderDrinksGrid();
+  renderWifiGrid();
   loadGlobalRecent();
   loadVisitorCount();
 
