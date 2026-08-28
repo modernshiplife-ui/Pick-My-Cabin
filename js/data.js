@@ -446,3 +446,69 @@ function regionsForShip(ship) {
   return SHIP_REGION_OVERRIDES[ship.id] || LINE_REGIONS[ship.lineId] || [];
 }
 
+// "Find your cabin type" quiz — a lightweight, four-question matcher scoring
+// toward the four universal cabin types. Result copy matches the Cabin
+// Guide's own descriptions for consistency.
+const CABIN_QUIZ = {
+  questions: [
+    {
+      text: 'How much time do you think you’ll spend in your cabin?',
+      options: [
+        { label: 'Just to sleep — I’ll be out enjoying the ship', scores: { interior: 2, oceanview: 1 } },
+        { label: 'Relaxing there during the day sounds nice too', scores: { oceanview: 2, balcony: 1 } },
+        { label: 'I want it to feel like a proper retreat', scores: { balcony: 2, suite: 1 } },
+      ],
+    },
+    {
+      text: 'How do you feel about natural light and a view?',
+      options: [
+        { label: 'Don’t need it, I won’t notice', scores: { interior: 2 } },
+        { label: 'I’d like a real window at least', scores: { oceanview: 2 } },
+        { label: 'I want to step outside for fresh air', scores: { balcony: 2, suite: 1 } },
+      ],
+    },
+    {
+      text: 'What’s your budget priority?',
+      options: [
+        { label: 'Keep it as affordable as possible', scores: { interior: 2 } },
+        { label: 'A good balance of value and comfort', scores: { oceanview: 1, balcony: 1 } },
+        { label: 'Happy to pay more for the right cabin', scores: { balcony: 1, suite: 2 } },
+      ],
+    },
+    {
+      text: 'Who’s cruising?',
+      options: [
+        { label: 'Solo, or I just don’t need much space', scores: { interior: 1, oceanview: 1 } },
+        { label: 'A couple wanting a bit of romance', scores: { balcony: 2 } },
+        { label: 'Family or group wanting real space', scores: { suite: 2 } },
+      ],
+    },
+  ],
+  results: {
+    interior: {
+      name: 'Interior',
+      price: '$',
+      summary: 'No window — fully enclosed, usually toward the middle of the ship. Some newer ships add a screen showing a live outside view ("virtual balcony").',
+      size: 'Typically 120–185 sq ft',
+    },
+    oceanview: {
+      name: 'Oceanview',
+      price: '$$',
+      summary: 'A real window or porthole, but no door — you can’t step outside. Natural light without balcony prices.',
+      size: 'Typically 150–200 sq ft',
+    },
+    balcony: {
+      name: 'Balcony',
+      price: '$$$',
+      summary: 'A private outdoor space, usually with two chairs and a small table. The most popular category for a reason.',
+      size: 'Typically 175–250 sq ft, plus balcony',
+    },
+    suite: {
+      name: 'Suite',
+      price: '$$$$',
+      summary: 'Significantly more space, often a separate bedroom or lounge, and a bigger balcony. Worth reading the Cabin Guide’s line-by-line breakdown — a "suite" varies hugely by line.',
+      size: 'Typically 300 sq ft and up',
+    },
+  },
+};
+

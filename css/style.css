@@ -854,6 +854,101 @@ textarea { resize: vertical; }
 
 .line-guide-btn:hover { border-color: var(--coral); transform: translateY(-2px); }
 
+/* --- Cabin quiz --------------------------------------------------------- */
+
+.quiz-promo {
+  display: block;
+  text-decoration: none;
+  background: var(--yellow);
+  color: var(--ink);
+  border-radius: var(--radius);
+  padding: 22px 28px;
+  margin: 0 24px 56px;
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  transition: transform 0.15s ease;
+}
+
+.quiz-promo:hover { transform: translateY(-2px); }
+
+.quiz-promo-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-bottom: 6px;
+}
+
+.quiz-promo-title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.quiz-promo-cta {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-bottom: 2px solid var(--ink);
+}
+
+.quiz-view { padding: 20px 24px 56px; max-width: 640px; margin: 0 auto; }
+
+.quiz-progress {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin: 24px 0 16px;
+}
+
+.quiz-question-text {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--ivory);
+  margin-bottom: 20px;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quiz-option-btn {
+  text-align: left;
+  padding: 14px 18px;
+  background: var(--ink-2);
+  border: 1px solid var(--ink-3);
+  border-radius: 8px;
+  color: var(--ivory);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.quiz-option-btn:hover { border-color: var(--coral); transform: translateX(2px); }
+
+.quiz-result-wrap { margin-top: 24px; }
+
+.quiz-result-card { max-width: 320px; margin: 0 auto 28px; text-align: left; }
+
+.quiz-result-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.quiz-result-actions .cta-btn { width: 100%; max-width: 280px; }
+
 .destinations-view { padding: 20px 24px 56px; max-width: 1000px; margin: 0 auto; }
 
 .region-legend {

@@ -5,6 +5,8 @@
     activeLine: null, // null = all lines; otherwise a single line id
     currentGuideLine: null, // which line's detail page is currently shown
     destActiveLine: null, // line filter on the Destinations page — independent of Browse's activeLine
+    quizIndex: 0,
+    quizScores: { interior: 0, oceanview: 0, balcony: 0, suite: 0 },
     selectedShipId: null,
     selectedRating: null,
     selectedTags: new Set(),
@@ -76,6 +78,12 @@
     regionLegend: document.getElementById('region-legend'),
     destLineFilters: document.getElementById('dest-line-filters'),
     destShipGrid: document.getElementById('dest-ship-grid'),
+    quizPromoLink: document.getElementById('quiz-promo-link'),
+    quizView: document.getElementById('quiz-view'),
+    quizBack: document.getElementById('quiz-back'),
+    quizProgress: document.getElementById('quiz-progress'),
+    quizQuestionWrap: document.getElementById('quiz-question-wrap'),
+    quizResultWrap: document.getElementById('quiz-result-wrap'),
   };
 
   const MAX_PHOTOS = 4;
@@ -298,6 +306,7 @@
     els.guideView.hidden = true;
     els.lineGuideView.hidden = true;
     els.destinationsView.hidden = true;
+    els.quizView.hidden = true;
   }
 
   function showShip(shipId) {
@@ -393,6 +402,82 @@
       btn.addEventListener('click', () => showLineGuide(btn.dataset.line));
     });
   }
+
+  // --- Cabin quiz -------------------------------------------------------
+  function showQuiz() {
+    state.quizIndex = 0;
+    state.quizScores = { interior: 0, oceanview: 0, balcony: 0, suite: 0 };
+    els.quizResultWrap.hidden = true;
+    els.quizQuestionWrap.hidden = false;
+    hideAllViews();
+    els.quizView.hidden = false;
+    els.hero.hidden = true;
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    renderQuizQuestion();
+  }
+
+  function renderQuizQuestion() {
+    const total = CABIN_QUIZ.questions.length;
+    const q = CABIN_QUIZ.questions[state.quizIndex];
+
+    els.quizProgress.textContent = `Question ${state.quizIndex + 1} of ${total}`;
+    els.quizQuestionWrap.innerHTML = `
+      <h2 class="quiz-question-text">${q.text}</h2>
+      <div class="quiz-options">
+        ${q.options.map((opt, i) => `<button type="button" class="quiz-option-btn" data-index="${i}">${opt.label}</button>`).join('')}
+      </div>
+    `;
+    els.quizQuestionWrap.querySelectorAll('.quiz-option-btn').forEach((btn) => {
+      btn.addEventListener('click', () => selectQuizAnswer(q.options[Number(btn.dataset.index)].scores));
+    });
+  }
+
+  function selectQuizAnswer(scores) {
+    Object.entries(scores).forEach(([type, points]) => {
+      state.quizScores[type] += points;
+    });
+    state.quizIndex += 1;
+    if (state.quizIndex < CABIN_QUIZ.questions.length) {
+      renderQuizQuestion();
+    } else {
+      renderQuizResult();
+    }
+  }
+
+  function renderQuizResult() {
+    const order = ['suite', 'balcony', 'oceanview', 'interior']; // tie-break toward the higher tier
+    const winner = order.reduce((best, type) =>
+      state.quizScores[type] > state.quizScores[best] ? type : best
+    , order[order.length - 1]);
+    const result = CABIN_QUIZ.results[winner];
+
+    els.quizProgress.textContent = 'Your match';
+    els.quizQuestionWrap.hidden = true;
+    els.quizResultWrap.hidden = false;
+    els.quizResultWrap.innerHTML = `
+      <article class="cabin-type-card quiz-result-card">
+        <h3>${result.name}</h3>
+        <p class="cabin-type-price">${result.price}</p>
+        <p>${result.summary}</p>
+        <p class="cabin-type-size">${result.size}</p>
+      </article>
+      <div class="quiz-result-actions">
+        <button class="cta-btn" id="quiz-browse-btn">Browse reviews</button>
+        <button type="button" class="text-btn" id="quiz-guide-btn">See the full Cabin Guide →</button>
+        <button type="button" class="text-btn" id="quiz-retake-btn">Retake the quiz</button>
+      </div>
+    `;
+    document.getElementById('quiz-browse-btn').addEventListener('click', () => goHome({ reset: true }));
+    document.getElementById('quiz-guide-btn').addEventListener('click', () => showGuide());
+    document.getElementById('quiz-retake-btn').addEventListener('click', () => showQuiz());
+  }
+
+  els.quizPromoLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showQuiz();
+  });
+
+  els.quizBack.addEventListener('click', () => showLanding());
 
   // --- Destinations ----------------------------------------------------
   function showDestinations() {
