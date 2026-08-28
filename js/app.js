@@ -659,11 +659,11 @@
     const t = encodeURIComponent(text);
     return `
       <span class="share-label">Share</span>
-      <a class="share-icon" href="https://www.facebook.com/sharer/sharer.php?u=${u}" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">${SHARE_ICON_FACEBOOK}</a>
-      <a class="share-icon" href="https://twitter.com/intent/tweet?url=${u}&text=${t}" target="_blank" rel="noopener noreferrer" aria-label="Share on X">${SHARE_ICON_X}</a>
-      <a class="share-icon" href="https://wa.me/?text=${t}%20${u}" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp">${SHARE_ICON_WHATSAPP}</a>
-      <button type="button" class="share-icon" data-share-url="${escapeHtml(url)}" data-copy-msg="Link copied — paste it into your Instagram bio or story" aria-label="Copy link for Instagram">${SHARE_ICON_INSTAGRAM}</button>
-      <button type="button" class="share-icon" data-share-url="${escapeHtml(url)}" data-copy-msg="${escapeHtml(copyMsg || 'Link copied!')}" aria-label="Copy link">${SHARE_ICON_LINK}</button>
+      <a class="share-icon share-icon-fb" href="https://www.facebook.com/sharer/sharer.php?u=${u}" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">${SHARE_ICON_FACEBOOK}</a>
+      <a class="share-icon share-icon-x" href="https://twitter.com/intent/tweet?url=${u}&text=${t}" target="_blank" rel="noopener noreferrer" aria-label="Share on X">${SHARE_ICON_X}</a>
+      <a class="share-icon share-icon-wa" href="https://wa.me/?text=${t}%20${u}" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp">${SHARE_ICON_WHATSAPP}</a>
+      <button type="button" class="share-icon share-icon-ig" data-share-url="${escapeHtml(url)}" data-copy-msg="Link copied — paste it into your Instagram bio or story" aria-label="Copy link for Instagram">${SHARE_ICON_INSTAGRAM}</button>
+      <button type="button" class="share-icon share-icon-link" data-share-url="${escapeHtml(url)}" data-copy-msg="${escapeHtml(copyMsg || 'Link copied!')}" aria-label="Copy link">${SHARE_ICON_LINK}</button>
       <span class="share-copied-msg" role="status"></span>
     `;
   }

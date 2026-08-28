@@ -105,11 +105,11 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
 .topbar-share .share-label { display: none; }
 
 .topbar-share .share-icon {
-  width: 26px;
-  height: 26px;
+  width: 32px;
+  height: 32px;
 }
 
-.topbar-share .share-icon svg { width: 14px; height: 14px; }
+.topbar-share .share-icon svg { width: 17px; height: 17px; }
 
 .topbar-share .share-copied-msg {
   position: absolute;
@@ -1017,20 +1017,38 @@ textarea { resize: vertical; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: var(--ink-2);
   border: 1px solid var(--ink-3);
   color: var(--ivory-dim);
   cursor: pointer;
   text-decoration: none;
-  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease, filter 0.15s ease;
 }
+
+.share-icon svg { width: 22px; height: 22px; }
 
 .share-icon:hover { border-color: var(--coral); color: var(--coral-bright); transform: translateY(-1px); }
 
 .share-icon.is-copied { border-color: var(--yellow); color: var(--yellow); }
+
+.share-icon-fb { background: #1877f2; border-color: #1877f2; color: #fff; }
+.share-icon-x { background: #000; border-color: #3a3a3a; color: #fff; }
+.share-icon-wa { background: #25d366; border-color: #25d366; color: #fff; }
+.share-icon-ig {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  border-color: transparent;
+  color: #fff;
+}
+
+.share-icon-fb:hover, .share-icon-x:hover, .share-icon-wa:hover, .share-icon-ig:hover {
+  border-color: transparent;
+  color: #fff;
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
 
 .share-copied-msg {
   font-size: 0.82rem;
