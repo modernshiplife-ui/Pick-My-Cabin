@@ -759,6 +759,28 @@ textarea { resize: vertical; }
   max-width: 70ch;
 }
 
+.line-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.line-guide-btn {
+  text-align: left;
+  padding: 14px 16px;
+  background: var(--ink-2);
+  border: 1px solid var(--ink-3);
+  border-radius: 6px;
+  color: var(--ivory);
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.line-guide-btn:hover { border-color: var(--coral); transform: translateY(-2px); }
+
 .glossary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));

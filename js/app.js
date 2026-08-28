@@ -3,6 +3,7 @@
     view: 'home',
     query: '',
     activeLine: null, // null = all lines; otherwise a single line id
+    currentGuideLine: null, // which line's detail page is currently shown
     selectedShipId: null,
     selectedRating: null,
     selectedTags: new Set(),
@@ -58,10 +59,17 @@
     landingRecentReviews: document.getElementById('landing-recent-reviews'),
     landingStats: document.getElementById('landing-stats'),
     hero: document.getElementById('hero'),
-    cunardGuideView: document.getElementById('cunard-guide-view'),
-    cunardGuideLink: document.getElementById('cunard-guide-link'),
-    cunardGuideBack: document.getElementById('cunard-guide-back'),
-    cunardGuideBrowseBtn: document.getElementById('cunard-guide-browse-btn'),
+    lineGuideView: document.getElementById('line-guide-view'),
+    lineGuideBack: document.getElementById('line-guide-back'),
+    lineGuideTitle: document.getElementById('line-guide-title'),
+    lineGuideIntro: document.getElementById('line-guide-intro'),
+    lineGuideAboutTitle: document.getElementById('line-guide-about-title'),
+    lineGuideAbout: document.getElementById('line-guide-about'),
+    lineGuideGradesTitle: document.getElementById('line-guide-grades-title'),
+    lineGuideGrades: document.getElementById('line-guide-grades'),
+    lineGuideCtaSub: document.getElementById('line-guide-cta-sub'),
+    lineGuideBrowseBtn: document.getElementById('line-guide-browse-btn'),
+    lineGuideGrid: document.getElementById('line-guide-grid'),
   };
 
   const MAX_PHOTOS = 4;
@@ -282,7 +290,7 @@
     els.homeView.hidden = true;
     els.shipView.hidden = true;
     els.guideView.hidden = true;
-    els.cunardGuideView.hidden = true;
+    els.lineGuideView.hidden = true;
   }
 
   function showShip(shipId) {
@@ -333,12 +341,50 @@
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
   }
 
-  function showCunardGuide() {
+  function showLineGuide(lineId) {
+    const guide = LINE_GUIDES[lineId];
+    if (!guide) return;
+    const line = lineById(lineId);
+    const lineName = line ? line.name : lineId;
+
+    els.lineGuideTitle.textContent = `${lineName}, explained`;
+    els.lineGuideIntro.textContent = `New to ${lineName}? Here's what makes it different from a typical cruise line, and exactly what each cabin grade actually gets you.`;
+    els.lineGuideAboutTitle.textContent = `New to ${lineName}?`;
+    els.lineGuideAbout.innerHTML = guide.about.map((p) => `<p class="guide-section-sub">${p}</p>`).join('');
+    els.lineGuideGradesTitle.textContent = `Every ${lineName} cabin grade`;
+    els.lineGuideGrades.innerHTML = guide.grades
+      .map(
+        (g) => `
+      <article class="grade-card">
+        <div class="grade-card-head">
+          <h3>${g.name}</h3>
+          <span class="grade-tier">${g.tier}</span>
+        </div>
+        <p class="grade-price">${g.price}</p>
+        <p class="grade-summary">${g.summary}</p>
+        <p class="grade-includes"><strong>Included:</strong> ${g.includes}</p>
+      </article>`
+      )
+      .join('');
+    els.lineGuideCtaSub.textContent = `Browse traveller reviews across the whole ${lineName} fleet.`;
+    els.lineGuideBrowseBtn.textContent = `Browse ${lineName} reviews`;
+
+    state.currentGuideLine = lineId;
+
     hideAllViews();
-    els.cunardGuideView.hidden = false;
+    els.lineGuideView.hidden = false;
     els.hero.hidden = false;
     els.hero.classList.add('is-compact');
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  function renderLineGuideGrid() {
+    els.lineGuideGrid.innerHTML = LINES.filter((line) => LINE_GUIDES[line.id])
+      .map((line) => `<button type="button" class="line-guide-btn" data-line="${line.id}">${line.name}</button>`)
+      .join('');
+    els.lineGuideGrid.querySelectorAll('.line-guide-btn').forEach((btn) => {
+      btn.addEventListener('click', () => showLineGuide(btn.dataset.line));
+    });
   }
 
   function showLanding() {
@@ -380,13 +426,15 @@
   els.guideBack.addEventListener('click', () => goHome());
   els.guideBrowseBtn.addEventListener('click', () => goHome({ reset: true }));
 
-  els.cunardGuideLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    showCunardGuide();
+  document.querySelectorAll('.enclave-more[data-line]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      showLineGuide(link.dataset.line);
+    });
   });
 
-  els.cunardGuideBack.addEventListener('click', () => showGuide());
-  els.cunardGuideBrowseBtn.addEventListener('click', () => goHomeFilteredToLine('cunard'));
+  els.lineGuideBack.addEventListener('click', () => showGuide());
+  els.lineGuideBrowseBtn.addEventListener('click', () => goHomeFilteredToLine(state.currentGuideLine));
 
   function renderShipView() {
     const ship = shipById(state.selectedShipId);
@@ -574,6 +622,7 @@
   renderTagPick();
   renderRecentReviews();
   renderLandingStats();
+  renderLineGuideGrid();
   loadGlobalRecent();
   loadVisitorCount();
 })();
