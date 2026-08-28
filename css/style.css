@@ -95,21 +95,21 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 2px;
 }
 
 .confused-visual {
   position: relative;
-  width: 240px;
-  height: 230px;
+  width: 145px;
+  height: 140px;
 }
 
 .confused-character {
   position: absolute;
   bottom: 0;
   left: 50%;
-  width: 176px;
-  height: 194px;
+  width: 106px;
+  height: 117px;
   animation: cc-bob 4.5s ease-in-out infinite;
   transform: translateX(-50%);
 }
@@ -144,19 +144,19 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
   background: var(--ink-2);
   border: 1px solid var(--coral);
   border-radius: 999px;
-  padding: 6px 14px;
+  padding: 4px 10px;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   color: var(--coral-bright);
   white-space: nowrap;
   opacity: 0;
   animation: thought-pop 9s ease-in-out infinite;
 }
 
-.tb-1 { top: -10px; left: 2px; animation-delay: 0s; }
-.tb-2 { top: 6px; right: -10px; border-color: var(--yellow); color: var(--yellow); animation-delay: 2.25s; }
-.tb-3 { top: 78px; left: -32px; animation-delay: 4.5s; }
-.tb-4 { top: 88px; right: -36px; border-color: var(--yellow); color: var(--yellow); animation-delay: 6.75s; }
+.tb-1 { top: -6px; left: 1px; animation-delay: 0s; }
+.tb-2 { top: 4px; right: -6px; border-color: var(--yellow); color: var(--yellow); animation-delay: 2.25s; }
+.tb-3 { top: 47px; left: -18px; animation-delay: 4.5s; }
+.tb-4 { top: 53px; right: -20px; border-color: var(--yellow); color: var(--yellow); animation-delay: 6.75s; }
 
 @keyframes thought-pop {
   0%, 12%, 100% { opacity: 0; transform: translateY(6px) scale(0.9); }
@@ -164,19 +164,9 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
   55% { opacity: 0; transform: translateY(-6px) scale(0.95); }
 }
 
-.confused-caption {
-  font-size: 0.85rem;
-  color: var(--ivory-dim);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: color 0.15s ease, border-color 0.15s ease;
-}
-
-.confused-caption:hover { color: var(--coral-bright); border-color: var(--coral-bright); }
-
 .landing-hero {
   text-align: center;
-  padding: 64px 24px 48px;
+  padding: 20px 24px 28px;
   max-width: 720px;
   margin: 0 auto;
 }
@@ -185,26 +175,26 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
 
 .landing-hero h1 {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4.2vw, 3.1rem);
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
   line-height: 1.15;
   color: var(--ivory);
-  margin: 14px 0 18px;
+  margin: 8px 0 10px;
 }
 
 .landing-tagline {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   color: var(--coral-bright);
-  margin: 0 0 18px;
+  margin: 0 0 10px;
 }
 
 .landing-sub {
   color: var(--ivory-dim);
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 0.92rem;
+  line-height: 1.5;
   max-width: 56ch;
-  margin: 0 auto 30px;
+  margin: 0 auto 16px;
 }
 
 .landing-cta-row {
@@ -213,7 +203,7 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
   justify-content: center;
   gap: 22px;
   flex-wrap: wrap;
-  margin-bottom: 24px;
+  margin-bottom: 10px;
 }
 
 .landing-cta-row .cta-btn { padding: 12px 28px; }
