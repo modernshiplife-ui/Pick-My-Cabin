@@ -62,6 +62,7 @@
     landingBrowseBtn: document.getElementById('landing-browse-btn'),
     landingGuideLink: document.getElementById('landing-guide-link'),
     landingGuideBtn: document.getElementById('landing-guide-btn'),
+    landingDrinksLink: document.getElementById('landing-drinks-link'),
     landingRecentReviews: document.getElementById('landing-recent-reviews'),
     landingStats: document.getElementById('landing-stats'),
     deckplanForm: document.getElementById('deckplan-form'),
@@ -724,6 +725,11 @@
   });
 
   els.landingGuideBtn.addEventListener('click', () => showGuide());
+
+  els.landingDrinksLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showDrinks();
+  });
 
   els.destinationsLink.addEventListener('click', (e) => {
     e.preventDefault();

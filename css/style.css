@@ -255,6 +255,21 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
 
 .landing-cta-row .cta-btn { padding: 12px 28px; }
 
+.drinks-icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #7B2D26;
+  border: 1px solid #7B2D26;
+  color: var(--ivory);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.drinks-icon-link:hover { transform: translateY(-2px); filter: brightness(1.15); }
+
 .landing-stats {
   font-family: var(--font-mono);
   font-size: 0.78rem;
