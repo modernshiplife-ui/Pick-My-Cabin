@@ -528,8 +528,18 @@ const DRINKS_PACKAGES = {
         price: '~$77–108/person/day',
         includes: 'Same as the Beverage Collection, with the per-drink cap raised to $20.',
       },
+      {
+        name: 'Signature Package',
+        price: '~£60/person/day',
+        includes: 'UK pricing. Bundles the Beverage Collection with Essential WiFi and a dining credit (~$50 on most voyages) — see the WiFi Plans page for the connectivity side.',
+      },
+      {
+        name: 'Premium Signature Package',
+        price: '~£70/person/day',
+        includes: 'UK pricing. Bundles the Premium Beverage Collection with Premium WiFi and a larger dining credit (~$80 on most voyages).',
+      },
     ],
-    note: "Cunard's 15% bar service charge is built into the package price. The separate daily Hotel & Dining Service Charge (~$17–19/day) is not included.",
+    note: "Cunard's 15% bar service charge is built into the package price. The separate daily Hotel & Dining Service Charge (~$17–19/day) is not included. The Signature packages are new for 2026, available on selected voyages from March 2026, and typically save up to 30% versus buying drinks, WiFi and dining credit separately.",
   },
   'royal-caribbean': {
     tiers: [
@@ -686,8 +696,18 @@ const WIFI_PLANS = {
         price: '~$24–30/day',
         includes: 'Adds streaming-capable speed for video and calls.',
       },
+      {
+        name: 'Signature Package',
+        price: '~£60/person/day',
+        includes: 'UK pricing. Bundles Essential WiFi with the Beverage Collection drinks package and a dining credit — see the Drinks Packages page for the beverage side.',
+      },
+      {
+        name: 'Premium Signature Package',
+        price: '~£70/person/day',
+        includes: 'UK pricing. Bundles Premium WiFi (streaming and video calls) with the Premium Beverage Collection and a larger dining credit.',
+      },
     ],
-    note: 'World Club loyalty tiers get an internet credit toward a package (Gold $45, Platinum $80, Diamond $135 per person) rather than free WiFi outright. Booking for the full voyage in advance is cheaper than day rates.',
+    note: 'World Club loyalty tiers get an internet credit toward a package (Gold $45, Platinum $80, Diamond $135 per person) rather than free WiFi outright. Booking for the full voyage in advance is cheaper than day rates. The Signature packages are new for 2026, available on selected voyages from March 2026.',
   },
   'royal-caribbean': {
     tiers: [
