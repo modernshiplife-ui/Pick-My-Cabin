@@ -50,6 +50,14 @@
     guideLink: document.getElementById('guide-link'),
     guideBack: document.getElementById('guide-back'),
     guideBrowseBtn: document.getElementById('guide-browse-btn'),
+    landingView: document.getElementById('landing-view'),
+    browseLink: document.getElementById('browse-link'),
+    landingBrowseBtn: document.getElementById('landing-browse-btn'),
+    landingGuideLink: document.getElementById('landing-guide-link'),
+    landingGuideBtn: document.getElementById('landing-guide-btn'),
+    landingRecentReviews: document.getElementById('landing-recent-reviews'),
+    landingStats: document.getElementById('landing-stats'),
+    hero: document.getElementById('hero'),
   };
 
   const MAX_PHOTOS = 4;
@@ -98,34 +106,38 @@
 
   function renderRecentReviews() {
     const reviews = recentReviews(6);
-    if (reviews.length === 0) {
-      els.recentReviews.innerHTML = '<p class="empty-note">No reviews yet — be the first to add one.</p>';
-      return;
-    }
+    const containers = [els.recentReviews, els.landingRecentReviews].filter(Boolean);
 
-    const [first, ...rest] = reviews;
-    let html = reviewCardHtml(first, { showShipName: true });
-    if (rest.length > 0) {
-      html += `<button type="button" class="text-btn recent-toggle" id="recent-toggle">Show ${rest.length} more recent review${rest.length === 1 ? '' : 's'}</button>`;
-      html += `<div class="recent-more" id="recent-more" hidden>${rest.map((r) => reviewCardHtml(r, { showShipName: true })).join('')}</div>`;
-    }
-    els.recentReviews.innerHTML = html;
+    containers.forEach((container) => {
+      if (reviews.length === 0) {
+        container.innerHTML = '<p class="empty-note">No reviews yet — be the first to add one.</p>';
+        return;
+      }
 
-    els.recentReviews.querySelectorAll('.review-card[data-ship]').forEach((card) => {
-      card.addEventListener('click', () => showShip(card.dataset.ship));
-    });
+      const [first, ...rest] = reviews;
+      let html = reviewCardHtml(first, { showShipName: true });
+      if (rest.length > 0) {
+        html += `<button type="button" class="text-btn recent-toggle">Show ${rest.length} more recent review${rest.length === 1 ? '' : 's'}</button>`;
+        html += `<div class="recent-more" hidden>${rest.map((r) => reviewCardHtml(r, { showShipName: true })).join('')}</div>`;
+      }
+      container.innerHTML = html;
 
-    const toggle = document.getElementById('recent-toggle');
-    if (toggle) {
-      toggle.addEventListener('click', () => {
-        const more = document.getElementById('recent-more');
-        const expanded = !more.hidden;
-        more.hidden = expanded;
-        toggle.textContent = expanded
-          ? `Show ${rest.length} more recent review${rest.length === 1 ? '' : 's'}`
-          : 'Show fewer';
+      container.querySelectorAll('.review-card[data-ship]').forEach((card) => {
+        card.addEventListener('click', () => showShip(card.dataset.ship));
       });
-    }
+
+      const toggle = container.querySelector('.recent-toggle');
+      if (toggle) {
+        toggle.addEventListener('click', () => {
+          const more = container.querySelector('.recent-more');
+          const expanded = !more.hidden;
+          more.hidden = expanded;
+          toggle.textContent = expanded
+            ? `Show ${rest.length} more recent review${rest.length === 1 ? '' : 's'}`
+            : 'Show fewer';
+        });
+      }
+    });
   }
 
   function loadGlobalRecent() {
@@ -265,9 +277,12 @@
     state.selectedShipId = shipId;
     state.selectedRating = null;
     state.selectedTags = new Set();
+    els.landingView.hidden = true;
     els.homeView.hidden = true;
+    els.guideView.hidden = true;
     els.shipView.hidden = false;
-    document.getElementById('hero').classList.add('is-compact');
+    els.hero.hidden = false;
+    els.hero.classList.add('is-compact');
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
     renderShipView();
     loadRemoteReviews(shipId);
@@ -275,10 +290,12 @@
   }
 
   function goHome({ reset } = {}) {
+    els.landingView.hidden = true;
     els.shipView.hidden = true;
     els.guideView.hidden = true;
     els.homeView.hidden = false;
-    document.getElementById('hero').classList.remove('is-compact');
+    els.hero.hidden = false;
+    els.hero.classList.remove('is-compact');
     state.selectedShipId = null;
     if (reset) {
       state.query = '';
@@ -291,24 +308,52 @@
   }
 
   function showGuide() {
+    els.landingView.hidden = true;
     els.homeView.hidden = true;
     els.shipView.hidden = true;
     els.guideView.hidden = false;
-    document.getElementById('hero').classList.add('is-compact');
+    els.hero.hidden = false;
+    els.hero.classList.add('is-compact');
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  function showLanding() {
+    els.homeView.hidden = true;
+    els.shipView.hidden = true;
+    els.guideView.hidden = true;
+    els.landingView.hidden = false;
+    els.hero.hidden = true;
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    renderLandingStats();
+  }
+
+  function renderLandingStats() {
+    const shipCount = allShips().length;
+    els.landingStats.textContent = `${LINES.length} cruise lines · ${shipCount.toLocaleString()} ships tracked`;
   }
 
   els.backToHome.addEventListener('click', () => goHome());
 
   document.getElementById('brand-home-link').addEventListener('click', (e) => {
     e.preventDefault();
+    showLanding();
+  });
+
+  els.browseLink.addEventListener('click', (e) => {
+    e.preventDefault();
     goHome({ reset: true });
   });
 
-  els.guideLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    showGuide();
+  els.landingBrowseBtn.addEventListener('click', () => goHome({ reset: true }));
+
+  [els.guideLink, els.landingGuideLink].forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      showGuide();
+    });
   });
+
+  els.landingGuideBtn.addEventListener('click', () => showGuide());
 
   els.guideBack.addEventListener('click', () => goHome());
   els.guideBrowseBtn.addEventListener('click', () => goHome({ reset: true }));
@@ -498,6 +543,7 @@
   renderShipGrid();
   renderTagPick();
   renderRecentReviews();
+  renderLandingStats();
   loadGlobalRecent();
   loadVisitorCount();
 })();

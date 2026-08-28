@@ -28,12 +28,56 @@
   </a>
   <p class="brand-tagline">Real cabin intelligence, from the people who’ve stayed there</p>
   <nav class="topbar-nav">
+    <a href="#" id="browse-link" class="nav-link">Browse reviews</a>
     <a href="#" id="guide-link" class="nav-link">Cabin guide</a>
   </nav>
   <span class="visitor-count" id="visitor-count" hidden></span>
 </header>
 
-<section class="hero" id="hero">
+<main id="landing-view" class="landing-view">
+  <section class="landing-hero">
+    <p class="eyebrow">Community cabin reviews · Every major cruise line</p>
+    <h1>Real reviews for every cabin, on every cruise line.</h1>
+    <p class="landing-tagline">A simple guide to the world of cruise cabins.</p>
+    <p class="landing-sub">See how real cabins actually held up — the view, the noise, the walk to the lifts — reported by the travellers and agents who were there.</p>
+    <div class="landing-cta-row">
+      <button class="cta-btn" id="landing-browse-btn">Browse reviews</button>
+      <a href="#" id="landing-guide-link" class="text-btn">Read the cabin guide →</a>
+    </div>
+    <p class="landing-stats" id="landing-stats"></p>
+  </section>
+
+  <section class="how-it-works">
+    <div class="how-step">
+      <span class="how-step-num">01</span>
+      <h3>Search</h3>
+      <p>Type any ship or cruise line to see what's already there.</p>
+    </div>
+    <div class="how-step">
+      <span class="how-step-num">02</span>
+      <h3>Read</h3>
+      <p>Ratings, tags and photos from people who actually stayed.</p>
+    </div>
+    <div class="how-step">
+      <span class="how-step-num">03</span>
+      <h3>Share</h3>
+      <p>Sailed recently? Add your own in under a minute.</p>
+    </div>
+  </section>
+
+  <section class="landing-recent">
+    <h2>Most recent reviews</h2>
+    <div class="reviews-list recent-reviews-list" id="landing-recent-reviews"></div>
+  </section>
+
+  <section class="guide-cta">
+    <h2>New to cruising?</h2>
+    <p>Learn the difference between Interior, Oceanview, Balcony and Suite — plus the premium enclaves each line doesn't shout about.</p>
+    <button class="cta-btn" id="landing-guide-btn">Read the cabin guide</button>
+  </section>
+</main>
+
+<section class="hero" id="hero" hidden>
   <p class="eyebrow">All cruise lines · Built by travellers &amp; agents</p>
   <h1>Would you book that cabin again?</h1>
   <p class="hero-sub">Search any ship to see how real cabins actually held up — the view, the noise, the walk to the lifts — reported by the people who were there. Can’t find yours? Be the first to add it.</p>
@@ -42,7 +86,7 @@
   </div>
 </section>
 
-<main id="home-view" class="home">
+<main id="home-view" class="home" hidden>
   <div class="line-filters" id="line-filters"></div>
 
   <section class="recent-section" id="recent-section">
