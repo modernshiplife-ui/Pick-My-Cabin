@@ -457,10 +457,13 @@ textarea { resize: vertical; }
   grid-template-areas:
     "back back"
     "header header"
+    "share share"
     "reviews form";
   gap: 10px 24px;
   padding: 20px 24px 48px;
 }
+
+#ship-share { grid-area: share; margin: 0; }
 
 .back-link {
   grid-area: back;
@@ -949,6 +952,61 @@ textarea { resize: vertical; }
 
 .quiz-result-actions .cta-btn { width: 100%; max-width: 280px; }
 
+/* --- Share icons --------------------------------------------------------- */
+
+.share-icons {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0;
+  position: relative;
+}
+
+.quiz-result-wrap .share-icons {
+  justify-content: center;
+  margin: 22px 0 0;
+}
+
+.share-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ivory-dim);
+  margin-right: 2px;
+}
+
+.share-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--ink-2);
+  border: 1px solid var(--ink-3);
+  color: var(--ivory-dim);
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.share-icon:hover { border-color: var(--coral); color: var(--coral-bright); transform: translateY(-1px); }
+
+.share-icon.is-copied { border-color: var(--yellow); color: var(--yellow); }
+
+.share-copied-msg {
+  font-size: 0.82rem;
+  color: var(--yellow);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.share-copied-msg.is-visible { opacity: 1; }
+
+.site-footer .share-icons { justify-content: center; margin-top: 16px; }
+
 .destinations-view { padding: 20px 24px 56px; max-width: 1000px; margin: 0 auto; }
 
 .region-legend {
@@ -1041,6 +1099,7 @@ textarea { resize: vertical; }
     grid-template-areas:
       "back"
       "header"
+      "share"
       "reviews"
       "form";
   }

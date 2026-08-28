@@ -37,6 +37,8 @@
     shipLineLabel: document.getElementById('ship-line-label'),
     shipTitle: document.getElementById('ship-title'),
     ratingSummary: document.getElementById('rating-summary'),
+    shipShare: document.getElementById('ship-share'),
+    footerShare: document.getElementById('footer-share'),
     reviewsList: document.getElementById('reviews-list'),
     reviewForm: document.getElementById('review-form'),
     reviewCabin: document.getElementById('review-cabin'),
@@ -466,6 +468,10 @@
         <button type="button" class="text-btn" id="quiz-guide-btn">See the full Cabin Guide →</button>
         <button type="button" class="text-btn" id="quiz-retake-btn">Retake the quiz</button>
       </div>
+      <div class="share-icons">${shareIconsHtml(
+        buildShareUrl({ quiz: 1 }),
+        `My cabin type is ${result.name}, according to Pick My Cabin's quiz — what's yours?`
+      )}</div>
     `;
     document.getElementById('quiz-browse-btn').addEventListener('click', () => goHome({ reset: true }));
     document.getElementById('quiz-guide-btn').addEventListener('click', () => showGuide());
@@ -617,6 +623,11 @@
     } else {
       els.reviewsList.innerHTML = reviews.map((r) => reviewCardHtml(r)).join('');
     }
+
+    els.shipShare.innerHTML = shareIconsHtml(
+      buildShareUrl({ ship: ship.id }),
+      `Check out real cabin reviews for ${ship.name} on Pick My Cabin`
+    );
   }
 
   function escapeHtml(str) {
@@ -624,6 +635,57 @@
     div.textContent = str;
     return div.innerHTML;
   }
+
+  // --- Share icons -------------------------------------------------------
+  const SHARE_ICON_FACEBOOK = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.89h2.78l-.44 2.91h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94Z"/></svg>';
+  const SHARE_ICON_X = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-7.6 8.68L23 22h-6.9l-5.4-6.6L4.5 22H1.4l8.1-9.26L1 2h7l4.9 6.02L18.9 2Zm-1.2 18h1.7L6.4 3.9H4.6L17.7 20Z"/></svg>';
+  const SHARE_ICON_WHATSAPP = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12.02 2C6.5 2 2.03 6.46 2.03 12c0 1.9.53 3.66 1.44 5.17L2 22l4.98-1.44A9.9 9.9 0 0 0 12.02 22C17.55 22 22 17.54 22 12S17.55 2 12.02 2Zm0 18a8 8 0 0 1-4.08-1.12l-.29-.17-2.96.86.85-2.87-.19-.3A7.96 7.96 0 1 1 12.02 20Zm4.4-5.94c-.24-.12-1.43-.7-1.65-.79-.22-.08-.38-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.42-.55-.42h-.47c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.7 2.6 4.13 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.1-.22-.16-.46-.28Z"/></svg>';
+  const SHARE_ICON_INSTAGRAM = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>';
+  const SHARE_ICON_LINK = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 15 15 9"/><path d="M7 13.5 5.6 14.9a3.5 3.5 0 0 0 4.95 4.95l2.1-2.1"/><path d="M17 10.5l1.4-1.4a3.5 3.5 0 0 0-4.95-4.95l-2.1 2.1"/></svg>';
+
+  function buildShareUrl(params) {
+    const url = new URL(window.location.origin + window.location.pathname);
+    Object.entries(params || {}).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) url.searchParams.set(key, value);
+    });
+    return url.toString();
+  }
+
+  function shareIconsHtml(url, text, copyMsg) {
+    const u = encodeURIComponent(url);
+    const t = encodeURIComponent(text);
+    return `
+      <span class="share-label">Share</span>
+      <a class="share-icon" href="https://www.facebook.com/sharer/sharer.php?u=${u}" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">${SHARE_ICON_FACEBOOK}</a>
+      <a class="share-icon" href="https://twitter.com/intent/tweet?url=${u}&text=${t}" target="_blank" rel="noopener noreferrer" aria-label="Share on X">${SHARE_ICON_X}</a>
+      <a class="share-icon" href="https://wa.me/?text=${t}%20${u}" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp">${SHARE_ICON_WHATSAPP}</a>
+      <button type="button" class="share-icon" data-share-url="${escapeHtml(url)}" data-copy-msg="Link copied — paste it into your Instagram bio or story" aria-label="Copy link for Instagram">${SHARE_ICON_INSTAGRAM}</button>
+      <button type="button" class="share-icon" data-share-url="${escapeHtml(url)}" data-copy-msg="${escapeHtml(copyMsg || 'Link copied!')}" aria-label="Copy link">${SHARE_ICON_LINK}</button>
+      <span class="share-copied-msg" role="status"></span>
+    `;
+  }
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.share-icons button.share-icon[data-share-url]');
+    if (!btn) return;
+    const container = btn.closest('.share-icons');
+    const msgEl = container ? container.querySelector('.share-copied-msg') : null;
+    const showMsg = (text) => {
+      if (!msgEl) return;
+      msgEl.textContent = text;
+      msgEl.classList.add('is-visible');
+      clearTimeout(msgEl._hideTimer);
+      msgEl._hideTimer = setTimeout(() => msgEl.classList.remove('is-visible'), 2600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(btn.dataset.shareUrl)
+        .then(() => showMsg(btn.dataset.copyMsg))
+        .catch(() => showMsg('Could not copy — copy the link from your address bar'));
+    } else {
+      showMsg('Could not copy — copy the link from your address bar');
+    }
+  });
 
   function loadRemoteReviews(shipId) {
     fetch(`/api/reviews?ship=${encodeURIComponent(shipId)}`)
@@ -789,4 +851,21 @@
   renderDestShipGrid();
   loadGlobalRecent();
   loadVisitorCount();
+
+  els.footerShare.innerHTML = shareIconsHtml(
+    buildShareUrl({}),
+    "Pick My Cabin — real cruise cabin reviews from people who've actually stayed there"
+  );
+
+  (function bootFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const shipParam = params.get('ship');
+    if (shipParam && shipById(shipParam)) {
+      showShip(shipParam);
+      return;
+    }
+    if (params.has('quiz')) {
+      showQuiz();
+    }
+  })();
 })();
