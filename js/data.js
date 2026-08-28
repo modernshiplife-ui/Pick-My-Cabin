@@ -512,3 +512,161 @@ const CABIN_QUIZ = {
   },
 };
 
+// General reference only — package names, inclusions and prices change often
+// and vary by ship, sailing length and promotion. Always confirm current
+// details directly with the line before booking.
+const DRINKS_PACKAGES = {
+  cunard: {
+    tiers: [
+      {
+        name: 'Beverage Collection',
+        price: '~$63–95/person/day',
+        includes: 'Drinks up to $13.50/serving, plus unlimited soda, juice, coffee and water. Capped at 15 alcoholic drinks per 24 hours.',
+      },
+      {
+        name: 'Premium Beverage Collection',
+        price: '~$77–108/person/day',
+        includes: 'Same as the Beverage Collection, with the per-drink cap raised to $20.',
+      },
+    ],
+    note: "Cunard's 15% bar service charge is built into the package price. The separate daily Hotel & Dining Service Charge (~$17–19/day) is not included.",
+  },
+  'royal-caribbean': {
+    tiers: [
+      {
+        name: 'Deluxe Beverage Package',
+        price: '~$70–110/person/day',
+        includes: 'Beer, wine, cocktails and spirits up to $14/drink, plus specialty coffee, smoothies, juice and bottled water.',
+      },
+      {
+        name: 'Refreshment Package',
+        price: 'Non-alcoholic',
+        includes: 'Specialty coffee, smoothies, juice and soda — no alcohol.',
+      },
+    ],
+    note: 'An 18% gratuity is added at purchase. As of August 2025, every adult sharing a cabin must buy the package if one does — no exemptions.',
+  },
+  celebrity: {
+    tiers: [
+      {
+        name: 'Classic Package',
+        price: '~$89–109/person/day',
+        includes: 'Standard beer, wine, cocktails and spirits up to a lower price cap, plus coffee and juice.',
+      },
+      {
+        name: 'Premium Package',
+        price: '~$109–149/person/day',
+        includes: 'Wider selection and a higher per-drink cap than Classic.',
+      },
+    ],
+    note: 'A 20% gratuity is added on top of the package price. All adults in a cabin must buy the same package.',
+  },
+  princess: {
+    tiers: [
+      {
+        name: 'Princess Plus',
+        price: '~$65–70/person/day',
+        includes: 'Drinks up to $15/drink — bundled with Wi-Fi and other fare perks, not sold as a drinks-only package.',
+      },
+      {
+        name: 'Princess Premier',
+        price: '~$100–105/person/day',
+        includes: 'Drinks up to $20/drink, unlimited specialty coffee/tea and up to 12 bottled waters a day, plus Wi-Fi and dining perks bundled in.',
+      },
+    ],
+    note: '18% beverage gratuity is included in the price. Only the first two guests in a stateroom must both buy the package.',
+  },
+  msc: {
+    tiers: [
+      {
+        name: 'Premium Extra',
+        price: 'Roughly $50–105/person/day',
+        includes: 'Broad range of alcoholic and non-alcoholic drinks, cocktails, wine, beer and spirits.',
+      },
+    ],
+    note: 'Gratuity is included in the price, but MSC no longer publishes a fixed rate — pricing swings widely by promotion, so check your MyMSC account before booking. Everyone at the same table, including minors via a separate Minors Package, must buy matching packages.',
+  },
+  'holland-america': {
+    tiers: [
+      {
+        name: 'Signature',
+        price: '~$56/person/day',
+        includes: 'Beer, spirits, cocktails and wine up to $12/drink. 15-drink daily limit.',
+      },
+      {
+        name: 'Elite',
+        price: '~$61/person/day',
+        includes: 'Same as Signature, with the per-drink cap raised to $16.',
+      },
+    ],
+    note: 'A 20% service charge is added on top of these prices. All adults in the same stateroom must buy the same package.',
+  },
+  regent: {
+    included: true,
+    note: "Regent's all-inclusive fare covers unlimited beverages — including top-shelf spirits, wine and beer — in every bar, lounge and restaurant. Gratuities are included too; no tipping expected.",
+  },
+  silversea: {
+    included: true,
+    note: "Silversea's all-inclusive fare covers wine, spirits, champagne, beer and a daily-restocked in-suite bar. Gratuities are included too; no tipping expected.",
+  },
+  oceania: {
+    tiers: [
+      {
+        name: 'House Select',
+        price: '~$40/person/day',
+        includes: 'Wine, champagne and beer by the glass at lunch and dinner.',
+      },
+      {
+        name: 'Prestige Select',
+        price: '~$60–70/person/day',
+        includes: 'Unlimited alcoholic and non-alcoholic drinks, any time, any venue.',
+      },
+    ],
+    note: "Gratuity is included in both packages. Oceania's included-fare program (currently \"Your World Included\") has changed name and terms several times recently — confirm exactly what's bundled before booking.",
+  },
+  ncl: {
+    tiers: [
+      {
+        name: 'Premium Beverage Package',
+        price: '~$109/person/day before gratuity',
+        includes: "Drinks up to $15/drink — often bundled into NCL's \"Free at Sea\" promotions.",
+      },
+      {
+        name: 'Premium Plus',
+        price: '+~$29/person/day upgrade',
+        includes: 'Wider top-shelf selection above the Premium package.',
+      },
+    ],
+    note: 'A 20% gratuity is added on top of the package price. Every qualifying guest in the stateroom must buy a matching package.',
+  },
+  disney: {
+    noPackage: true,
+    note: "Disney doesn't sell an unlimited drinks package. Soda, juice, coffee and tea are free and unlimited at drink stations and in the dining rooms — unusually generous compared to other lines — but alcohol is pay-as-you-go, with optional discounted wine and beer-mug bundles.",
+  },
+  viking: {
+    tiers: [
+      {
+        name: 'Silver Spirits',
+        price: '~$27/person/day',
+        includes: 'Any drink up to $18 — wine, cocktails, spirits — any time, anywhere on the ship, plus event pairings and tasting discounts.',
+      },
+    ],
+    note: 'House beer, wine and soft drinks are already included with lunch and dinner as standard, along with all-day coffee and tea — Silver Spirits is only for anytime, premium drinking. Both guests in a cabin must buy it, for the full cruise, non-refundable.',
+  },
+  'po-cruises': {
+    tiers: [
+      {
+        name: 'Classic',
+        price: '~£50–55/person/day',
+        includes: 'Most alcoholic and soft drinks, cocktails up to about £8.50.',
+      },
+      {
+        name: 'Deluxe',
+        price: '~£60/person/day',
+        includes: 'Same as Classic, plus premium/top-shelf brands.',
+      },
+    ],
+    note: "P&O has no separate service charge — gratuities are already built into the fare and drink prices, and tipping isn't expected onboard.",
+  },
+};
+

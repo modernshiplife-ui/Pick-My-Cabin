@@ -85,6 +85,9 @@
     regionLegend: document.getElementById('region-legend'),
     destLineFilters: document.getElementById('dest-line-filters'),
     destShipGrid: document.getElementById('dest-ship-grid'),
+    drinksLink: document.getElementById('drinks-link'),
+    drinksView: document.getElementById('drinks-view'),
+    drinksGrid: document.getElementById('drinks-grid'),
     quizPromoLink: document.getElementById('quiz-promo-link'),
     quizView: document.getElementById('quiz-view'),
     quizBack: document.getElementById('quiz-back'),
@@ -313,6 +316,7 @@
     els.guideView.hidden = true;
     els.lineGuideView.hidden = true;
     els.destinationsView.hidden = true;
+    els.drinksView.hidden = true;
     els.quizView.hidden = true;
     els.topbarShare.hidden = true;
   }
@@ -569,6 +573,59 @@
     els.landingStats.textContent = `${LINES.length} cruise lines · ${shipCount.toLocaleString()} ships tracked`;
   }
 
+  // --- Drinks packages -----------------------------------------------------
+  function showDrinks() {
+    hideAllViews();
+    els.drinksView.hidden = false;
+    els.hero.hidden = true;
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  function renderDrinksGrid() {
+    els.drinksGrid.innerHTML = LINES.filter((line) => DRINKS_PACKAGES[line.id])
+      .map((line) => {
+        const d = DRINKS_PACKAGES[line.id];
+        if (d.included) {
+          return `
+            <article class="drinks-card drinks-card-included">
+              <p class="drinks-card-line">${line.name}</p>
+              <p class="drinks-card-included-badge">Included in fare</p>
+              <p class="drinks-card-note">${d.note}</p>
+            </article>
+          `;
+        }
+        if (d.noPackage) {
+          return `
+            <article class="drinks-card drinks-card-included drinks-card-nopackage">
+              <p class="drinks-card-line">${line.name}</p>
+              <p class="drinks-card-included-badge drinks-card-nopackage-badge">No package sold</p>
+              <p class="drinks-card-note">${d.note}</p>
+            </article>
+          `;
+        }
+        return `
+          <article class="drinks-card">
+            <p class="drinks-card-line">${line.name}</p>
+            ${d.tiers
+              .map(
+                (t) => `
+              <div class="drinks-tier">
+                <div class="drinks-tier-head">
+                  <span class="drinks-tier-name">${t.name}</span>
+                  <span class="drinks-tier-price">${t.price}</span>
+                </div>
+                <p class="drinks-tier-includes">${t.includes}</p>
+              </div>
+            `
+              )
+              .join('')}
+            <p class="drinks-card-note">${d.note}</p>
+          </article>
+        `;
+      })
+      .join('');
+  }
+
   // --- Deck plan search --------------------------------------------------
   function deckPlanUrl(ship) {
     const slug = ship.name.trim().replace(/\s+/g, '-');
@@ -671,6 +728,11 @@
   els.destinationsLink.addEventListener('click', (e) => {
     e.preventDefault();
     showDestinations();
+  });
+
+  els.drinksLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showDrinks();
   });
 
   els.guideBack.addEventListener('click', () => goHome());
@@ -932,6 +994,7 @@
   renderRegionLegend();
   renderDestFilters();
   renderDestShipGrid();
+  renderDrinksGrid();
   loadGlobalRecent();
   loadVisitorCount();
 

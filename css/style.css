@@ -1134,6 +1134,93 @@ textarea { resize: vertical; }
 
 .region-badge-muted { color: var(--ivory-dim); font-style: italic; }
 
+/* --- Drinks packages ------------------------------------------------------ */
+
+.drinks-view { padding: 20px 24px 56px; max-width: 1000px; margin: 0 auto; }
+
+.drinks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.drinks-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  background: var(--ink-2);
+  border: 1px solid var(--ink-3);
+  border-top: 3px solid var(--coral);
+  border-radius: var(--radius);
+}
+
+.drinks-card-line {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--ivory);
+}
+
+.drinks-tier {
+  padding-top: 10px;
+  border-top: 1px dashed var(--ink-3);
+}
+
+.drinks-tier-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.drinks-tier-name { font-size: 0.92rem; color: var(--ivory); font-weight: 600; }
+
+.drinks-tier-price {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--yellow);
+  white-space: nowrap;
+}
+
+.drinks-tier-includes {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: var(--ivory-dim);
+  line-height: 1.5;
+}
+
+.drinks-card-note {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--ivory-dim);
+  font-style: italic;
+  padding-top: 10px;
+  border-top: 1px dashed var(--ink-3);
+}
+
+.drinks-card-included { border-top-color: var(--yellow); align-items: flex-start; }
+
+.drinks-card-included-badge {
+  display: inline-block;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--yellow);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.drinks-card-included .drinks-card-note { border-top: none; padding-top: 0; }
+
+.drinks-card-nopackage-badge { color: var(--ivory-dim); background: var(--ink-3); }
+
+.drinks-card-nopackage { border-top-color: var(--ink-3); }
+
 .glossary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
