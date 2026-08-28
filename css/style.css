@@ -1208,9 +1208,8 @@ textarea { resize: vertical; }
 
 .drinks-tier-head {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
+  flex-direction: column;
+  gap: 3px;
 }
 
 .drinks-tier-name { font-size: 0.92rem; color: var(--ivory); font-weight: 600; }
@@ -1219,7 +1218,6 @@ textarea { resize: vertical; }
   font-family: var(--font-mono);
   font-size: 0.8rem;
   color: var(--yellow);
-  white-space: nowrap;
 }
 
 .drinks-tier-includes {
