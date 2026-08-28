@@ -57,6 +57,7 @@
     landingBrowseBtn: document.getElementById('landing-browse-btn'),
     landingGuideLink: document.getElementById('landing-guide-link'),
     landingGuideBtn: document.getElementById('landing-guide-btn'),
+    confusedGuideLink: document.getElementById('confused-guide-link'),
     landingRecentReviews: document.getElementById('landing-recent-reviews'),
     landingStats: document.getElementById('landing-stats'),
     hero: document.getElementById('hero'),
@@ -485,7 +486,7 @@
 
   els.landingBrowseBtn.addEventListener('click', () => goHome({ reset: true }));
 
-  [els.guideLink, els.landingGuideLink].forEach((link) => {
+  [els.guideLink, els.landingGuideLink, els.confusedGuideLink].forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       showGuide();
