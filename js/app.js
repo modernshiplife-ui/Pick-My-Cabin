@@ -58,6 +58,10 @@
     landingRecentReviews: document.getElementById('landing-recent-reviews'),
     landingStats: document.getElementById('landing-stats'),
     hero: document.getElementById('hero'),
+    cunardGuideView: document.getElementById('cunard-guide-view'),
+    cunardGuideLink: document.getElementById('cunard-guide-link'),
+    cunardGuideBack: document.getElementById('cunard-guide-back'),
+    cunardGuideBrowseBtn: document.getElementById('cunard-guide-browse-btn'),
   };
 
   const MAX_PHOTOS = 4;
@@ -273,13 +277,19 @@
   });
 
   // --- Ship view -------------------------------------------------------------
+  function hideAllViews() {
+    els.landingView.hidden = true;
+    els.homeView.hidden = true;
+    els.shipView.hidden = true;
+    els.guideView.hidden = true;
+    els.cunardGuideView.hidden = true;
+  }
+
   function showShip(shipId) {
     state.selectedShipId = shipId;
     state.selectedRating = null;
     state.selectedTags = new Set();
-    els.landingView.hidden = true;
-    els.homeView.hidden = true;
-    els.guideView.hidden = true;
+    hideAllViews();
     els.shipView.hidden = false;
     els.hero.hidden = false;
     els.hero.classList.add('is-compact');
@@ -290,9 +300,7 @@
   }
 
   function goHome({ reset } = {}) {
-    els.landingView.hidden = true;
-    els.shipView.hidden = true;
-    els.guideView.hidden = true;
+    hideAllViews();
     els.homeView.hidden = false;
     els.hero.hidden = false;
     els.hero.classList.remove('is-compact');
@@ -307,20 +315,34 @@
     }
   }
 
+  function goHomeFilteredToLine(lineId) {
+    state.activeLine = lineId;
+    state.query = '';
+    els.search.value = '';
+    goHome();
+    renderLineFilters();
+    renderShipGrid();
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
   function showGuide() {
-    els.landingView.hidden = true;
-    els.homeView.hidden = true;
-    els.shipView.hidden = true;
+    hideAllViews();
     els.guideView.hidden = false;
     els.hero.hidden = false;
     els.hero.classList.add('is-compact');
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
   }
 
+  function showCunardGuide() {
+    hideAllViews();
+    els.cunardGuideView.hidden = false;
+    els.hero.hidden = false;
+    els.hero.classList.add('is-compact');
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
   function showLanding() {
-    els.homeView.hidden = true;
-    els.shipView.hidden = true;
-    els.guideView.hidden = true;
+    hideAllViews();
     els.landingView.hidden = false;
     els.hero.hidden = true;
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
@@ -357,6 +379,14 @@
 
   els.guideBack.addEventListener('click', () => goHome());
   els.guideBrowseBtn.addEventListener('click', () => goHome({ reset: true }));
+
+  els.cunardGuideLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showCunardGuide();
+  });
+
+  els.cunardGuideBack.addEventListener('click', () => showGuide());
+  els.cunardGuideBrowseBtn.addEventListener('click', () => goHomeFilteredToLine('cunard'));
 
   function renderShipView() {
     const ship = shipById(state.selectedShipId);
