@@ -64,6 +64,10 @@
     landingGuideBtn: document.getElementById('landing-guide-btn'),
     landingRecentReviews: document.getElementById('landing-recent-reviews'),
     landingStats: document.getElementById('landing-stats'),
+    deckplanForm: document.getElementById('deckplan-form'),
+    deckplanInput: document.getElementById('deckplan-input'),
+    deckplanSuggestions: document.getElementById('deckplan-suggestions'),
+    deckplanNote: document.getElementById('deckplan-note'),
     hero: document.getElementById('hero'),
     lineGuideView: document.getElementById('line-guide-view'),
     lineGuideBack: document.getElementById('line-guide-back'),
@@ -564,6 +568,82 @@
     const shipCount = allShips().length;
     els.landingStats.textContent = `${LINES.length} cruise lines · ${shipCount.toLocaleString()} ships tracked`;
   }
+
+  // --- Deck plan search --------------------------------------------------
+  function deckPlanUrl(ship) {
+    const slug = ship.name.trim().replace(/\s+/g, '-');
+    return `https://cruisedeckplans.com/ships/deckbydeck.php?ship=${encodeURIComponent(slug)}&deck=5`;
+  }
+
+  function matchingShipsFor(query) {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return allShips()
+      .filter((s) => s.name.toLowerCase().includes(q))
+      .slice(0, 6);
+  }
+
+  function exactShipMatch(query) {
+    const q = query.trim().toLowerCase();
+    if (!q) return null;
+    return allShips().find((s) => s.name.toLowerCase() === q) || null;
+  }
+
+  function hideDeckplanSuggestions() {
+    els.deckplanSuggestions.hidden = true;
+    els.deckplanSuggestions.innerHTML = '';
+  }
+
+  function goToDeckPlan(ship) {
+    els.deckplanInput.value = ship.name;
+    hideDeckplanSuggestions();
+    els.deckplanNote.hidden = true;
+    window.open(deckPlanUrl(ship), '_blank', 'noopener');
+  }
+
+  els.deckplanInput.addEventListener('input', () => {
+    els.deckplanNote.hidden = true;
+    const matches = matchingShipsFor(els.deckplanInput.value);
+    if (matches.length === 0) {
+      hideDeckplanSuggestions();
+      return;
+    }
+    els.deckplanSuggestions.innerHTML = matches
+      .map((s, i) => {
+        const line = lineById(s.lineId);
+        return `<button type="button" class="deckplan-suggestion" data-index="${i}">${escapeHtml(s.name)}${
+          line ? `<span class="line-name">${escapeHtml(line.name)}</span>` : ''
+        }</button>`;
+      })
+      .join('');
+    els.deckplanSuggestions.hidden = false;
+    els.deckplanSuggestions.querySelectorAll('.deckplan-suggestion').forEach((btn) => {
+      btn.addEventListener('click', () => goToDeckPlan(matches[Number(btn.dataset.index)]));
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!els.deckplanForm.contains(e.target)) hideDeckplanSuggestions();
+  });
+
+  els.deckplanForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const query = els.deckplanInput.value;
+    const exact = exactShipMatch(query);
+    if (exact) {
+      goToDeckPlan(exact);
+      return;
+    }
+    const matches = matchingShipsFor(query);
+    if (matches.length === 1) {
+      goToDeckPlan(matches[0]);
+      return;
+    }
+    els.deckplanNote.textContent = matches.length > 1
+      ? 'Multiple ships match — pick one from the list.'
+      : "We don't recognise that ship — pick one from the list.";
+    els.deckplanNote.hidden = false;
+  });
 
   els.backToHome.addEventListener('click', () => goHome());
 

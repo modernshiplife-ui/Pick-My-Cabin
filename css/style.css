@@ -127,78 +127,89 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
 
 /* --- Landing page -------------------------------------------------------- */
 
-.confused-illustration {
+.deckplan-search {
+  max-width: 480px;
+  margin: 0 auto 22px;
+}
+
+.deckplan-search-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin: 0 0 10px;
+}
+
+.deckplan-search-form {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 2px;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.confused-visual {
-  position: relative;
-  width: 145px;
-  height: 140px;
-}
+.deckplan-search-wrap { position: relative; flex: 1 1 260px; text-align: left; }
 
-.confused-character {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 106px;
-  height: 117px;
-  animation: cc-bob 4.5s ease-in-out infinite;
-  transform: translateX(-50%);
-}
-
-.cc-shoulders, .cc-hands, .cc-neck { fill: var(--ink-3); }
-.cc-head { fill: var(--ivory-dim); }
-.cc-brow, .cc-mouth { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; fill: none; }
-.cc-eye { fill: var(--ink); }
-.cc-ship-hull { fill: var(--coral); }
-.cc-ship-cabin { fill: var(--yellow); }
-.cc-ship-funnel { fill: var(--ivory); }
-.cc-ship-window { fill: var(--ink); }
-
-.cc-ship {
-  transform-origin: 100px 160px;
-  animation: cc-ship-wiggle 6s ease-in-out infinite;
-}
-
-@keyframes cc-bob {
-  0%, 100% { transform: translateX(-50%) rotate(-2deg); }
-  50% { transform: translateX(-50%) rotate(2deg) translateY(-4px); }
-}
-
-@keyframes cc-ship-wiggle {
-  0%, 100% { transform: rotate(-9deg); }
-  50% { transform: rotate(5deg); }
-}
-
-.thought-bubble {
-  position: absolute;
-  z-index: 2;
-  background: var(--ink-2);
-  border: 1px solid var(--coral);
+#deckplan-input {
+  width: 100%;
+  padding: 13px 16px;
+  font-size: 0.95rem;
+  background: var(--paper);
+  color: var(--paper-text);
+  border: none;
   border-radius: 999px;
-  padding: 4px 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+
+#deckplan-input::placeholder { color: #6B7674; }
+
+.deckplan-suggestions {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 6;
+  background: var(--ink-2);
+  border: 1px solid var(--ink-3);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+}
+
+.deckplan-suggestions[hidden] { display: none; }
+
+.deckplan-suggestion {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  color: var(--ivory);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.deckplan-suggestion:hover, .deckplan-suggestion.is-active { background: var(--ink-3); }
+
+.deckplan-suggestion .line-name {
+  display: block;
   font-family: var(--font-mono);
   font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ivory-dim);
+}
+
+.deckplan-search-form .cta-btn { padding: 13px 26px; flex: 0 0 auto; }
+
+.deckplan-search-note {
+  margin: 10px 0 0;
+  font-size: 0.82rem;
   color: var(--coral-bright);
-  white-space: nowrap;
-  opacity: 0;
-  animation: thought-pop 9s ease-in-out infinite;
 }
 
-.tb-1 { top: -6px; left: 1px; animation-delay: 0s; }
-.tb-2 { top: 4px; right: -6px; border-color: var(--yellow); color: var(--yellow); animation-delay: 2.25s; }
-.tb-3 { top: 47px; left: -18px; animation-delay: 4.5s; }
-.tb-4 { top: 53px; right: -20px; border-color: var(--yellow); color: var(--yellow); animation-delay: 6.75s; }
-
-@keyframes thought-pop {
-  0%, 12%, 100% { opacity: 0; transform: translateY(6px) scale(0.9); }
-  25%, 42% { opacity: 1; transform: translateY(0) scale(1); }
-  55% { opacity: 0; transform: translateY(-6px) scale(0.95); }
-}
+.deckplan-search-note[hidden] { display: none; }
 
 .landing-hero {
   text-align: center;

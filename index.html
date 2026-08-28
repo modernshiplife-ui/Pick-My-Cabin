@@ -40,35 +40,16 @@
 
 <main id="landing-view" class="landing-view">
   <section class="landing-hero">
-    <div class="confused-illustration">
-      <div class="confused-visual" aria-hidden="true">
-        <div class="thought-bubble tb-1"><span>Haven Suites?</span></div>
-        <div class="thought-bubble tb-2"><span>Princess Grill?</span></div>
-        <div class="thought-bubble tb-3"><span>Yacht Club?</span></div>
-        <div class="thought-bubble tb-4"><span>The Retreat?</span></div>
-        <svg class="confused-character" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-          <path class="cc-shoulders" d="M 28 220 Q 28 132 100 132 Q 172 132 172 220 Z" />
-          <rect class="cc-neck" x="90" y="118" width="20" height="18" />
-          <ellipse class="cc-hands" cx="100" cy="178" rx="30" ry="13" />
-          <g class="cc-ship">
-            <rect x="72" y="171" width="56" height="14" rx="7" class="cc-ship-hull" />
-            <rect x="86" y="160" width="20" height="13" rx="2" class="cc-ship-cabin" />
-            <rect x="101" y="150" width="6" height="10" rx="1" class="cc-ship-funnel" />
-            <circle cx="84" cy="178" r="1.6" class="cc-ship-window" />
-            <circle cx="92" cy="178" r="1.6" class="cc-ship-window" />
-            <circle cx="100" cy="178" r="1.6" class="cc-ship-window" />
-            <circle cx="108" cy="178" r="1.6" class="cc-ship-window" />
-          </g>
-          <g class="cc-head-group" transform="rotate(9 100 78)">
-            <circle class="cc-head" cx="100" cy="78" r="44" />
-            <path class="cc-brow" d="M 76 68 Q 84 63 93 67" />
-            <path class="cc-brow" d="M 105 60 Q 115 52 127 57" />
-            <circle class="cc-eye" cx="84" cy="76" r="4.2" />
-            <circle class="cc-eye" cx="118" cy="73" r="4.2" />
-            <path class="cc-mouth" d="M 83 100 Q 97 105 111 99" />
-          </g>
-        </svg>
-      </div>
+    <div class="deckplan-search">
+      <p class="deckplan-search-label">Deck plan search bar</p>
+      <form id="deckplan-form" class="deckplan-search-form" autocomplete="off">
+        <div class="deckplan-search-wrap">
+          <input type="text" id="deckplan-input" placeholder="Type a ship — e.g. “Queen Anne”" aria-label="Search for a ship's deck plan" />
+          <div class="deckplan-suggestions" id="deckplan-suggestions" hidden></div>
+        </div>
+        <button type="submit" class="cta-btn" id="deckplan-submit">Search</button>
+      </form>
+      <p class="deckplan-search-note" id="deckplan-note" hidden></p>
     </div>
     <p class="eyebrow">Community cabin reviews · Every major cruise line</p>
     <h1>Real reviews for every cabin, on every cruise line.</h1>
