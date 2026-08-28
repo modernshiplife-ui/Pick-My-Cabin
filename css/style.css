@@ -290,6 +290,7 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
 
 .landing-promo-icon-drinks { background: #7B2D26; }
 .landing-promo-icon-wifi { background: #2B5F8A; }
+.landing-promo-icon-gratuities { background: #8A6B1E; }
 
 .landing-promo-link:hover .landing-promo-icon { transform: translateY(-2px); filter: brightness(1.15); }
 

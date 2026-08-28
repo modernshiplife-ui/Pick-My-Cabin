@@ -93,6 +93,10 @@
     wifiView: document.getElementById('wifi-view'),
     wifiGrid: document.getElementById('wifi-grid'),
     landingWifiLink: document.getElementById('landing-wifi-link'),
+    gratuitiesLink: document.getElementById('gratuities-link'),
+    gratuitiesView: document.getElementById('gratuities-view'),
+    gratuitiesGrid: document.getElementById('gratuities-grid'),
+    landingGratuitiesLink: document.getElementById('landing-gratuities-link'),
     quizPromoLink: document.getElementById('quiz-promo-link'),
     quizView: document.getElementById('quiz-view'),
     quizBack: document.getElementById('quiz-back'),
@@ -323,6 +327,7 @@
     els.destinationsView.hidden = true;
     els.drinksView.hidden = true;
     els.wifiView.hidden = true;
+    els.gratuitiesView.hidden = true;
     els.quizView.hidden = true;
     els.topbarShare.hidden = true;
   }
@@ -613,7 +618,7 @@
                   <span class="drinks-tier-name">${t.name}</span>
                   <span class="drinks-tier-price">${t.price}</span>
                 </div>
-                <p class="drinks-tier-includes">${t.includes}</p>
+                ${t.includes ? `<p class="drinks-tier-includes">${t.includes}</p>` : ''}
               </div>
             `
               )
@@ -647,6 +652,18 @@
 
   function renderWifiGrid() {
     renderPackageGrid(els.wifiGrid, WIFI_PLANS);
+  }
+
+  // --- Gratuities --------------------------------------------------------
+  function showGratuities() {
+    hideAllViews();
+    els.gratuitiesView.hidden = false;
+    els.hero.hidden = true;
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  function renderGratuitiesGrid() {
+    renderPackageGrid(els.gratuitiesGrid, GRATUITIES);
   }
 
   // --- Deck plan search --------------------------------------------------
@@ -758,6 +775,11 @@
     showWifi();
   });
 
+  els.landingGratuitiesLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showGratuities();
+  });
+
   els.destinationsLink.addEventListener('click', (e) => {
     e.preventDefault();
     showDestinations();
@@ -771,6 +793,11 @@
   els.wifiLink.addEventListener('click', (e) => {
     e.preventDefault();
     showWifi();
+  });
+
+  els.gratuitiesLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showGratuities();
   });
 
   els.guideBack.addEventListener('click', () => goHome());
@@ -1034,6 +1061,7 @@
   renderDestShipGrid();
   renderDrinksGrid();
   renderWifiGrid();
+  renderGratuitiesGrid();
   loadGlobalRecent();
   loadVisitorCount();
 

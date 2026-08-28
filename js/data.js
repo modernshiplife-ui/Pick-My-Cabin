@@ -858,3 +858,165 @@ const WIFI_PLANS = {
   },
 };
 
+// General reference only — rates increase periodically and vary by cabin
+// category and sailing. Always confirm current details directly with the
+// line before booking.
+const GRATUITIES = {
+  cunard: {
+    tiers: [
+      {
+        name: 'Britannia & Britannia Club',
+        price: '$17.00/person/day',
+        includes: 'Standard and Club cabins.',
+      },
+      {
+        name: 'Grill Suites',
+        price: '$19.00/person/day',
+        includes: 'Princess Grill and Queens Grill suites.',
+      },
+    ],
+    note: 'Automatically added to the onboard account and adjustable at Guest Services if needed. A separate 15% service charge applies to individual bar and wine purchases — package prices on the Drinks Packages page already include it.',
+  },
+  'royal-caribbean': {
+    tiers: [
+      {
+        name: 'Standard cabins',
+        price: '~$18–18.50/person/day',
+        includes: 'Interior through Balcony cabins.',
+      },
+      {
+        name: 'Suites',
+        price: '$21.00/person/day',
+        includes: 'Junior Suites and above.',
+      },
+    ],
+    note: 'Automatically added to the SeaPass account unless prepaid, and adjustable at Guest Services. A separate 18–20% service charge applies to drinks and the Deluxe Beverage Package — see the Drinks Packages page.',
+  },
+  celebrity: {
+    tiers: [
+      {
+        name: 'Inside / Oceanview / Veranda',
+        price: '$19.50/person/day',
+        includes: 'Standard cabin categories.',
+      },
+      {
+        name: 'Concierge / AquaClass',
+        price: '$20.50/person/day',
+        includes: 'Elevated cabin categories below suite level.',
+      },
+      {
+        name: 'The Retreat suites',
+        price: '$24.50/person/day',
+        includes: 'Suite-class accommodation.',
+      },
+    ],
+    note: 'Rate increased in late July 2026. Automatically added and adjustable at Guest Services. A separate 20% service charge applies to bar drinks, beverage packages, mini-bar and spa, and 18% on specialty dining — see the Drinks Packages page.',
+  },
+  princess: {
+    tiers: [
+      {
+        name: 'Standard staterooms',
+        price: '$18/person/day',
+        includes: 'Interior, Oceanview and Balcony.',
+      },
+      {
+        name: 'Mini Suites / Cabanas / Reserve Collection',
+        price: '$19/person/day',
+        includes: '',
+      },
+      {
+        name: 'Suites',
+        price: '$20/person/day',
+        includes: '',
+      },
+    ],
+    note: 'Called "Crew Appreciation." Automatically added and adjustable at Guest Services. A separate 20% service charge applies to bar purchases, spa and the Plus/Premier beverage packages — see the Drinks Packages page.',
+  },
+  msc: {
+    tiers: [
+      {
+        name: 'Standard staterooms',
+        price: '$17.00/person/night',
+        includes: 'Caribbean and Alaska sailings; Mediterranean/N. Europe sailings bill roughly €12/night.',
+      },
+      {
+        name: 'MSC Yacht Club',
+        price: '$23.00/person/night',
+        includes: '',
+      },
+    ],
+    note: 'Called the "Hotel Service Charge." Automatically added and typically adjustable at Guest Services. Children under 2 are exempt. Separate from beverage package pricing — see the Drinks Packages page.',
+  },
+  'holland-america': {
+    tiers: [
+      {
+        name: 'Standard cabins',
+        price: '$18.00/person/day',
+        includes: '',
+      },
+      {
+        name: 'Suites',
+        price: '$20.00/person/day',
+        includes: '',
+      },
+    ],
+    note: 'Called "Crew Appreciation." Automatically added and adjustable at Guest Services. A separate 20% service charge applies to beverages, specialty dining cover charges and à la carte items — see the Drinks Packages page.',
+  },
+  regent: {
+    included: true,
+    note: "All standard gratuities are pre-paid and bundled into the fare, consistent with Regent's all-inclusive model.",
+  },
+  silversea: {
+    included: true,
+    note: 'Gratuities are included in the fare. The one carve-out is spa and salon services, which carry their own ~18% service charge.',
+  },
+  oceania: {
+    included: true,
+    note: 'Gratuities became fully included in the fare from January 1, 2025 under Oceania\'s "Your World Included" pricing — a change from its previous per-day charge, and a repackaging of the older "Simply MORE" bundle rather than a straightforward addition on top of it.',
+  },
+  ncl: {
+    tiers: [
+      {
+        name: 'Studio / Inside / Oceanview / Balcony / Club Balcony Suite',
+        price: '$20.00/person/day',
+        includes: 'Applies to guests age 3 and up.',
+      },
+      {
+        name: 'Suites / The Haven',
+        price: '$25.00/person/day',
+        includes: '',
+      },
+    ],
+    note: 'Can be prepaid (fully refundable) or paid onboard; adjustable at Guest Services in person. Separate from the gratuity already built into Free at Sea drink package pricing (~$28.50–32/person/day) and the 20% service charge on individual drinks — see the Drinks Packages page.',
+  },
+  disney: {
+    tiers: [
+      {
+        name: 'Standard staterooms',
+        price: '$16.00/person/night',
+        includes: 'Applies to all guests, including children and infants.',
+      },
+      {
+        name: 'Concierge staterooms and suites',
+        price: '$27.25/person/night',
+        includes: '',
+      },
+    ],
+    note: 'Disney describes these as optional — automatically added if not prepaid, but fully adjustable or refundable at Guest Services. A separate 15% service charge applies to bar tabs and drinks purchases.',
+  },
+  viking: {
+    tiers: [
+      {
+        name: 'All guests',
+        price: '$20.00/person/day',
+        includes: 'Called a "hotel and dining charge" rather than a gratuity.',
+      },
+    ],
+    note: "Not included in the base fare, despite Viking's broader all-inclusive reputation — a common point of confusion. Automatically added but described as discretionary/adjustable, and can be prepaid. A separate 15% gratuity applies to bar and beverage purchases.",
+  },
+  'po-cruises': {
+    included: true,
+    note: "P&O removed onboard gratuity charges in 2019 and folded service into the fare — guests aren't expected to tip separately. Spa treatments carry their own separate 10% service charge.",
+  },
+};
+
