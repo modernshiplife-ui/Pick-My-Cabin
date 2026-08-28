@@ -4,7 +4,6 @@
     query: '',
     activeLine: null, // null = all lines; otherwise a single line id
     currentGuideLine: null, // which line's detail page is currently shown
-    destActiveLine: null, // line filter on the Destinations page — independent of Browse's activeLine
     quizIndex: 0,
     quizScores: { interior: 0, oceanview: 0, balcony: 0, suite: 0 },
     selectedShipId: null,
@@ -81,11 +80,6 @@
     lineGuideCtaSub: document.getElementById('line-guide-cta-sub'),
     lineGuideBrowseBtn: document.getElementById('line-guide-browse-btn'),
     lineGuideGrid: document.getElementById('line-guide-grid'),
-    destinationsView: document.getElementById('destinations-view'),
-    destinationsLink: document.getElementById('destinations-link'),
-    regionLegend: document.getElementById('region-legend'),
-    destLineFilters: document.getElementById('dest-line-filters'),
-    destShipGrid: document.getElementById('dest-ship-grid'),
     drinksLink: document.getElementById('drinks-link'),
     drinksView: document.getElementById('drinks-view'),
     drinksGrid: document.getElementById('drinks-grid'),
@@ -324,7 +318,6 @@
     els.shipView.hidden = true;
     els.guideView.hidden = true;
     els.lineGuideView.hidden = true;
-    els.destinationsView.hidden = true;
     els.drinksView.hidden = true;
     els.wifiView.hidden = true;
     els.gratuitiesView.hidden = true;
@@ -505,70 +498,6 @@
   });
 
   els.quizBack.addEventListener('click', () => showLanding());
-
-  // --- Destinations ----------------------------------------------------
-  function showDestinations() {
-    hideAllViews();
-    els.destinationsView.hidden = false;
-    els.hero.hidden = true;
-    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
-  }
-
-  function renderRegionLegend() {
-    els.regionLegend.innerHTML = Object.values(REGIONS)
-      .map((r) => `<span class="region-chip">${r.flags} ${r.name}</span>`)
-      .join('');
-  }
-
-  function renderDestFilters() {
-    els.destLineFilters.innerHTML = '';
-
-    const allChip = document.createElement('button');
-    allChip.className = 'chip';
-    allChip.textContent = 'All lines';
-    allChip.setAttribute('aria-pressed', String(state.destActiveLine === null));
-    allChip.addEventListener('click', () => {
-      state.destActiveLine = null;
-      renderDestFilters();
-      renderDestShipGrid();
-    });
-    els.destLineFilters.appendChild(allChip);
-
-    LINES.forEach((line) => {
-      const chip = document.createElement('button');
-      chip.className = 'chip';
-      chip.setAttribute('aria-pressed', String(state.destActiveLine === line.id));
-      chip.textContent = line.name;
-      chip.addEventListener('click', () => {
-        state.destActiveLine = line.id;
-        renderDestFilters();
-        renderDestShipGrid();
-      });
-      els.destLineFilters.appendChild(chip);
-    });
-  }
-
-  function renderDestShipGrid() {
-    const ships = allShips().filter((s) => !state.destActiveLine || s.lineId === state.destActiveLine);
-
-    els.destShipGrid.innerHTML = ships
-      .map((ship) => {
-        const line = lineById(ship.lineId);
-        const regions = regionsForShip(ship);
-        const badges = regions
-          .map((id) => REGIONS[id])
-          .filter(Boolean)
-          .map((r) => `<span class="region-badge">${r.flags} ${r.name}</span>`)
-          .join('');
-        return `
-          <div class="dest-ship-card">
-            <span class="dest-ship-line">${line ? line.name : ''}</span>
-            <span class="dest-ship-name">${ship.name}</span>
-            <div class="dest-ship-regions">${badges || '<span class="region-badge region-badge-muted">General fleet rotation</span>'}</div>
-          </div>`;
-      })
-      .join('');
-  }
 
   function showLanding() {
     hideAllViews();
@@ -778,11 +707,6 @@
   els.landingGratuitiesLink.addEventListener('click', (e) => {
     e.preventDefault();
     showGratuities();
-  });
-
-  els.destinationsLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    showDestinations();
   });
 
   els.drinksLink.addEventListener('click', (e) => {
@@ -1056,9 +980,6 @@
   renderRecentReviews();
   renderLandingStats();
   renderLineGuideGrid();
-  renderRegionLegend();
-  renderDestFilters();
-  renderDestShipGrid();
   renderDrinksGrid();
   renderWifiGrid();
   renderGratuitiesGrid();

@@ -399,53 +399,6 @@ const LINE_GUIDES = {
   },
 };
 
-// General, typical regions each line sails — not a live sailing schedule or
-// specific dates (we have no data feed for that; presenting fabricated dates
-// would be far more misleading than useful). Reflects stable, well-known
-// deployment patterns. Confirm exact itineraries with the line before booking.
-const REGIONS = {
-  caribbean: { name: 'Caribbean', flags: '🇧🇸🇯🇲🇧🇧' },
-  mediterranean: { name: 'Mediterranean', flags: '🇮🇹🇬🇷🇪🇸' },
-  'northern-europe': { name: 'Northern Europe & Baltic', flags: '🇳🇴🇸🇪🇩🇰' },
-  alaska: { name: 'Alaska', flags: '🇺🇸' },
-  transatlantic: { name: 'Transatlantic crossings', flags: '🇬🇧🇺🇸' },
-  asia: { name: 'Asia', flags: '🇯🇵🇸🇬🇹🇭' },
-  'australia-pacific': { name: 'Australia & South Pacific', flags: '🇦🇺🇳🇿' },
-  'south-america': { name: 'South America', flags: '🇧🇷🇦🇷🇨🇱' },
-  polar: { name: 'Antarctica & the Arctic', flags: '❄️' },
-  'middle-east': { name: 'Middle East', flags: '🇦🇪🇴🇲' },
-  africa: { name: 'Africa', flags: '🇿🇦🇲🇦' },
-  world: { name: 'World cruises', flags: '🌍' },
-};
-
-const LINE_REGIONS = {
-  cunard: ['transatlantic', 'caribbean', 'mediterranean', 'northern-europe', 'world'],
-  'royal-caribbean': ['caribbean', 'mediterranean', 'alaska', 'asia'],
-  celebrity: ['caribbean', 'mediterranean', 'alaska', 'south-america'],
-  princess: ['caribbean', 'alaska', 'mediterranean', 'asia', 'australia-pacific', 'world'],
-  msc: ['mediterranean', 'caribbean', 'northern-europe', 'africa', 'middle-east'],
-  'holland-america': ['alaska', 'caribbean', 'mediterranean', 'asia', 'world'],
-  regent: ['world', 'mediterranean', 'caribbean', 'asia', 'polar', 'northern-europe'],
-  silversea: ['polar', 'mediterranean', 'caribbean', 'asia', 'world'],
-  oceania: ['mediterranean', 'caribbean', 'asia', 'south-america', 'world'],
-  ncl: ['caribbean', 'alaska', 'mediterranean'],
-  disney: ['caribbean', 'alaska', 'mediterranean', 'northern-europe'],
-  viking: ['northern-europe', 'mediterranean', 'asia', 'world', 'south-america'],
-  'po-cruises': ['caribbean', 'mediterranean', 'northern-europe', 'world'],
-};
-
-// Only ships where a distinctive, well-known specialisation genuinely differs
-// from the line's general pattern — not an attempt to cover all 161 ships
-// individually, since we don't have confident per-ship knowledge for most.
-const SHIP_REGION_OVERRIDES = {
-  'queen-mary-2': ['transatlantic', 'caribbean', 'world'],
-  'silver-endeavour': ['polar'],
-};
-
-function regionsForShip(ship) {
-  return SHIP_REGION_OVERRIDES[ship.id] || LINE_REGIONS[ship.lineId] || [];
-}
-
 // "Find your cabin type" quiz — a lightweight, four-question matcher scoring
 // toward the four universal cabin types. Result copy matches the Cabin
 // Guide's own descriptions for consistency.

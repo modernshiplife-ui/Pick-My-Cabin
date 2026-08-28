@@ -1111,68 +1111,6 @@ textarea { resize: vertical; }
 
 .site-footer .share-icons { justify-content: center; margin-top: 16px; }
 
-.destinations-view { padding: 20px 24px 56px; max-width: 1000px; margin: 0 auto; }
-
-.region-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 24px 0;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--ink-3);
-}
-
-.region-chip {
-  font-size: 0.8rem;
-  color: var(--ivory-dim);
-  background: var(--ink-2);
-  border: 1px solid var(--ink-3);
-  border-radius: 999px;
-  padding: 5px 12px;
-  white-space: nowrap;
-}
-
-.dest-ship-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 14px;
-  margin-top: 24px;
-}
-
-.dest-ship-card {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 16px;
-  background: var(--ink-2);
-  border: 1px solid var(--ink-3);
-  border-radius: var(--radius);
-}
-
-.dest-ship-line {
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ivory-dim);
-}
-
-.dest-ship-name { font-family: var(--font-display); font-size: 1.05rem; color: var(--ivory); }
-
-.dest-ship-regions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-
-.region-badge {
-  font-size: 0.74rem;
-  color: var(--ivory);
-  background: var(--ink);
-  border: 1px solid var(--ink-3);
-  border-radius: 999px;
-  padding: 3px 9px;
-  white-space: nowrap;
-}
-
-.region-badge-muted { color: var(--ivory-dim); font-style: italic; }
-
 /* --- Drinks packages ------------------------------------------------------ */
 
 .drinks-view { padding: 20px 24px 56px; max-width: 1000px; margin: 0 auto; }
