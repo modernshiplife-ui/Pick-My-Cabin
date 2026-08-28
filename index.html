@@ -27,6 +27,9 @@
     <span class="brand-text">Pick&nbsp;My&nbsp;Cabin</span>
   </a>
   <p class="brand-tagline">Real cabin intelligence, from the people who’ve stayed there</p>
+  <nav class="topbar-nav">
+    <a href="#" id="guide-link" class="nav-link">Cabin guide</a>
+  </nav>
   <span class="visitor-count" id="visitor-count" hidden></span>
 </header>
 
@@ -115,6 +118,78 @@
       <p class="form-note" id="review-status"></p>
     </form>
   </div>
+</main>
+
+<main id="guide-view" class="guide-view" hidden>
+  <button class="back-link" id="guide-back">← Back</button>
+
+  <section class="guide-hero">
+    <p class="eyebrow">Cabin guide</p>
+    <h1>Which cabin type is actually right for you?</h1>
+    <p class="guide-intro">Every cruise line uses its own brand names, but almost all cabins fall into four basic types. Here's what each one actually means, plus the premium enclaves worth knowing about and the terms you'll see in reviews.</p>
+  </section>
+
+  <section class="guide-section">
+    <h2>The four cabin types</h2>
+    <div class="cabin-type-grid">
+      <article class="cabin-type-card">
+        <h3>Interior</h3>
+        <p class="cabin-type-price">$</p>
+        <p>No window — fully enclosed, usually toward the middle of the ship. Some newer ships add a screen showing a live outside view ("virtual balcony").</p>
+        <p class="cabin-type-size">Typically 120–185 sq ft</p>
+      </article>
+      <article class="cabin-type-card">
+        <h3>Oceanview</h3>
+        <p class="cabin-type-price">$$</p>
+        <p>A real window or porthole, but no door — you can't step outside. Natural light without balcony prices. Check for an obstructed view before booking.</p>
+        <p class="cabin-type-size">Typically 150–200 sq ft</p>
+      </article>
+      <article class="cabin-type-card">
+        <h3>Balcony</h3>
+        <p class="cabin-type-price">$$$</p>
+        <p>A private outdoor space, usually with two chairs and a small table. The most popular category for a reason — fresh air and a view of every port.</p>
+        <p class="cabin-type-size">Typically 175–250 sq ft, plus balcony</p>
+      </article>
+      <article class="cabin-type-card">
+        <h3>Suite</h3>
+        <p class="cabin-type-price">$$$$</p>
+        <p>Significantly more space, often a separate bedroom or lounge, and a bigger balcony. Perks vary hugely by line — a "suite" isn't the same experience everywhere.</p>
+        <p class="cabin-type-size">Typically 300 sq ft and up</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Premium enclaves by cruise line</h2>
+    <p class="guide-section-sub">Above standard suites, several lines run a "ship within a ship" — its own restaurant, lounge, sun deck, sometimes a private pool.</p>
+    <div class="enclave-list">
+      <div class="enclave-row"><span class="enclave-line">Cunard</span><span class="enclave-name">Grill Suites</span><span class="enclave-desc">Princess Grill and Queens Grill — dedicated dining and a more exclusive feel throughout the ship.</span></div>
+      <div class="enclave-row"><span class="enclave-line">Norwegian Cruise Line</span><span class="enclave-name">The Haven</span><span class="enclave-desc">A private complex with its own pool deck, restaurant, and 24-hour butler service.</span></div>
+      <div class="enclave-row"><span class="enclave-line">MSC Cruises</span><span class="enclave-name">Yacht Club</span><span class="enclave-desc">Private restaurant, lounge and sun deck, plus butler service.</span></div>
+      <div class="enclave-row"><span class="enclave-line">Celebrity Cruises</span><span class="enclave-name">The Retreat</span><span class="enclave-desc">Suite guests get a private restaurant, lounge and sun deck.</span></div>
+      <div class="enclave-row"><span class="enclave-line">Royal Caribbean</span><span class="enclave-name">Star Class</span><span class="enclave-desc">Top-tier suites with a dedicated genie (concierge) and exclusive areas.</span></div>
+      <div class="enclave-row"><span class="enclave-line">Princess Cruises</span><span class="enclave-name">Suite Class</span><span class="enclave-desc">Priority perks and a dedicated lounge on select ships.</span></div>
+      <div class="enclave-row"><span class="enclave-line">Disney Cruise Line</span><span class="enclave-name">Concierge</span><span class="enclave-desc">A private lounge, dedicated concierge team, and expanded suite perks.</span></div>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Terms worth knowing</h2>
+    <dl class="glossary-grid">
+      <div class="glossary-item"><dt>Midship</dt><dd>The middle of the ship — generally the most stable, with the least motion.</dd></div>
+      <div class="glossary-item"><dt>Forward / Aft</dt><dd>Toward the front (forward, or bow) or back (aft, or stern) of the ship.</dd></div>
+      <div class="glossary-item"><dt>Muster station</dt><dd>Your assigned safety assembly point, listed on your cabin door and key card.</dd></div>
+      <div class="glossary-item"><dt>Obstructed view</dt><dd>A window or balcony partly blocked, often by a lifeboat or the ship's own structure.</dd></div>
+      <div class="glossary-item"><dt>Guarantee cabin</dt><dd>You book a category without picking an exact cabin — the line assigns one before sailing, sometimes as a free upgrade.</dd></div>
+      <div class="glossary-item"><dt>Connecting cabins</dt><dd>Two cabins with an internal connecting door — useful for families or groups travelling together.</dd></div>
+    </dl>
+  </section>
+
+  <section class="guide-cta">
+    <h2>Now you know what to look for</h2>
+    <p>See what real travellers actually experienced, cabin by cabin.</p>
+    <button class="cta-btn" id="guide-browse-btn">Browse reviews</button>
+  </section>
 </main>
 
 <footer class="site-footer">

@@ -46,6 +46,10 @@
     photoPreviews: document.getElementById('photo-previews'),
     photoAddBtn: document.getElementById('photo-add-btn'),
     visitorCount: document.getElementById('visitor-count'),
+    guideView: document.getElementById('guide-view'),
+    guideLink: document.getElementById('guide-link'),
+    guideBack: document.getElementById('guide-back'),
+    guideBrowseBtn: document.getElementById('guide-browse-btn'),
   };
 
   const MAX_PHOTOS = 4;
@@ -272,6 +276,7 @@
 
   function goHome({ reset } = {}) {
     els.shipView.hidden = true;
+    els.guideView.hidden = true;
     els.homeView.hidden = false;
     document.getElementById('hero').classList.remove('is-compact');
     state.selectedShipId = null;
@@ -285,12 +290,28 @@
     }
   }
 
+  function showGuide() {
+    els.homeView.hidden = true;
+    els.shipView.hidden = true;
+    els.guideView.hidden = false;
+    document.getElementById('hero').classList.add('is-compact');
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
   els.backToHome.addEventListener('click', () => goHome());
 
   document.getElementById('brand-home-link').addEventListener('click', (e) => {
     e.preventDefault();
     goHome({ reset: true });
   });
+
+  els.guideLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showGuide();
+  });
+
+  els.guideBack.addEventListener('click', () => goHome());
+  els.guideBrowseBtn.addEventListener('click', () => goHome({ reset: true }));
 
   function renderShipView() {
     const ship = shipById(state.selectedShipId);
