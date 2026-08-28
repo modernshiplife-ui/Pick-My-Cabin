@@ -52,6 +52,7 @@
     photoPreviews: document.getElementById('photo-previews'),
     photoAddBtn: document.getElementById('photo-add-btn'),
     visitorCount: document.getElementById('visitor-count'),
+    topbarShare: document.getElementById('topbar-share'),
     guideView: document.getElementById('guide-view'),
     guideLink: document.getElementById('guide-link'),
     guideBack: document.getElementById('guide-back'),
@@ -309,6 +310,7 @@
     els.lineGuideView.hidden = true;
     els.destinationsView.hidden = true;
     els.quizView.hidden = true;
+    els.topbarShare.hidden = true;
   }
 
   function showShip(shipId) {
@@ -552,6 +554,7 @@
   function showLanding() {
     hideAllViews();
     els.landingView.hidden = false;
+    els.topbarShare.hidden = false;
     els.hero.hidden = true;
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
     renderLandingStats();
@@ -852,10 +855,9 @@
   loadGlobalRecent();
   loadVisitorCount();
 
-  els.footerShare.innerHTML = shareIconsHtml(
-    buildShareUrl({}),
-    "Pick My Cabin — real cruise cabin reviews from people who've actually stayed there"
-  );
+  const homeShareText = "Pick My Cabin — real cruise cabin reviews from people who've actually stayed there";
+  els.footerShare.innerHTML = shareIconsHtml(buildShareUrl({}), homeShareText);
+  els.topbarShare.innerHTML = shareIconsHtml(buildShareUrl({}), homeShareText);
 
   (function bootFromUrl() {
     const params = new URLSearchParams(window.location.search);

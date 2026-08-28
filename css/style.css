@@ -78,15 +78,51 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
 
 .nav-link:hover { color: var(--coral-bright); border-color: var(--coral-bright); }
 
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .visitor-count[hidden] { display: none; }
 
 .visitor-count {
-  margin-left: auto;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--yellow);
   white-space: nowrap;
+}
+
+.topbar-share[hidden] { display: none; }
+
+.topbar-share {
+  margin: 0;
+  gap: 8px;
+}
+
+.topbar-share .share-label { display: none; }
+
+.topbar-share .share-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.topbar-share .share-icon svg { width: 14px; height: 14px; }
+
+.topbar-share .share-copied-msg {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  max-width: min(240px, 90vw);
+  white-space: normal;
+  text-align: right;
+  background: var(--ink-2);
+  border: 1px solid var(--ink-3);
+  padding: 4px 10px;
+  border-radius: 6px;
+  z-index: 5;
 }
 
 /* --- Landing page -------------------------------------------------------- */
