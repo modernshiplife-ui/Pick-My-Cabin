@@ -679,7 +679,7 @@
     setUrl({ promotions: 1 });
     updateMeta({
       title: 'Current Cruise Line Promotions Compared | Pick My Cabin',
-      description: `A snapshot of each major cruise line's flagship current offer, as of ${PROMOTIONS.asOfDate}.`,
+      description: `A snapshot of each major cruise line's flagship current offer, as of ${PROMOTIONS.asOfDate}. Refreshed automatically on the 1st of every month.`,
     });
   }
 
