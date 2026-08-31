@@ -1223,6 +1223,24 @@ textarea { resize: vertical; }
 
 .promo-notfound { color: var(--ivory-dim); font-style: italic; }
 
+.promo-market { display: flex; flex-direction: column; gap: 6px; }
+
+.promo-market + .promo-market {
+  border-top: 1px dashed var(--ink-3);
+  padding-top: 12px;
+  margin-top: 2px;
+}
+
+.promo-market-label {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #2F7D5A;
+}
+
 .glossary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));

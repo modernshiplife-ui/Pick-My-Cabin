@@ -974,96 +974,190 @@ const GRATUITIES = {
 };
 
 // A dated snapshot, not a live feed — sales change constantly and often
-// expire or get replaced within days or weeks. Update asOfDate whenever this
-// is refreshed, and always confirm the current offer directly with the line
-// or a travel agent before booking.
+// expire or get replaced within days or weeks. Shows both US and UK
+// promotions since most lines run separate campaigns per market. Update
+// asOfDate whenever this is refreshed, and always confirm the current offer
+// directly with the line or a travel agent before booking.
 const PROMOTIONS = {
   asOfDate: 'August 31, 2026',
   lines: {
     cunard: {
-      name: 'Labor Day Sale',
-      includes: 'Fares from $999pp, plus up to $300 onboard credit per stateroom on over 150 select voyages.',
-      window: 'Aug 27 – Sept 9, 2026.',
-      restrictions: 'Select 2026 Caribbean, European and Transatlantic sailings, plus select 2027 Canada/New England, Caribbean, Europe, Mediterranean and World Voyage segments.',
-      sourceUrl: 'https://cruiseindustrynews.com/cruise-news/2026/08/cunard-unveils-labor-day-sale-with-300-in-onboard-credit/',
+      us: {
+        name: 'Enjoy with More',
+        includes: 'Up to $300 onboard credit per stateroom (tiered down to $90 by cabin grade), plus Cunard Signature Packages bundling drinks, WiFi and dining credit at up to 30% off.',
+        window: 'Book by Aug 31, 2026 (today) — may have already expired. The Signature Packages themselves appear to be an ongoing, not dated, offer.',
+        restrictions: 'Grill Suite bookings also get a $19/person/day hotel-charge credit.',
+        sourceUrl: 'https://www.cunard.com/en-us/cruise-deals',
+      },
+      uk: {
+        name: 'Extra On Board Credit + Returning Guest Saving',
+        includes: 'Onboard credit tiered $90–$300 per person by cabin grade (shown in USD even on the UK site), plus 10% off for returning guests on 7–67 night voyages sailing Jan 2027–Mar 2028, and the same Signature Packages bundle at up to 30% off.',
+        window: 'Book by Aug 31, 2026 (today) — may have already expired.',
+        restrictions: 'The 10% returning-guest discount requires a Cunard World Club login/past-passenger status.',
+        sourceUrl: 'https://www.cunard.com/en-gb/cruise-deals/extra-on-board-credit',
+      },
     },
     'royal-caribbean': {
-      name: 'August Flash Sale',
-      includes: 'Up to $900 off cruise fares, up to $100 off short getaways, and up to 30% off onboard extras.',
-      window: 'Live now — exact end date isn\'t shown on the page (countdown-timer driven), so it may roll into a new offer at any time.',
-      restrictions: '',
-      sourceUrl: 'https://www.royalcaribbean.com/cruise-deals',
+      us: {
+        name: 'Up to $900 Off (3rd & 4th Guests Sail Free)',
+        includes: 'Up to $900 off cruise fares, up to $100 off short getaways, and up to 30% off onboard extras.',
+        window: "Live now, but Royal Caribbean reuses this exact headline across back-to-back flash sales — the on-page countdown timer doesn't expose a fixed end date, so treat the window as approximate.",
+        restrictions: '',
+        sourceUrl: 'https://www.royalcaribbean.com/cruise-deals',
+      },
+      uk: {
+        name: 'Summer Adventure Sale',
+        includes: 'Up to £675 off fares, kids and teens sail from £99 on Summer 2027 sailings, and up to £75 off short cruises.',
+        window: 'Live now — exact end date not shown on the page (countdown-timer driven).',
+        restrictions: 'Some sub-offers (e.g. "Mega Flash Deals") are restricted to UK and Republic of Ireland residents.',
+        sourceUrl: 'https://www.royalcaribbean.com/gbr/en/cruise-deals',
+      },
     },
     celebrity: {
-      name: 'Summer Sale',
-      includes: "75% off the second guest's fare (save up to $750/room), plus up to $200 bonus onboard credit per stateroom on select sailings — an extra $100 on 2026 holiday-season sailings.",
-      window: "Live now — exact end date isn't shown on the page (countdown-timer driven).",
-      restrictions: 'Select sailings of 3+ nights. Excludes Galapagos and Celebrity River Cruises.',
-      sourceUrl: 'https://www.celebritycruises.com/cruise-deals/special-offers',
+      us: {
+        name: 'Exciting Deals (Summer Sale)',
+        includes: "75% off the second guest's fare (save up to $750/room), plus up to $100 bonus onboard credit on select 2026 holiday-season sailings.",
+        window: 'Expires 11:59pm EST, Aug 31, 2026 — today.',
+        restrictions: 'Not combinable with other offers; select sailings only.',
+        sourceUrl: 'https://www.celebritycruises.com/cruise-deals/exciting-deals',
+      },
+      uk: {
+        name: 'Europe Sale',
+        includes: "Up to 35% off the first and second guest's fare, up to £550 per room, plus up to £300 bonus savings on select Europe 2027 sailings.",
+        window: 'Not stated on the page.',
+        restrictions: 'Select Europe 2027 sailings only.',
+        sourceUrl: 'https://www.celebritycruises.com/gb/cruise-deals',
+      },
     },
     princess: {
-      notFound: true,
-      checkUrl: 'https://www.princess.com/cruise-deals-promotions',
+      us: {
+        name: 'Cyber Summer Sale',
+        includes: 'Up to 40% off, up to $300 instant savings, $99 deposits, and free 3rd and 4th guests.',
+        window: 'Valid for bookings through Aug 31, 2026 (today) — may have already expired.',
+        restrictions: '',
+        sourceUrl: 'https://www.princess.com/cruise-deals-promotions/limited-time-offer',
+      },
+      uk: {
+        name: 'The 2027 Sale + Onboard Spend Offer',
+        includes: 'Up to £500 per room off 2027 sailings, plus up to $600 onboard spend (shown in USD, not £, on the UK site) with a £99pp deposit.',
+        window: 'The onboard-spend/low-deposit offer runs through Aug 31, 2026 (today) — may have already expired. The 2027 Sale itself was framed as running "for 11 days," with no exact end date shown.',
+        restrictions: '',
+        sourceUrl: 'https://www.princess.com/en-uk/cruise-deals-promotions',
+      },
     },
     msc: {
-      name: 'Labor Day Sale',
-      includes: 'Up to 40% off cruise fares, plus Kids Sail Free.',
-      window: 'Timed around Labor Day (Sept 7, 2026) — exact dates weren\'t confirmed directly on MSC\'s own site.',
-      restrictions: 'Likely new bookings only and US residents only, and probably not combinable with other offers — confirm on the page.',
-      sourceUrl: 'https://www.msccruisesusa.com/cruise-deals/labor-day-sale',
+      us: {
+        name: 'Limited-Time Offer',
+        includes: 'Up to 35% off cruise fares, up to $500 onboard credit, and Kids Sail Free.',
+        window: 'A related tier of this offer was stated to expire 11:59pm EST, Aug 31, 2026 — today.',
+        restrictions: 'Select sailings; Voyagers Club loyalty members get an additional discount of up to 15%.',
+        sourceUrl: 'https://www.msccruisesusa.com/cruise-deals',
+      },
+      uk: {
+        name: 'MSC Yacht Club Special',
+        includes: 'Up to £250 per person onboard credit for Yacht Club suite bookings. Separately, a "Free Balcony Upgrade" offer is running for Winter 2026/27 sailings.',
+        window: 'Not stated on the page.',
+        restrictions: 'The onboard credit offer is limited to Yacht Club suite bookings.',
+        sourceUrl: 'https://www.msccruises.co.uk/deals',
+      },
     },
     'holland-america': {
-      name: 'Save on Sunshine + Have It All bonuses',
-      includes: 'Up to 40% off select Caribbean/Mexico sailings through May 2027, plus up to $400 onboard credit. Bookings made Aug 1 – Sept 30, 2026 also get free prepaid gratuities for the first two guests on select sailings via the Have It All fare.',
-      window: 'Discount portion runs through Aug 31, 2026 (today, so it may have just ended). Onboard credit and Have It All gratuities run through Sept 30, 2026.',
-      restrictions: 'New reservations only. The Have It All gratuities perk requires a balcony cabin or above.',
-      sourceUrl: 'https://www.hollandamerica.com/en/us/cruise-deals',
+      us: {
+        name: 'Save on Sunshine Event',
+        includes: 'Up to 40–45% off select Caribbean/Mexico sailings through May 2, 2027, plus up to $400 onboard credit and a free prepaid gratuities offer for the first two guests on new bookings made Aug 1 – Sept 30, 2026.',
+        window: 'The core sale was stated to expire 11:59pm EST, Aug 31, 2026 — today. The onboard credit and gratuities offers run through Sept 30, 2026.',
+        restrictions: 'The onboard credit and gratuities offers reportedly require booking by phone, per third-party sources — not independently confirmed.',
+        sourceUrl: 'https://www.hollandamerica.com/en/us/cruise-deals',
+      },
+      uk: {
+        name: 'Have It All Early Booking Bonus',
+        includes: 'Up to $300 onboard credit per stateroom (shown in USD on the UK site), a $300 shore excursion credit per person, up to 3 nights of specialty dining, prepaid gratuities, premium WiFi and an elite beverage package, from £149pp, on May–Oct 2027 Europe/Alaska sailings.',
+        window: 'Ends Nov 2, 2026. A separate "Up to £600pp Air Credit with Caribbean Cruise Bookings" offer, combinable with this one, ends Aug 31, 2026 — today.',
+        restrictions: 'The air credit offer is tied to Flight Ease bookings.',
+        sourceUrl: 'https://www.hollandamerica.com/en/gb/cruise-deals',
+      },
     },
     regent: {
-      name: '35th Anniversary Celebration',
-      includes: 'Up to 35% off 35 curated anniversary voyages across six ships, plus $250–$350 shipboard credit per suite.',
-      window: 'Book by Aug 31, 2026 (today) — may have just expired, so check for an extension or successor offer.',
-      restrictions: 'Limited to specific anniversary-designated sailings.',
-      sourceUrl: 'https://www.rssc.com/specials',
+      us: {
+        name: '35th Anniversary Offer + The Caribbean Edition',
+        includes: 'Up to 35% savings plus $350 shipboard credit per suite on 35 curated anniversary voyages; separately, up to 45% off on "The Caribbean Edition" sailings.',
+        window: 'The 35th Anniversary Offer runs through Aug 31, 2026 (today) — may have already expired. No end date shown for the Caribbean Edition.',
+        restrictions: '',
+        sourceUrl: 'https://www.rssc.com/specials',
+      },
+      uk: { sameAsUs: true },
     },
     silversea: {
-      notFound: true,
-      checkUrl: 'https://www.silversea.com/best-luxury-cruise-deals.html',
+      us: {
+        name: 'Save Up to 45%',
+        includes: 'Combined savings up to 45%, with a reduced deposit from 15%. Presumed to be the same campaign advertised on the UK site, priced in USD — not independently verified on the US site.',
+        window: 'Expires Sept 8, 2026 (based on the confirmed UK version of this offer).',
+        restrictions: '',
+        sourceUrl: 'https://www.silversea.com',
+      },
+      uk: {
+        name: 'Save Up to 45% + Venetian Society Referral Credit',
+        includes: 'Combined savings up to 45%, reduced deposit from 15%, plus a Venetian Society (loyalty) referral credit of £350 per suite, up to £1,400 per booking.',
+        window: 'Expires Sept 8, 2026.',
+        restrictions: 'The referral credit requires Venetian Society loyalty membership.',
+        sourceUrl: 'https://www.silversea.com',
+      },
     },
     oceania: {
-      name: 'Annual Summer Sale',
-      includes: 'Up to 40% off, layered on the standing "Your World Included" bundle (2-for-1 fares, free shore excursions, wine, specialty dining and WiFi as standard).',
-      window: 'No fixed end date found for the Summer Sale itself. A separate "Limited-Time Offer" (up to 50% off select destinations) was stated to run through Aug 31, 2026 (today).',
-      restrictions: 'Select sailings and destinations only.',
-      sourceUrl: 'https://www.oceaniacruises.com/special-offers',
+      us: {
+        name: 'Ultimate Exploration',
+        includes: 'Up to 50% off, on top of the standing "Your World Included" bundle (dining, gratuities, WiFi and shore excursion credit or a drinks package, included as standard). A separate "Tropics & Exotics" referral offer adds a $400 credit plus up to 50% off for 2026–2027 sailings.',
+        window: 'No explicit end date found for Ultimate Exploration.',
+        restrictions: 'The referral credit requires an existing-guest referral.',
+        sourceUrl: 'https://www.oceaniacruises.com/special-offers',
+      },
+      uk: { sameAsUs: true },
     },
     ncl: {
-      name: 'Free at Sea (standing perks bundle)',
-      includes: 'Unlimited open bar, specialty dining scaled to cruise length, 150 minutes of WiFi per guest, and a $50 shore excursion credit for the first guest per port. An optional Free at Sea Plus upgrade (from $49.99pp/day) adds premium drinks, streaming WiFi and 50% off specialty dining nights.',
-      window: 'Ongoing, always-on program rather than a dated sale — no named sitewide sale confirmed layered on top as of today.',
-      restrictions: 'A mandatory service charge (~$28.50/person/day) applies on top of the open bar and dining perks.',
-      sourceUrl: 'https://www.ncl.com/cruise-deals/free-at-sea',
+      us: {
+        name: 'Free at Sea / Free at Sea Plus',
+        includes: 'Unlimited open bar, specialty dining (1–4 meals depending on sailing length), WiFi, and a $50 shore excursion credit for the first guest per port. An optional Free at Sea Plus upgrade (from $49.99pp/day) adds premium drinks, streaming WiFi and 50% off specialty dining, for sailings from Feb 1, 2026 onward.',
+        window: 'Ongoing, standard package branding rather than a dated flash sale — no fixed expiration.',
+        restrictions: '',
+        sourceUrl: 'https://www.ncl.com/cruise-deals/free-at-sea',
+      },
+      uk: { sameAsUs: true },
     },
     disney: {
-      name: 'Regional & eligibility-based discounts',
-      includes: 'Save up to 25% on voyage fare generally; $250 onboard credit for US military on select ships through 2026; up to 30% off for Florida residents; up to 25% off for Canadian residents; up to 30% off for Southern California residents; up to 20% off select Singapore sailings.',
-      window: "No expiration dates were listed on Disney's offers page — treat as currently listed rather than freshly time-boxed.",
-      restrictions: 'Each offer is residency- or eligibility-gated (military ID, state/country residency, specific ships or dates) rather than a single flagship sale.',
-      sourceUrl: 'https://disneycruise.disney.go.com/special-offers/',
+      us: {
+        name: 'Save Up to 25% on Voyage Fare (plus several residency-gated offers)',
+        includes: 'A broadly available "up to 25% off select sailings" offer, alongside separate residency-restricted discounts: up to 30% off for Florida residents, up to 30% off for Southern California residents, up to 25% off for Canadian residents, a $250 onboard credit for US military, and up to 20% off select Singapore sailings.',
+        window: 'No expiration dates were shown for any of these offers — treat as currently listed rather than freshly time-boxed.',
+        restrictions: 'Most of these offers are gated by residency or military ID and only apply within the US.',
+        sourceUrl: 'https://disneycruise.disney.go.com/special-offers/',
+      },
+      uk: {
+        notFound: true,
+        checkUrl: 'https://disneycruise.disney.go.com',
+      },
     },
     viking: {
-      name: 'Low Deposit Offer',
-      includes: 'Reduced deposit of $25 (£25 in the UK) per person on 2027–2029 sailings, with the balance due 120 days before departure.',
-      window: 'Aug 1 – Sept 30, 2026.',
-      restrictions: "Excludes World Cruises, World Voyages and World Discoveries. Doesn't apply to departures within 120 days of booking.",
-      sourceUrl: 'https://www.vikingcruises.com/oceans/promotions.html',
+      us: {
+        notFound: true,
+        checkUrl: 'https://www.vikingcruises.com/oceans/promotions.html',
+      },
+      uk: {
+        name: 'Low Deposit Offer',
+        includes: 'Reduced deposit of £25 per person on 2027–2029 sailings, across ocean, river and expedition cruises, with the balance due 120 days before departure.',
+        window: 'Aug 1 – Sept 30, 2026.',
+        restrictions: "Excludes World Cruises, World Voyages and World Discoveries. Doesn't apply to departures within 120 days of booking.",
+        sourceUrl: 'https://www.vikingcruises.co.uk/oceans/promotions.html',
+      },
     },
     'po-cruises': {
-      name: 'Bank Holiday Sale',
-      includes: '5% off all 2027 and 2028 holidays across 650+ eligible cruises, combinable with up to £350 per cabin onboard spending money on eligible Select Price holidays.',
-      window: 'Bookings must be made Aug 28 – Sept 1, 2026 — ending imminently.',
-      restrictions: 'Covers departures between Jan 1, 2027 and Oct 28, 2028. New bookings on Select Price/Early Saver fares only.',
-      sourceUrl: 'https://www.pocruises.com/deals/cruise-deals',
+      uk: {
+        name: '5% Off 2027/2028 Holidays + Onboard Spending Money',
+        includes: '5% off all 2027 and 2028 holidays across 650+ eligible cruises, combinable with up to £350 per cabin onboard spending money on eligible Select Price holidays. A 10% deposit option is also available, and an all-inclusive drinks/WiFi/dining package is available from £49pp/day.',
+        window: '"For a limited time" — no explicit end date stated.',
+        restrictions: 'The onboard spending money add-on requires a Select Price fare.',
+        sourceUrl: 'https://www.pocruises.com/deals',
+      },
+      // No `us` entry — P&O has no meaningful US market presence.
     },
   },
 };

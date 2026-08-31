@@ -678,9 +678,40 @@
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
     setUrl({ promotions: 1 });
     updateMeta({
-      title: 'Current Cruise Line Promotions Compared | Pick My Cabin',
-      description: `A snapshot of each major cruise line's flagship current offer, as of ${PROMOTIONS.asOfDate}. Refreshed automatically on the 1st of every month.`,
+      title: 'Current Cruise Line Promotions Compared (US & UK) | Pick My Cabin',
+      description: `A snapshot of each major cruise line's flagship current offer for both the US and UK markets, as of ${PROMOTIONS.asOfDate}. Refreshed automatically on the 1st of every month.`,
     });
+  }
+
+  function renderPromoMarket(label, m) {
+    if (!m) return '';
+    if (m.sameAsUs) {
+      return `
+        <div class="promo-market">
+          <p class="promo-market-label">${label}</p>
+          <p class="promo-restrictions">Same global offer as the US — this line doesn't run a separate UK campaign.</p>
+        </div>
+      `;
+    }
+    if (m.notFound) {
+      return `
+        <div class="promo-market">
+          <p class="promo-market-label">${label}</p>
+          <p class="promo-notfound">No current promotion we could confidently confirm.</p>
+          ${m.checkUrl ? `<a href="${m.checkUrl}" target="_blank" rel="noopener noreferrer" class="promo-source-link">Check current offers →</a>` : ''}
+        </div>
+      `;
+    }
+    return `
+      <div class="promo-market">
+        <p class="promo-market-label">${label}</p>
+        <p class="promo-name">${m.name}</p>
+        <p class="drinks-card-note">${m.includes}</p>
+        <p class="promo-window">${m.window}</p>
+        ${m.restrictions ? `<p class="promo-restrictions">${m.restrictions}</p>` : ''}
+        <a href="${m.sourceUrl}" target="_blank" rel="noopener noreferrer" class="promo-source-link">See official offer →</a>
+      </div>
+    `;
   }
 
   function renderPromotionsGrid() {
@@ -688,23 +719,11 @@
     els.promotionsGrid.innerHTML = LINES.filter((line) => PROMOTIONS.lines[line.id])
       .map((line) => {
         const p = PROMOTIONS.lines[line.id];
-        if (p.notFound) {
-          return `
-            <article class="drinks-card promo-card">
-              <p class="drinks-card-line">${line.name}</p>
-              <p class="promo-notfound">No current flagship promotion we could confidently confirm.</p>
-              ${p.checkUrl ? `<a href="${p.checkUrl}" target="_blank" rel="noopener noreferrer" class="promo-source-link">Check current offers →</a>` : ''}
-            </article>
-          `;
-        }
         return `
           <article class="drinks-card promo-card">
             <p class="drinks-card-line">${line.name}</p>
-            <p class="promo-name">${p.name}</p>
-            <p class="drinks-card-note">${p.includes}</p>
-            <p class="promo-window">${p.window}</p>
-            ${p.restrictions ? `<p class="promo-restrictions">${p.restrictions}</p>` : ''}
-            <a href="${p.sourceUrl}" target="_blank" rel="noopener noreferrer" class="promo-source-link">See official offer →</a>
+            ${renderPromoMarket('US', p.us)}
+            ${renderPromoMarket('UK', p.uk)}
           </article>
         `;
       })
