@@ -1198,6 +1198,34 @@ textarea { resize: vertical; }
   border-bottom: none;
 }
 
+.promotions-hero-banner {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-top: -20px;
+  background-image: url('/images/hero-promotions.jpg');
+  background-size: cover;
+  background-position: center 45%;
+  background-repeat: no-repeat;
+}
+
+.promotions-hero-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(14, 36, 41, 0.55) 0px, rgba(14, 36, 41, 0.85) 420px, var(--ink) 620px);
+  pointer-events: none;
+}
+
+.promotions-hero-banner .guide-hero {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+  border-bottom: none;
+}
+
 .drinks-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
