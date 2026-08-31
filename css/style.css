@@ -1168,6 +1168,36 @@ textarea { resize: vertical; }
   border-bottom: none;
 }
 
+.gratuities-hero-banner {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-top: -20px;
+  background-image: url('/images/hero-gratuities.jpg');
+  background-size: cover;
+  background-position: center 50%;
+  background-repeat: no-repeat;
+}
+
+.gratuities-hero-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Busier source photo (lots of small banknote detail) than the other
+     hero images, so this overlay starts darker and resolves sooner. */
+  background: linear-gradient(180deg, rgba(14, 36, 41, 0.72) 0px, rgba(14, 36, 41, 0.92) 180px, var(--ink) 260px);
+  pointer-events: none;
+}
+
+.gratuities-hero-banner .guide-hero {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+  border-bottom: none;
+}
+
 .drinks-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
