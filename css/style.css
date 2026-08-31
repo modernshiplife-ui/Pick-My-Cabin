@@ -745,6 +745,9 @@ textarea { resize: vertical; }
 .site-footer p { margin: 4px 0; font-size: 0.8rem; color: var(--ivory-dim); }
 .site-footer strong { color: var(--coral-bright); }
 
+.site-footer .footer-contact { margin-top: 12px; }
+.footer-contact a { color: var(--coral-bright); text-decoration: underline; text-underline-offset: 3px; }
+
 /* --- Cabin guide landing page ------------------------------------------- */
 
 .guide-view { padding: 20px 24px 56px; max-width: 900px; margin: 0 auto; }
