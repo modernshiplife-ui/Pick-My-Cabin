@@ -475,6 +475,8 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
   text-align: left;
 }
 
+.add-ship-name-wrap { position: relative; }
+
 /* --- Form fields (shared) ------------------------------------------------ */
 
 label { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; color: var(--ivory-dim); }

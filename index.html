@@ -166,7 +166,10 @@
       </label>
       <label>
         <span>Ship name</span>
-        <input id="add-ship-name" type="text" required />
+        <div class="add-ship-name-wrap">
+          <input id="add-ship-name" type="text" required autocomplete="off" />
+          <div class="deckplan-suggestions" id="add-ship-suggestions" hidden></div>
+        </div>
       </label>
       <button type="submit" class="cta-btn">Continue to add a review</button>
     </form>

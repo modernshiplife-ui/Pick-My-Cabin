@@ -27,6 +27,7 @@
     addShipForm: document.getElementById('add-ship-form'),
     addShipLine: document.getElementById('add-ship-line'),
     addShipName: document.getElementById('add-ship-name'),
+    addShipSuggestions: document.getElementById('add-ship-suggestions'),
     homeView: document.getElementById('home-view'),
     shipView: document.getElementById('ship-view'),
     backToHome: document.getElementById('back-to-home'),
@@ -278,16 +279,55 @@
     });
   }
 
+  function hideAddShipSuggestions() {
+    els.addShipSuggestions.hidden = true;
+    els.addShipSuggestions.innerHTML = '';
+  }
+
   els.addShipToggle.addEventListener('click', () => {
     els.addShipLine.innerHTML = LINES.map((l) => `<option value="${l.id}">${l.name}</option>`).join('');
     els.addShipName.value = '';
+    hideAddShipSuggestions();
     els.addShipForm.hidden = false;
+  });
+
+  els.addShipName.addEventListener('input', () => {
+    const matches = matchingShipsFor(els.addShipName.value);
+    if (matches.length === 0) {
+      hideAddShipSuggestions();
+      return;
+    }
+    els.addShipSuggestions.innerHTML = matches
+      .map((s, i) => {
+        const line = lineById(s.lineId);
+        return `<button type="button" class="deckplan-suggestion" data-index="${i}">${escapeHtml(s.name)}${
+          line ? `<span class="line-name">${escapeHtml(line.name)}</span>` : ''
+        }</button>`;
+      })
+      .join('');
+    els.addShipSuggestions.hidden = false;
+    els.addShipSuggestions.querySelectorAll('.deckplan-suggestion').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        hideAddShipSuggestions();
+        showShip(matches[Number(btn.dataset.index)].id);
+      });
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!els.addShipForm.contains(e.target)) hideAddShipSuggestions();
   });
 
   els.addShipForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const name = els.addShipName.value.trim();
     if (!name) return;
+    hideAddShipSuggestions();
+    const existing = exactShipMatch(name);
+    if (existing) {
+      showShip(existing.id);
+      return;
+    }
     const id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-' + Date.now().toString(36);
     const ship = { id, lineId: els.addShipLine.value, name };
     state.addedShips.push(ship);
