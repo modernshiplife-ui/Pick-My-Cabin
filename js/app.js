@@ -311,6 +311,25 @@
     showShip(id);
   });
 
+  // --- Routing & SEO metadata --------------------------------------------
+  let isRoutingFromUrl = false;
+
+  function setUrl(params) {
+    if (isRoutingFromUrl) return;
+    const url = buildShareUrl(params);
+    if (url !== window.location.href) {
+      history.pushState({}, '', url);
+    }
+  }
+
+  function updateMeta({ title, description }) {
+    document.title = title;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc && description) metaDesc.setAttribute('content', description);
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute('href', window.location.href);
+  }
+
   // --- Ship view -------------------------------------------------------------
   function hideAllViews() {
     els.landingView.hidden = true;
@@ -337,6 +356,15 @@
     renderShipView();
     loadRemoteReviews(shipId);
     resetForm();
+
+    setUrl({ ship: shipId });
+    const ship = shipById(shipId);
+    updateMeta({
+      title: ship ? `${ship.name} Cabin Reviews | Pick My Cabin` : 'Pick My Cabin',
+      description: ship
+        ? `Real cabin reviews for ${ship.name} — ratings, tags and photos from travellers and agents who've actually stayed there.`
+        : undefined,
+    });
   }
 
   function goHome({ reset } = {}) {
@@ -353,6 +381,11 @@
       renderShipGrid();
       window.scrollTo({ top: 0, behavior: 'auto' });
     }
+    setUrl({ browse: 1 });
+    updateMeta({
+      title: 'Browse Cruise Cabin Reviews — Every Ship, Every Line | Pick My Cabin',
+      description: 'Search cabin reviews for over 160 ships across every major cruise line — ratings, tags and photos from real travellers and agents.',
+    });
   }
 
   function goHomeFilteredToLine(lineId) {
@@ -371,6 +404,11 @@
     els.hero.hidden = false;
     els.hero.classList.add('is-compact');
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    setUrl({ guide: 1 });
+    updateMeta({
+      title: 'Cabin Guide: Interior, Oceanview, Balcony & Suite Explained | Pick My Cabin',
+      description: "Learn the difference between Interior, Oceanview, Balcony and Suite cabins, plus the premium enclaves each cruise line doesn't advertise.",
+    });
   }
 
   function showLineGuide(lineId) {
@@ -408,6 +446,12 @@
     els.hero.hidden = false;
     els.hero.classList.add('is-compact');
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+
+    setUrl({ line: lineId });
+    updateMeta({
+      title: `${lineName} Cabin Guide — Every Grade Explained | Pick My Cabin`,
+      description: `A grade-by-grade breakdown of every ${lineName} cabin type, from the most affordable to the top suite.`,
+    });
   }
 
   function renderLineGuideGrid() {
@@ -430,6 +474,11 @@
     els.hero.hidden = true;
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
     renderQuizQuestion();
+    setUrl({ quiz: 1 });
+    updateMeta({
+      title: 'Find Your Cabin Type Quiz | Pick My Cabin',
+      description: 'Answer four quick questions to find out whether Interior, Oceanview, Balcony or Suite fits how you actually cruise.',
+    });
   }
 
   function renderQuizQuestion() {
@@ -506,6 +555,11 @@
     els.hero.hidden = true;
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
     renderLandingStats();
+    setUrl({});
+    updateMeta({
+      title: 'Pick My Cabin — Real Cabin Reviews From Cruise Travellers',
+      description: 'Search any cruise ship and cabin number to see honest traveller-reported ratings, or add your own — across every major cruise line.',
+    });
   }
 
   function renderLandingStats() {
@@ -565,6 +619,11 @@
     els.drinksView.hidden = false;
     els.hero.hidden = true;
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    setUrl({ drinks: 1 });
+    updateMeta({
+      title: 'Cruise Drinks Packages Compared — Every Major Line | Pick My Cabin',
+      description: 'Compare drinks package prices, inclusions and gratuity rules across Royal Caribbean, Celebrity, Princess, MSC and more.',
+    });
   }
 
   function renderDrinksGrid() {
@@ -577,6 +636,11 @@
     els.wifiView.hidden = false;
     els.hero.hidden = true;
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    setUrl({ wifi: 1 });
+    updateMeta({
+      title: 'Cruise WiFi Plans Compared — Every Major Line | Pick My Cabin',
+      description: 'Compare internet package prices and inclusions across every major cruise line, from basic browsing to streaming.',
+    });
   }
 
   function renderWifiGrid() {
@@ -589,6 +653,11 @@
     els.gratuitiesView.hidden = false;
     els.hero.hidden = true;
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    setUrl({ gratuities: 1 });
+    updateMeta({
+      title: 'Cruise Gratuities Compared — Every Major Line | Pick My Cabin',
+      description: 'Compare the automatic daily gratuity or service charge for every major cruise line, by cabin category.',
+    });
   }
 
   function renderGratuitiesGrid() {
@@ -990,15 +1059,36 @@
   els.footerShare.innerHTML = shareIconsHtml(buildShareUrl({}), homeShareText);
   els.topbarShare.innerHTML = shareIconsHtml(buildShareUrl({}), homeShareText);
 
-  (function bootFromUrl() {
+  function route() {
     const params = new URLSearchParams(window.location.search);
-    const shipParam = params.get('ship');
-    if (shipParam && shipById(shipParam)) {
-      showShip(shipParam);
-      return;
+    isRoutingFromUrl = true;
+    try {
+      const shipParam = params.get('ship');
+      const lineParam = params.get('line');
+      if (shipParam && shipById(shipParam)) {
+        showShip(shipParam);
+      } else if (params.has('quiz')) {
+        showQuiz();
+      } else if (params.has('guide')) {
+        showGuide();
+      } else if (lineParam && LINE_GUIDES[lineParam]) {
+        showLineGuide(lineParam);
+      } else if (params.has('drinks')) {
+        showDrinks();
+      } else if (params.has('wifi')) {
+        showWifi();
+      } else if (params.has('gratuities')) {
+        showGratuities();
+      } else if (params.has('browse')) {
+        goHome();
+      } else {
+        showLanding();
+      }
+    } finally {
+      isRoutingFromUrl = false;
     }
-    if (params.has('quiz')) {
-      showQuiz();
-    }
-  })();
+  }
+
+  window.addEventListener('popstate', route);
+  route();
 })();
