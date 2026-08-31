@@ -8,6 +8,9 @@ export default {
     if (url.pathname === '/api/reviews' && request.method === 'GET') {
       return handleGetReviews(url, env);
     }
+    if (url.pathname === '/api/review-counts' && request.method === 'GET') {
+      return handleGetReviewCounts(env);
+    }
     if (url.pathname === '/api/reviews' && request.method === 'POST') {
       return handlePostReview(request, env);
     }
@@ -47,6 +50,19 @@ async function handleGetReviews(url, env) {
     .all();
 
   return json(results.map((r) => rowToReview(r, shipId)));
+}
+
+async function handleGetReviewCounts(env) {
+  const { results } = await env.DB.prepare(
+    'SELECT ship_id, rating, COUNT(*) as n FROM reviews GROUP BY ship_id, rating'
+  ).all();
+
+  const counts = {};
+  for (const row of results) {
+    if (!counts[row.ship_id]) counts[row.ship_id] = { up: 0, down: 0 };
+    counts[row.ship_id][row.rating] = row.n;
+  }
+  return json(counts);
 }
 
 function rowToReview(r, shipId) {

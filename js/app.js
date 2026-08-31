@@ -11,6 +11,7 @@
     selectedPhotos: [], // { file, previewUrl }
     remoteReviews: {}, // shipId -> array, fetched from the API when available
     globalRecent: null, // recent reviews across all ships, fetched from the API when available
+    reviewCounts: null, // shipId -> { up, down }, fetched from the API when available
     localReviews: JSON.parse(localStorage.getItem('pmc-reviews') || '[]'),
     addedShips: JSON.parse(localStorage.getItem('pmc-added-ships') || '[]'),
   };
@@ -193,6 +194,18 @@
       });
   }
 
+  function loadReviewCounts() {
+    fetch('/api/review-counts')
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data) => {
+        state.reviewCounts = data && typeof data === 'object' ? data : {};
+        renderShipGrid();
+      })
+      .catch(() => {
+        // No live backend yet — cards fall back to per-ship counts as those load.
+      });
+  }
+
   // --- Visitor count ---------------------------------------------------
   function showVisitorCount(count) {
     els.visitorCount.textContent = `${count.toLocaleString()} visitors`;
@@ -260,11 +273,12 @@
 
     els.shipGrid.innerHTML = matches
       .map((ship) => {
-        const reviews = reviewsForShip(ship.id);
-        const up = reviews.filter((r) => r.rating === 'up').length;
-        const down = reviews.filter((r) => r.rating === 'down').length;
+        const local = state.localReviews.filter((r) => r.shipId === ship.id);
+        const remoteAgg = (state.reviewCounts && state.reviewCounts[ship.id]) || { up: 0, down: 0 };
+        const up = remoteAgg.up + local.filter((r) => r.rating === 'up').length;
+        const down = remoteAgg.down + local.filter((r) => r.rating === 'down').length;
         const line = lineById(ship.lineId);
-        const countLabel = reviews.length === 0 ? 'No reviews yet' : `${up}👍 ${down}👎`;
+        const countLabel = up + down === 0 ? 'No reviews yet' : `${up}👍 ${down}👎`;
         return `
           <button class="ship-card" data-id="${ship.id}">
             <span class="ship-card-line">${line ? line.name : ''}</span>
@@ -1147,6 +1161,7 @@
   renderGratuitiesGrid();
   renderPromotionsGrid();
   loadGlobalRecent();
+  loadReviewCounts();
   loadVisitorCount();
 
   const homeShareText = "Pick My Cabin — real cruise cabin reviews from people who've actually stayed there";
