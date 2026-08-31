@@ -224,7 +224,7 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
   font-size: 0.88rem;
   padding: 10px 22px;
   cursor: pointer;
-  margin: 0 auto 16px;
+  margin: 0;
   transition: background 0.15s ease, color 0.15s ease;
 }
 
@@ -232,14 +232,15 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
 
 .landing-cta-row {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 22px;
-  flex-wrap: wrap;
+  gap: 12px;
   margin-bottom: 10px;
 }
 
-.landing-cta-row .cta-btn { padding: 12px 28px; }
+.landing-cta-row .cta-btn { padding: 12px 28px; min-width: 200px; }
+.landing-cta-row .cta-btn-outline { min-width: 200px; }
 
 .landing-promo-links {
   display: flex;

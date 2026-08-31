@@ -55,7 +55,6 @@
     landingView: document.getElementById('landing-view'),
     browseLink: document.getElementById('browse-link'),
     landingBrowseBtn: document.getElementById('landing-browse-btn'),
-    landingGuideLink: document.getElementById('landing-guide-link'),
     landingGuideBtn: document.getElementById('landing-guide-btn'),
     landingSubmitReviewBtn: document.getElementById('landing-submit-review-btn'),
     landingDrinksLink: document.getElementById('landing-drinks-link'),
@@ -800,11 +799,9 @@
     els.addShipStandalone.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
-  [els.guideLink, els.landingGuideLink].forEach((link) => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      showGuide();
-    });
+  els.guideLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showGuide();
   });
 
   els.landingGuideBtn.addEventListener('click', () => showGuide());
