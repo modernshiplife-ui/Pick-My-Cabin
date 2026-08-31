@@ -211,6 +211,24 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
 
 .deckplan-search-note[hidden] { display: none; }
 
+.landing-hero-banner {
+  position: relative;
+  background-image: url('/images/hero-port.jpg');
+  background-size: cover;
+  background-position: 40% 55%;
+  background-repeat: no-repeat;
+}
+
+.landing-hero-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(14, 36, 41, 0.55) 0px, rgba(14, 36, 41, 0.85) 420px, var(--ink) 620px);
+  pointer-events: none;
+}
+
+.landing-hero-banner > * { position: relative; }
+
 .landing-hero {
   text-align: center;
   padding: 20px 24px 28px;
