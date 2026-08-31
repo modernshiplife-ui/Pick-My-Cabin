@@ -143,10 +143,7 @@
 <section class="hero" id="hero" hidden>
   <p class="eyebrow">All cruise lines · Built by travellers &amp; agents</p>
   <h1>Would you book that cabin again?</h1>
-  <p class="hero-sub">Search any ship to see how real cabins actually held up — the view, the noise, the walk to the lifts — reported by the people who were there. Can’t find yours? Be the first to add it.</p>
-  <div class="search-wrap">
-    <input id="global-search" type="search" placeholder="Search a ship — e.g. “Queen Mary 2” or “Icon of the Seas”" aria-label="Search for a ship" />
-  </div>
+  <p class="hero-sub">Browse every ship below, filtered by cruise line — how real cabins actually held up, reported by the people who were there. Can’t find yours? Add it below.</p>
 </section>
 
 <main id="home-view" class="home" hidden>
@@ -158,9 +155,9 @@
   </section>
 
   <div class="ship-grid" id="ship-grid"></div>
-  <div class="no-results" id="no-results" hidden>
-    <p>No ships match “<span id="no-results-query"></span>”.</p>
-    <button class="text-btn" id="add-ship-toggle">Add this ship</button>
+  <div class="add-ship-standalone" id="add-ship-standalone">
+    <p>Can’t find your ship?</p>
+    <button class="text-btn" id="add-ship-toggle">Add it →</button>
     <form class="add-ship-form" id="add-ship-form" hidden>
       <label>
         <span>Cruise line</span>

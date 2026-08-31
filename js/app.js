@@ -1,7 +1,6 @@
 (function () {
   const state = {
     view: 'home',
-    query: '',
     activeLine: null, // null = all lines; otherwise a single line id
     currentGuideLine: null, // which line's detail page is currently shown
     quizIndex: 0,
@@ -21,11 +20,8 @@
   const lineById = (id) => LINES.find((l) => l.id === id);
 
   const els = {
-    search: document.getElementById('global-search'),
     lineFilters: document.getElementById('line-filters'),
     shipGrid: document.getElementById('ship-grid'),
-    noResults: document.getElementById('no-results'),
-    noResultsQuery: document.getElementById('no-results-query'),
     addShipToggle: document.getElementById('add-ship-toggle'),
     addShipForm: document.getElementById('add-ship-form'),
     addShipLine: document.getElementById('add-ship-line'),
@@ -257,21 +253,9 @@
   }
 
   function renderShipGrid() {
-    const q = state.query.trim().toLowerCase();
-    const matches = allShips().filter((ship) => {
-      if (state.activeLine && ship.lineId !== state.activeLine) return false;
-      if (!q) return true;
-      const line = lineById(ship.lineId);
-      return ship.name.toLowerCase().includes(q) || (line && line.name.toLowerCase().includes(q));
-    });
+    const matches = allShips().filter((ship) => !state.activeLine || ship.lineId === state.activeLine);
 
-    els.noResults.hidden = matches.length > 0;
-    els.noResultsQuery.textContent = state.query;
     els.addShipForm.hidden = true;
-    if (matches.length === 0) {
-      els.shipGrid.innerHTML = '';
-      return;
-    }
 
     els.shipGrid.innerHTML = matches
       .map((ship) => {
@@ -294,14 +278,9 @@
     });
   }
 
-  els.search.addEventListener('input', () => {
-    state.query = els.search.value;
-    renderShipGrid();
-  });
-
   els.addShipToggle.addEventListener('click', () => {
     els.addShipLine.innerHTML = LINES.map((l) => `<option value="${l.id}">${l.name}</option>`).join('');
-    els.addShipName.value = state.query;
+    els.addShipName.value = '';
     els.addShipForm.hidden = false;
   });
 
@@ -380,8 +359,6 @@
     els.hero.classList.remove('is-compact');
     state.selectedShipId = null;
     if (reset) {
-      state.query = '';
-      els.search.value = '';
       state.activeLine = null;
       renderLineFilters();
       renderShipGrid();
@@ -396,8 +373,6 @@
 
   function goHomeFilteredToLine(lineId) {
     state.activeLine = lineId;
-    state.query = '';
-    els.search.value = '';
     goHome();
     renderLineFilters();
     renderShipGrid();
