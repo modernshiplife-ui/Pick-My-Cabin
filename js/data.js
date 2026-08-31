@@ -628,8 +628,18 @@ const DRINKS_PACKAGES = {
         price: '~£60/person/day',
         includes: 'Same as Classic, plus premium/top-shelf brands.',
       },
+      {
+        name: 'All-Inclusive Classic',
+        price: '£49/person/day (£45/day on 15+ night cruises)',
+        includes: 'Bundles the Classic Drinks Package (drinks up to £8.50) with Essential WiFi and a dining credit (£20 on 5–9 nights, £40 on 10–14, £55 on 15+) — see the WiFi Plans page for the connectivity side.',
+      },
+      {
+        name: 'All-Inclusive Deluxe',
+        price: '£59/person/day (£55/day on 15+ night cruises)',
+        includes: 'Bundles the Deluxe Drinks Package (premium spirits, cocktails and craft beers up to £9.50) with Ultimate WiFi and a larger dining credit (£30 on 5–9 nights, £60 on 10–14, £80 on 15+).',
+      },
     ],
-    note: "P&O has no separate service charge — gratuities are already built into the fare and drink prices, and tipping isn't expected onboard.",
+    note: "P&O has no separate service charge — gratuities are already built into the fare and drink prices, and tipping isn't expected onboard. The two All-Inclusive tiers are new for sailings of 5+ nights from March 2026; both adults sharing a cabin must buy the same tier, and kids under 17 in that cabin get the Refresh soft drinks package free when they do.",
   },
 };
 
@@ -806,8 +816,18 @@ const WIFI_PLANS = {
         price: '~£20–30/day',
         includes: 'Adds streaming and voice/video calls, plus free access to The Times online.',
       },
+      {
+        name: 'All-Inclusive Classic',
+        price: '£49/person/day (£45/day on 15+ night cruises)',
+        includes: 'Bundles Essential WiFi with the Classic Drinks Package and a dining credit — see the Drinks Packages page for the beverage side.',
+      },
+      {
+        name: 'All-Inclusive Deluxe',
+        price: '£59/person/day (£55/day on 15+ night cruises)',
+        includes: 'Bundles Ultimate WiFi with the Deluxe Drinks Package and a larger dining credit.',
+      },
     ],
-    note: 'Length-of-cruise purchase is meaningfully cheaper than paying day by day. From March 2026, P&O also offers an optional all-inclusive bundle on 5+ night cruises that folds WiFi in alongside drinks — check current terms, as this may overlap with the package on the Drinks Packages page.',
+    note: 'Length-of-cruise purchase is meaningfully cheaper than paying day by day for the standalone plans. The two All-Inclusive tiers are new for sailings of 5+ nights from March 2026; both adults sharing a cabin must buy the same tier.',
   },
 };
 
