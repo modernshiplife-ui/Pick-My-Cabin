@@ -1233,9 +1233,12 @@ textarea { resize: vertical; }
 
 .promo-market-label {
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   font-weight: 700;
   color: #2F7D5A;

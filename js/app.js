@@ -689,7 +689,7 @@
       return `
         <div class="promo-market">
           <p class="promo-market-label">${label}</p>
-          <p class="promo-restrictions">Same global offer as the US — this line doesn't run a separate UK campaign.</p>
+          <p class="promo-restrictions">Same global offer as the USA — this line doesn't run a separate UK campaign.</p>
         </div>
       `;
     }
@@ -722,8 +722,8 @@
         return `
           <article class="drinks-card promo-card">
             <p class="drinks-card-line">${line.name}</p>
-            ${renderPromoMarket('US', p.us)}
-            ${renderPromoMarket('UK', p.uk)}
+            ${renderPromoMarket('🇺🇸 USA', p.us)}
+            ${renderPromoMarket('🇬🇧 UK', p.uk)}
           </article>
         `;
       })
