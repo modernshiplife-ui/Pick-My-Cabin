@@ -973,3 +973,98 @@ const GRATUITIES = {
   },
 };
 
+// A dated snapshot, not a live feed — sales change constantly and often
+// expire or get replaced within days or weeks. Update asOfDate whenever this
+// is refreshed, and always confirm the current offer directly with the line
+// or a travel agent before booking.
+const PROMOTIONS = {
+  asOfDate: 'August 31, 2026',
+  lines: {
+    cunard: {
+      name: 'Labor Day Sale',
+      includes: 'Fares from $999pp, plus up to $300 onboard credit per stateroom on over 150 select voyages.',
+      window: 'Aug 27 – Sept 9, 2026.',
+      restrictions: 'Select 2026 Caribbean, European and Transatlantic sailings, plus select 2027 Canada/New England, Caribbean, Europe, Mediterranean and World Voyage segments.',
+      sourceUrl: 'https://cruiseindustrynews.com/cruise-news/2026/08/cunard-unveils-labor-day-sale-with-300-in-onboard-credit/',
+    },
+    'royal-caribbean': {
+      name: 'August Flash Sale',
+      includes: 'Up to $900 off cruise fares, up to $100 off short getaways, and up to 30% off onboard extras.',
+      window: 'Live now — exact end date isn\'t shown on the page (countdown-timer driven), so it may roll into a new offer at any time.',
+      restrictions: '',
+      sourceUrl: 'https://www.royalcaribbean.com/cruise-deals',
+    },
+    celebrity: {
+      name: 'Summer Sale',
+      includes: "75% off the second guest's fare (save up to $750/room), plus up to $200 bonus onboard credit per stateroom on select sailings — an extra $100 on 2026 holiday-season sailings.",
+      window: "Live now — exact end date isn't shown on the page (countdown-timer driven).",
+      restrictions: 'Select sailings of 3+ nights. Excludes Galapagos and Celebrity River Cruises.',
+      sourceUrl: 'https://www.celebritycruises.com/cruise-deals/special-offers',
+    },
+    princess: {
+      notFound: true,
+      checkUrl: 'https://www.princess.com/cruise-deals-promotions',
+    },
+    msc: {
+      name: 'Labor Day Sale',
+      includes: 'Up to 40% off cruise fares, plus Kids Sail Free.',
+      window: 'Timed around Labor Day (Sept 7, 2026) — exact dates weren\'t confirmed directly on MSC\'s own site.',
+      restrictions: 'Likely new bookings only and US residents only, and probably not combinable with other offers — confirm on the page.',
+      sourceUrl: 'https://www.msccruisesusa.com/cruise-deals/labor-day-sale',
+    },
+    'holland-america': {
+      name: 'Save on Sunshine + Have It All bonuses',
+      includes: 'Up to 40% off select Caribbean/Mexico sailings through May 2027, plus up to $400 onboard credit. Bookings made Aug 1 – Sept 30, 2026 also get free prepaid gratuities for the first two guests on select sailings via the Have It All fare.',
+      window: 'Discount portion runs through Aug 31, 2026 (today, so it may have just ended). Onboard credit and Have It All gratuities run through Sept 30, 2026.',
+      restrictions: 'New reservations only. The Have It All gratuities perk requires a balcony cabin or above.',
+      sourceUrl: 'https://www.hollandamerica.com/en/us/cruise-deals',
+    },
+    regent: {
+      name: '35th Anniversary Celebration',
+      includes: 'Up to 35% off 35 curated anniversary voyages across six ships, plus $250–$350 shipboard credit per suite.',
+      window: 'Book by Aug 31, 2026 (today) — may have just expired, so check for an extension or successor offer.',
+      restrictions: 'Limited to specific anniversary-designated sailings.',
+      sourceUrl: 'https://www.rssc.com/specials',
+    },
+    silversea: {
+      notFound: true,
+      checkUrl: 'https://www.silversea.com/best-luxury-cruise-deals.html',
+    },
+    oceania: {
+      name: 'Annual Summer Sale',
+      includes: 'Up to 40% off, layered on the standing "Your World Included" bundle (2-for-1 fares, free shore excursions, wine, specialty dining and WiFi as standard).',
+      window: 'No fixed end date found for the Summer Sale itself. A separate "Limited-Time Offer" (up to 50% off select destinations) was stated to run through Aug 31, 2026 (today).',
+      restrictions: 'Select sailings and destinations only.',
+      sourceUrl: 'https://www.oceaniacruises.com/special-offers',
+    },
+    ncl: {
+      name: 'Free at Sea (standing perks bundle)',
+      includes: 'Unlimited open bar, specialty dining scaled to cruise length, 150 minutes of WiFi per guest, and a $50 shore excursion credit for the first guest per port. An optional Free at Sea Plus upgrade (from $49.99pp/day) adds premium drinks, streaming WiFi and 50% off specialty dining nights.',
+      window: 'Ongoing, always-on program rather than a dated sale — no named sitewide sale confirmed layered on top as of today.',
+      restrictions: 'A mandatory service charge (~$28.50/person/day) applies on top of the open bar and dining perks.',
+      sourceUrl: 'https://www.ncl.com/cruise-deals/free-at-sea',
+    },
+    disney: {
+      name: 'Regional & eligibility-based discounts',
+      includes: 'Save up to 25% on voyage fare generally; $250 onboard credit for US military on select ships through 2026; up to 30% off for Florida residents; up to 25% off for Canadian residents; up to 30% off for Southern California residents; up to 20% off select Singapore sailings.',
+      window: "No expiration dates were listed on Disney's offers page — treat as currently listed rather than freshly time-boxed.",
+      restrictions: 'Each offer is residency- or eligibility-gated (military ID, state/country residency, specific ships or dates) rather than a single flagship sale.',
+      sourceUrl: 'https://disneycruise.disney.go.com/special-offers/',
+    },
+    viking: {
+      name: 'Low Deposit Offer',
+      includes: 'Reduced deposit of $25 (£25 in the UK) per person on 2027–2029 sailings, with the balance due 120 days before departure.',
+      window: 'Aug 1 – Sept 30, 2026.',
+      restrictions: "Excludes World Cruises, World Voyages and World Discoveries. Doesn't apply to departures within 120 days of booking.",
+      sourceUrl: 'https://www.vikingcruises.com/oceans/promotions.html',
+    },
+    'po-cruises': {
+      name: 'Bank Holiday Sale',
+      includes: '5% off all 2027 and 2028 holidays across 650+ eligible cruises, combinable with up to £350 per cabin onboard spending money on eligible Select Price holidays.',
+      window: 'Bookings must be made Aug 28 – Sept 1, 2026 — ending imminently.',
+      restrictions: 'Covers departures between Jan 1, 2027 and Oct 28, 2028. New bookings on Select Price/Early Saver fares only.',
+      sourceUrl: 'https://www.pocruises.com/deals/cruise-deals',
+    },
+  },
+};
+

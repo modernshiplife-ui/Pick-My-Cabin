@@ -33,6 +33,7 @@
     <a href="#" id="drinks-link" class="nav-link">Drinks packages</a>
     <a href="#" id="wifi-link" class="nav-link">WiFi plans</a>
     <a href="#" id="gratuities-link" class="nav-link">Gratuities</a>
+    <a href="#" id="promotions-link" class="nav-link">Promotions</a>
   </nav>
   <div class="topbar-right">
     <span class="share-icons topbar-share" id="topbar-share"></span>
@@ -82,6 +83,15 @@
             </svg>
           </span>
           <span>Compare gratuities</span>
+        </a>
+        <a href="#" id="landing-promotions-link" class="landing-promo-link">
+          <span class="landing-promo-icon landing-promo-icon-promotions">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 12.5 12.5 20a1.5 1.5 0 0 1-2.12 0l-6.38-6.38a1.5 1.5 0 0 1 0-2.12L11.5 4H19a1 1 0 0 1 1 1v7.5Z" />
+              <circle cx="15.5" cy="8.5" r="1.3" fill="currentColor" stroke="none" />
+            </svg>
+          </span>
+          <span>Current promotions</span>
         </a>
       </div>
     </div>
@@ -368,6 +378,16 @@
   </section>
 
   <div class="drinks-grid" id="gratuities-grid"></div>
+</main>
+
+<main id="promotions-view" class="drinks-view" hidden>
+  <section class="guide-hero">
+    <p class="eyebrow">Promotions</p>
+    <h1>What cruise line promotions are currently running?</h1>
+    <p class="guide-intro">A snapshot of each line's flagship current offer — <strong id="promotions-asof"></strong>. Sales change constantly and often expire or get replaced within weeks, so treat this as a starting point, not a live feed — always confirm the current offer directly with the line or your travel agent before booking.</p>
+  </section>
+
+  <div class="drinks-grid" id="promotions-grid"></div>
 </main>
 
 <footer class="site-footer">

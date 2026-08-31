@@ -6,6 +6,7 @@
   <url><loc>https://pickmycabin.com/?drinks=1</loc><priority>0.8</priority></url>
   <url><loc>https://pickmycabin.com/?wifi=1</loc><priority>0.8</priority></url>
   <url><loc>https://pickmycabin.com/?gratuities=1</loc><priority>0.8</priority></url>
+  <url><loc>https://pickmycabin.com/?promotions=1</loc><priority>0.8</priority></url>
   <url><loc>https://pickmycabin.com/?quiz=1</loc><priority>0.7</priority></url>
   <url><loc>https://pickmycabin.com/?line=cunard</loc><priority>0.6</priority></url>
   <url><loc>https://pickmycabin.com/?line=royal-caribbean</loc><priority>0.6</priority></url>

@@ -283,6 +283,7 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
 .landing-promo-icon-drinks { background: #7B2D26; }
 .landing-promo-icon-wifi { background: #2B5F8A; }
 .landing-promo-icon-gratuities { background: #8A6B1E; }
+.landing-promo-icon-promotions { background: #2F7D5A; }
 
 .landing-promo-link:hover .landing-promo-icon { transform: translateY(-2px); filter: brightness(1.15); }
 
@@ -1187,6 +1188,40 @@ textarea { resize: vertical; }
 .drinks-card-nopackage-badge { color: var(--ivory-dim); background: var(--ink-3); }
 
 .drinks-card-nopackage { border-top-color: var(--ink-3); }
+
+/* --- Promotions ------------------------------------------------------- */
+
+.promo-card { border-top-color: #2F7D5A; }
+
+.promo-name {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--ivory);
+}
+
+.promo-window {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--yellow);
+}
+
+.promo-restrictions {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--ivory-dim);
+}
+
+.promo-source-link {
+  align-self: flex-start;
+  font-size: 0.85rem;
+  color: var(--coral-bright);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.promo-notfound { color: var(--ivory-dim); font-style: italic; }
 
 .glossary-grid {
   display: grid;

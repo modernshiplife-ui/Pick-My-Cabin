@@ -91,6 +91,11 @@
     gratuitiesView: document.getElementById('gratuities-view'),
     gratuitiesGrid: document.getElementById('gratuities-grid'),
     landingGratuitiesLink: document.getElementById('landing-gratuities-link'),
+    promotionsLink: document.getElementById('promotions-link'),
+    promotionsView: document.getElementById('promotions-view'),
+    promotionsGrid: document.getElementById('promotions-grid'),
+    promotionsAsOf: document.getElementById('promotions-asof'),
+    landingPromotionsLink: document.getElementById('landing-promotions-link'),
     quizPromoLink: document.getElementById('quiz-promo-link'),
     quizView: document.getElementById('quiz-view'),
     quizBack: document.getElementById('quiz-back'),
@@ -340,6 +345,7 @@
     els.drinksView.hidden = true;
     els.wifiView.hidden = true;
     els.gratuitiesView.hidden = true;
+    els.promotionsView.hidden = true;
     els.quizView.hidden = true;
     els.topbarShare.hidden = true;
   }
@@ -664,6 +670,47 @@
     renderPackageGrid(els.gratuitiesGrid, GRATUITIES);
   }
 
+  // --- Promotions ----------------------------------------------------------
+  function showPromotions() {
+    hideAllViews();
+    els.promotionsView.hidden = false;
+    els.hero.hidden = true;
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    setUrl({ promotions: 1 });
+    updateMeta({
+      title: 'Current Cruise Line Promotions Compared | Pick My Cabin',
+      description: `A snapshot of each major cruise line's flagship current offer, as of ${PROMOTIONS.asOfDate}.`,
+    });
+  }
+
+  function renderPromotionsGrid() {
+    els.promotionsAsOf.textContent = `as of ${PROMOTIONS.asOfDate}`;
+    els.promotionsGrid.innerHTML = LINES.filter((line) => PROMOTIONS.lines[line.id])
+      .map((line) => {
+        const p = PROMOTIONS.lines[line.id];
+        if (p.notFound) {
+          return `
+            <article class="drinks-card promo-card">
+              <p class="drinks-card-line">${line.name}</p>
+              <p class="promo-notfound">No current flagship promotion we could confidently confirm.</p>
+              ${p.checkUrl ? `<a href="${p.checkUrl}" target="_blank" rel="noopener noreferrer" class="promo-source-link">Check current offers →</a>` : ''}
+            </article>
+          `;
+        }
+        return `
+          <article class="drinks-card promo-card">
+            <p class="drinks-card-line">${line.name}</p>
+            <p class="promo-name">${p.name}</p>
+            <p class="drinks-card-note">${p.includes}</p>
+            <p class="promo-window">${p.window}</p>
+            ${p.restrictions ? `<p class="promo-restrictions">${p.restrictions}</p>` : ''}
+            <a href="${p.sourceUrl}" target="_blank" rel="noopener noreferrer" class="promo-source-link">See official offer →</a>
+          </article>
+        `;
+      })
+      .join('');
+  }
+
   // --- Deck plan search --------------------------------------------------
   function deckPlanUrl(ship) {
     const slug = ship.name.trim().replace(/\s+/g, '-');
@@ -778,6 +825,11 @@
     showGratuities();
   });
 
+  els.landingPromotionsLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showPromotions();
+  });
+
   els.drinksLink.addEventListener('click', (e) => {
     e.preventDefault();
     showDrinks();
@@ -791,6 +843,11 @@
   els.gratuitiesLink.addEventListener('click', (e) => {
     e.preventDefault();
     showGratuities();
+  });
+
+  els.promotionsLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showPromotions();
   });
 
   els.guideBack.addEventListener('click', () => goHome());
@@ -1052,6 +1109,7 @@
   renderDrinksGrid();
   renderWifiGrid();
   renderGratuitiesGrid();
+  renderPromotionsGrid();
   loadGlobalRecent();
   loadVisitorCount();
 
@@ -1079,6 +1137,8 @@
         showWifi();
       } else if (params.has('gratuities')) {
         showGratuities();
+      } else if (params.has('promotions')) {
+        showPromotions();
       } else if (params.has('browse')) {
         goHome();
       } else {
