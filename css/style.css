@@ -214,13 +214,21 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
   margin: 0 0 10px;
 }
 
-.landing-sub {
-  color: var(--ivory-dim);
-  font-size: 0.92rem;
-  line-height: 1.5;
-  max-width: 56ch;
+.cta-btn-outline {
+  display: inline-block;
+  background: none;
+  border: 1px solid var(--coral);
+  border-radius: 6px;
+  color: var(--coral-bright);
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 10px 22px;
+  cursor: pointer;
   margin: 0 auto 16px;
+  transition: background 0.15s ease, color 0.15s ease;
 }
+
+.cta-btn-outline:hover { background: var(--coral); color: var(--ink); }
 
 .landing-cta-row {
   display: flex;

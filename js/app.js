@@ -23,6 +23,7 @@
     lineFilters: document.getElementById('line-filters'),
     shipGrid: document.getElementById('ship-grid'),
     addShipToggle: document.getElementById('add-ship-toggle'),
+    addShipStandalone: document.getElementById('add-ship-standalone'),
     addShipForm: document.getElementById('add-ship-form'),
     addShipLine: document.getElementById('add-ship-line'),
     addShipName: document.getElementById('add-ship-name'),
@@ -56,6 +57,7 @@
     landingBrowseBtn: document.getElementById('landing-browse-btn'),
     landingGuideLink: document.getElementById('landing-guide-link'),
     landingGuideBtn: document.getElementById('landing-guide-btn'),
+    landingSubmitReviewBtn: document.getElementById('landing-submit-review-btn'),
     landingDrinksLink: document.getElementById('landing-drinks-link'),
     landingRecentReviews: document.getElementById('landing-recent-reviews'),
     landingStats: document.getElementById('landing-stats'),
@@ -791,6 +793,12 @@
   });
 
   els.landingBrowseBtn.addEventListener('click', () => goHome({ reset: true }));
+
+  els.landingSubmitReviewBtn.addEventListener('click', () => {
+    goHome({ reset: true });
+    els.addShipToggle.click();
+    els.addShipStandalone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
 
   [els.guideLink, els.landingGuideLink].forEach((link) => {
     link.addEventListener('click', (e) => {
