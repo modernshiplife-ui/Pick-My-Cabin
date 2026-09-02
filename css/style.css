@@ -1210,6 +1210,26 @@ textarea { resize: vertical; }
   border-bottom: none;
 }
 
+.browse-hero-banner {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background-image: url('/images/hero-browse.jpg');
+  background-size: cover;
+  background-position: center 60%;
+  background-repeat: no-repeat;
+}
+
+.browse-hero-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(14, 36, 41, 0.55) 0px, rgba(14, 36, 41, 0.85) 220px, var(--ink) 320px);
+  pointer-events: none;
+}
+
+.browse-hero-banner .hero { position: relative; }
+
 .drinks-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
