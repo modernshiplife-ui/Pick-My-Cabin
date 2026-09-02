@@ -303,34 +303,6 @@ button, select, input, textarea { font-family: inherit; color: inherit; }
   margin: 0;
 }
 
-.how-it-works {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-  max-width: 860px;
-  margin: 0 auto 56px;
-  padding: 0 24px;
-}
-
-.how-step { text-align: center; }
-
-.how-step-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--yellow);
-  border: 1px solid var(--ink-3);
-  border-radius: 999px;
-  width: 32px;
-  height: 32px;
-  margin-bottom: 12px;
-}
-
-.how-step h3 { font-size: 1.05rem; color: var(--ivory); margin-bottom: 6px; }
-.how-step p { font-size: 0.86rem; color: var(--ivory-dim); line-height: 1.5; margin: 0; }
-
 .landing-recent {
   max-width: 640px;
   margin: 0 auto 56px;
@@ -1424,7 +1396,6 @@ textarea { resize: vertical; }
   .guide-view { padding: 16px 16px 40px; }
   .enclave-row { grid-template-columns: 1fr; gap: 4px; }
   .topbar-nav { margin-left: 0; }
-  .how-it-works { grid-template-columns: 1fr; gap: 32px; }
   .landing-hero { padding: 40px 16px 32px; }
 }
 
