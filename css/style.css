@@ -1152,6 +1152,36 @@ textarea { resize: vertical; }
   border-bottom: none;
 }
 
+.cabin-guide-hero-banner {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-top: 8px;
+  background-image: url('/images/hero-guide.jpg');
+  background-size: cover;
+  background-position: center 30%;
+  background-repeat: no-repeat;
+}
+
+.cabin-guide-hero-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Busy, high-detail source photo (repeating balcony pattern), so this
+     overlay starts darker and resolves sooner. */
+  background: linear-gradient(180deg, rgba(14, 36, 41, 0.72) 0px, rgba(14, 36, 41, 0.92) 180px, var(--ink) 260px);
+  pointer-events: none;
+}
+
+.cabin-guide-hero-banner .guide-hero {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+  border-bottom: none;
+}
+
 .gratuities-hero-banner {
   position: relative;
   width: 100vw;
@@ -1210,17 +1240,18 @@ textarea { resize: vertical; }
   border-bottom: none;
 }
 
-.browse-hero-banner {
+/* #hero is shared: shown full-size on Browse Reviews, and reused in a
+   collapsed .is-compact spacer form on the ship/guide/line-guide pages —
+   the photo must only apply to the full-size version. */
+.hero:not(.is-compact) {
   position: relative;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
   background-image: url('/images/hero-browse.jpg');
   background-size: cover;
   background-position: center 60%;
   background-repeat: no-repeat;
 }
 
-.browse-hero-banner::before {
+.hero:not(.is-compact)::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -1228,7 +1259,7 @@ textarea { resize: vertical; }
   pointer-events: none;
 }
 
-.browse-hero-banner .hero { position: relative; }
+.hero:not(.is-compact) > * { position: relative; }
 
 .drinks-grid {
   display: grid;
