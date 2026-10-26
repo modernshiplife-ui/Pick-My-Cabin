@@ -1,25 +1,7 @@
-const MAX_PHOTO_BYTES = 8 * 1024 * 1024; // 8MB
-const ALLOWED_PHOTO_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
-
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    if (url.pathname === '/api/reviews' && request.method === 'GET') {
-      return handleGetReviews(url, env);
-    }
-    if (url.pathname === '/api/review-counts' && request.method === 'GET') {
-      return handleGetReviewCounts(env);
-    }
-    if (url.pathname === '/api/reviews' && request.method === 'POST') {
-      return handlePostReview(request, env);
-    }
-    if (url.pathname === '/api/photos' && request.method === 'POST') {
-      return handleUploadPhoto(request, env);
-    }
-    if (url.pathname.startsWith('/photos/') && request.method === 'GET') {
-      return handleGetPhoto(url, env);
-    }
     if (url.pathname === '/api/visits' && request.method === 'GET') {
       return handleGetVisits(env);
     }
@@ -30,132 +12,6 @@ export default {
     return env.ASSETS.fetch(request);
   },
 };
-
-async function handleGetReviews(url, env) {
-  const shipId = url.searchParams.get('ship');
-
-  // No ship filter — return the most recent reviews across every ship, for
-  // the home page's "most recent reviews" feed.
-  if (!shipId) {
-    const { results } = await env.DB.prepare(
-      'SELECT id, ship_id, cabin, rating, tags, comment, author, photos, created_at FROM reviews ORDER BY created_at DESC LIMIT 6'
-    ).all();
-    return json(results.map((r) => rowToReview(r, r.ship_id)));
-  }
-
-  const { results } = await env.DB.prepare(
-    'SELECT id, cabin, rating, tags, comment, author, photos, created_at FROM reviews WHERE ship_id = ? ORDER BY created_at DESC'
-  )
-    .bind(shipId)
-    .all();
-
-  return json(results.map((r) => rowToReview(r, shipId)));
-}
-
-async function handleGetReviewCounts(env) {
-  const { results } = await env.DB.prepare(
-    'SELECT ship_id, rating, COUNT(*) as n FROM reviews GROUP BY ship_id, rating'
-  ).all();
-
-  const counts = {};
-  for (const row of results) {
-    if (!counts[row.ship_id]) counts[row.ship_id] = { up: 0, down: 0 };
-    counts[row.ship_id][row.rating] = row.n;
-  }
-  return json(counts);
-}
-
-function rowToReview(r, shipId) {
-  return {
-    id: r.id,
-    shipId,
-    cabin: r.cabin,
-    rating: r.rating,
-    tags: JSON.parse(r.tags || '[]'),
-    comment: r.comment,
-    author: r.author,
-    photos: JSON.parse(r.photos || '[]'),
-    when: formatWhen(r.created_at),
-  };
-}
-
-async function handlePostReview(request, env) {
-  let body;
-  try {
-    body = await request.json();
-  } catch {
-    return json({ error: 'invalid JSON body' }, 400);
-  }
-
-  const { shipId, cabin, rating, tags, comment, author, photos } = body || {};
-  if (!shipId || !cabin || (rating !== 'up' && rating !== 'down')) {
-    return json({ error: 'shipId, cabin and rating (up|down) are required' }, 400);
-  }
-
-  const id = crypto.randomUUID();
-  const createdAt = new Date().toISOString();
-  const photoKeys = Array.isArray(photos) ? photos.filter((p) => typeof p === 'string').slice(0, 6) : [];
-
-  await env.DB.prepare(
-    'INSERT INTO reviews (id, ship_id, cabin, rating, tags, comment, author, photos, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
-  )
-    .bind(
-      id,
-      shipId,
-      cabin,
-      rating,
-      JSON.stringify(Array.isArray(tags) ? tags : []),
-      comment || '',
-      author || 'Anonymous',
-      JSON.stringify(photoKeys),
-      createdAt
-    )
-    .run();
-
-  return json({
-    id,
-    shipId,
-    cabin,
-    rating,
-    tags: Array.isArray(tags) ? tags : [],
-    comment: comment || '',
-    author: author || 'Anonymous',
-    photos: photoKeys,
-    when: 'Just now',
-  });
-}
-
-async function handleUploadPhoto(request, env) {
-  const contentType = request.headers.get('content-type') || '';
-  if (!ALLOWED_PHOTO_TYPES.has(contentType)) {
-    return json({ error: 'Unsupported image type — use JPEG, PNG, WebP or GIF' }, 415);
-  }
-
-  const contentLength = Number(request.headers.get('content-length') || 0);
-  if (contentLength > MAX_PHOTO_BYTES) {
-    return json({ error: 'Image is too large (8MB max)' }, 413);
-  }
-
-  const ext = contentType.split('/')[1];
-  const key = `${crypto.randomUUID()}.${ext}`;
-
-  await env.PHOTOS.put(key, request.body, { httpMetadata: { contentType } });
-
-  return json({ key });
-}
-
-async function handleGetPhoto(url, env) {
-  const key = decodeURIComponent(url.pathname.replace('/photos/', ''));
-  const object = await env.PHOTOS.get(key);
-  if (!object) return new Response('Not found', { status: 404 });
-
-  return new Response(object.body, {
-    headers: {
-      'content-type': object.httpMetadata?.contentType || 'application/octet-stream',
-      'cache-control': 'public, max-age=31536000, immutable',
-    },
-  });
-}
 
 async function handleGetVisits(env) {
   const row = await env.DB.prepare('SELECT value FROM stats WHERE key = ?').bind('visits').first();
@@ -168,11 +24,6 @@ async function handleIncrementVisits(env) {
   ).run();
   const row = await env.DB.prepare('SELECT value FROM stats WHERE key = ?').bind('visits').first();
   return json({ count: row ? row.value : 0 });
-}
-
-function formatWhen(iso) {
-  const d = new Date(iso);
-  return d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 }
 
 function json(data, status = 200) {

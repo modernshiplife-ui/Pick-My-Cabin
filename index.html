@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pick My Cabin — Real cabin reviews from cruise travellers</title>
-<meta name="description" content="Search any cruise ship and cabin number to see honest traveller-reported ratings, or add your own — across every major cruise line." />
+<title>Pick My Cabin — Deck Plans, Drinks, WiFi & Gratuities Compared</title>
+<meta name="description" content="Quick reference tools for cruise cabins: find a ship's deck plan instantly, plus compare drinks packages, WiFi plans, gratuities and current promotions across every major cruise line." />
 <link rel="canonical" href="https://pickmycabin.com/" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230E2429'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23E2683D' stroke-width='2.4'/%3E%3Ccircle cx='16' cy='6.3' r='1' fill='%23E2683D'/%3E%3Ccircle cx='16' cy='25.7' r='1' fill='%23E2683D'/%3E%3Ccircle cx='6.3' cy='16' r='1' fill='%23E2683D'/%3E%3Ccircle cx='25.7' cy='16' r='1' fill='%23E2683D'/%3E%3Ccircle cx='16' cy='13.6' r='3.6' fill='%23F2C94C'/%3E%3Cpath d='M12.7 15.8 L16 21.8 L19.3 15.8 Z' fill='%23F2C94C'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,7 +14,6 @@
 <script>
   (function () {
     var heroByParam = {
-      browse: 'hero-browse.jpg',
       guide: 'hero-guide.jpg',
       drinks: 'hero-drinks.jpg',
       wifi: 'hero-wifi.jpg',
@@ -49,9 +48,8 @@
     </svg>
     <span class="brand-text">Pick&nbsp;My&nbsp;Cabin</span>
   </a>
-  <p class="brand-tagline">A simple guide to the world of cruise cabins.</p>
+  <p class="brand-tagline">Deck plans, drinks, WiFi &amp; gratuities — compared.</p>
   <nav class="topbar-nav">
-    <a href="#" id="browse-link" class="nav-link">Browse reviews</a>
     <a href="#" id="guide-link" class="nav-link">Cabin guide</a>
     <a href="#" id="drinks-link" class="nav-link">Drinks packages</a>
     <a href="#" id="wifi-link" class="nav-link">WiFi plans</a>
@@ -66,12 +64,8 @@
 <main id="landing-view" class="landing-view">
   <div class="landing-hero-banner">
   <section class="landing-hero">
-    <h1 class="landing-headline">Real cabin reviews from people who've actually stayed there.</h1>
-    <div class="landing-cta-row">
-      <button class="cta-btn-outline" id="landing-submit-review-btn">Submit a cabin review</button>
-      <button class="cta-btn" id="landing-browse-btn">Browse reviews</button>
-    </div>
-    <p class="landing-stats" id="landing-stats"></p>
+    <h1 class="landing-headline">Quick reference tools for cruise cabins.</h1>
+    <p class="landing-sub">Find a ship's deck plan instantly, or compare drinks packages, WiFi, gratuities and current promotions across every major cruise line.</p>
 
     <div class="deckplan-search">
       <p class="deckplan-search-label">Deck plan search bar</p>
@@ -140,101 +134,6 @@
       <span class="quiz-promo-cta">Find your cabin type →</span>
     </a>
   </div>
-
-
-  <section class="landing-recent">
-    <h2>Most recent reviews</h2>
-    <div class="reviews-list recent-reviews-list" id="landing-recent-reviews"></div>
-  </section>
-</main>
-
-<section class="hero" id="hero" hidden>
-  <p class="eyebrow">All cruise lines · Built by travellers &amp; agents</p>
-  <h1>Would you book that cabin again?</h1>
-  <p class="hero-sub">Browse every ship below, filtered by cruise line — how real cabins actually held up, reported by the people who were there. Can’t find yours? Add it below.</p>
-</section>
-
-<main id="home-view" class="home" hidden>
-  <div class="line-filters" id="line-filters"></div>
-
-  <section class="recent-section" id="recent-section">
-    <h2>Most recent reviews</h2>
-    <div class="reviews-list recent-reviews-list" id="recent-reviews"></div>
-  </section>
-
-  <div class="ship-grid" id="ship-grid"></div>
-  <div class="add-ship-standalone" id="add-ship-standalone">
-    <p>Can’t find your ship?</p>
-    <button class="text-btn" id="add-ship-toggle">Add it →</button>
-    <form class="add-ship-form" id="add-ship-form" hidden>
-      <label>
-        <span>Cruise line</span>
-        <select id="add-ship-line"></select>
-      </label>
-      <label>
-        <span>Ship name</span>
-        <div class="add-ship-name-wrap">
-          <input id="add-ship-name" type="text" required autocomplete="off" />
-          <div class="deckplan-suggestions" id="add-ship-suggestions" hidden></div>
-        </div>
-      </label>
-      <button type="submit" class="cta-btn">Continue to add a review</button>
-    </form>
-  </div>
-</main>
-
-<main id="ship-view" class="ship-view" hidden>
-  <button class="back-link" id="back-to-home">← All ships</button>
-  <div class="ship-view-header">
-    <div>
-      <p class="ship-line-label" id="ship-line-label"></p>
-      <h2 id="ship-title"></h2>
-    </div>
-    <div class="rating-summary" id="rating-summary"></div>
-  </div>
-
-  <div class="share-icons" id="ship-share"></div>
-
-  <div class="reviews-col">
-    <h3>Reviews</h3>
-    <div id="reviews-list" class="reviews-list"></div>
-  </div>
-
-  <div class="review-form-col">
-    <h3>Add a review</h3>
-    <form id="review-form" class="review-form">
-      <label>
-        <span>Cabin number</span>
-        <input id="review-cabin" type="text" required placeholder="e.g. 8156" />
-      </label>
-      <div class="rating-pick">
-        <span>Would you book it again?</span>
-        <div class="rating-pick-buttons">
-          <button type="button" class="rate-btn" data-vote="up">👍 Yes</button>
-          <button type="button" class="rate-btn" data-vote="down">👎 No</button>
-        </div>
-      </div>
-      <div class="tag-pick" id="tag-pick"></div>
-      <label>
-        <span>Comment <em>(optional)</em></span>
-        <textarea id="review-comment" rows="3" placeholder="Anything worth knowing — noise, view, walk to the lifts…"></textarea>
-      </label>
-      <label>
-        <span>Name or initials <em>(optional)</em></span>
-        <input id="review-author" type="text" placeholder="Anonymous" />
-      </label>
-      <div class="photo-pick">
-        <span>Photos <em>(optional, up to 4)</em></span>
-        <div class="photo-previews" id="photo-previews"></div>
-        <label class="photo-add-btn" id="photo-add-btn">
-          + Add photos
-          <input id="review-photos" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden />
-        </label>
-      </div>
-      <button type="submit" class="cta-btn" id="review-submit" disabled>Submit review</button>
-      <p class="form-note" id="review-status"></p>
-    </form>
-  </div>
 </main>
 
 <main id="guide-view" class="guide-view" hidden>
@@ -244,7 +143,7 @@
     <section class="guide-hero">
       <p class="eyebrow">Cabin guide</p>
       <h1>Which cabin type is actually right for you?</h1>
-      <p class="guide-intro">Every cruise line uses its own brand names, but almost all cabins fall into four basic types. Here's what each one actually means, plus the premium enclaves worth knowing about and the terms you'll see in reviews.</p>
+      <p class="guide-intro">Every cruise line uses its own brand names, but almost all cabins fall into four basic types. Here's what each one actually means, plus the premium enclaves worth knowing about and the terms you'll come across when booking.</p>
     </section>
   </div>
 
@@ -310,11 +209,6 @@
     </dl>
   </section>
 
-  <section class="guide-cta">
-    <h2>Now you know what to look for</h2>
-    <p>See what real travellers actually experienced, cabin by cabin.</p>
-    <button class="cta-btn" id="guide-browse-btn">Browse reviews</button>
-  </section>
 </main>
 
 <main id="line-guide-view" class="guide-view" hidden>
@@ -337,11 +231,6 @@
     <p class="guide-disclaimer">Exact inclusions — drinks packages, gratuities, specific perks — can change between ships and sailings. Confirm current details with the line or your travel agent before booking; this page describes the general grade structure, not a specific sailing's pricing.</p>
   </section>
 
-  <section class="guide-cta">
-    <h2>Ready to see real cabins?</h2>
-    <p id="line-guide-cta-sub"></p>
-    <button class="cta-btn" id="line-guide-browse-btn"></button>
-  </section>
 </main>
 
 <main id="quiz-view" class="quiz-view" hidden>
@@ -410,7 +299,7 @@
 
 <footer class="site-footer">
   <p><strong>Pick My Cabin</strong> · pickmycabin.com</p>
-  <p class="muted">Independent, community-sourced cabin reviews. Not affiliated with or endorsed by any cruise line. Every review here is submitted by travellers and agents.</p>
+  <p class="muted">Independent reference tools for cruise cabins and pricing. Not affiliated with or endorsed by any cruise line.</p>
   <p class="footer-contact">Questions or feedback? <a href="mailto:modernshiplife@gmail.com">modernshiplife@gmail.com</a></p>
   <div class="share-icons" id="footer-share"></div>
 </footer>

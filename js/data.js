@@ -1,8 +1,6 @@
 const BRAND = { site: 'Pick My Cabin' };
 
-// Cruise lines and ships are a starter directory to search/browse — not tied
-// to any single line, and meant to grow. "Can't find your ship" adds new
-// entries the same way real reviews do.
+// The 13 cruise lines covered across the comparison and reference pages.
 const LINES = [
   { id: 'cunard', name: 'Cunard' },
   { id: 'royal-caribbean', name: 'Royal Caribbean' },
@@ -23,10 +21,10 @@ function slugify(str) {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
-// IDs are just the slugified ship name (matches the original hand-written
-// ids, so existing reviews keep pointing at the right ship) — except where
-// names are generic enough to collide (e.g. Oceania's single-word ships),
-// which get the line as a prefix for uniqueness.
+// IDs are just the slugified ship name, used to match a typed name to a
+// known ship for the deck plan search — except where names are generic
+// enough to collide (e.g. Oceania's single-word ships), which get the
+// line as a prefix for uniqueness.
 function shipList(lineId, names, { prefixed = false } = {}) {
   return names.map((name) => ({
     id: prefixed ? `${lineId}-${slugify(name)}` : slugify(name),
@@ -203,19 +201,6 @@ const SHIPS = [
     'Viking Star',
   ]),
   ...shipList('po-cruises', ['Iona', 'Arvia', 'Britannia', 'Azura', 'Ventura', 'Aurora', 'Arcadia']),
-];
-
-const TAGS = [
-  'Quiet',
-  'Noisy',
-  'Great view',
-  'Obstructed view',
-  'Spacious',
-  'Small bathroom',
-  'Close to lifts',
-  'Long walk to lifts',
-  'Balcony overlooked',
-  'Good storage',
 ];
 
 // In-depth, line-specific cabin grade guides. Original writing describing
