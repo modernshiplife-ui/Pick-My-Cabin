@@ -1,6 +1,6 @@
 const BRAND = { site: 'Pick My Cabin' };
 
-// The 13 cruise lines covered across the comparison and reference pages.
+// The 21 cruise lines covered across the comparison and reference pages.
 const LINES = [
   { id: 'cunard', name: 'Cunard' },
   { id: 'royal-caribbean', name: 'Royal Caribbean' },
@@ -15,6 +15,14 @@ const LINES = [
   { id: 'disney', name: 'Disney Cruise Line' },
   { id: 'viking', name: 'Viking Ocean Cruises' },
   { id: 'po-cruises', name: 'P&O Cruises' },
+  { id: 'carnival', name: 'Carnival Cruise Line' },
+  { id: 'virgin-voyages', name: 'Virgin Voyages' },
+  { id: 'azamara', name: 'Azamara' },
+  { id: 'seabourn', name: 'Seabourn' },
+  { id: 'marella', name: 'Marella Cruises' },
+  { id: 'fred-olsen', name: 'Fred Olsen Cruise Lines' },
+  { id: 'saga', name: 'Saga Cruises' },
+  { id: 'ambassador', name: 'Ambassador Cruise Line' },
 ];
 
 function slugify(str) {
@@ -201,6 +209,44 @@ const SHIPS = [
     'Viking Star',
   ]),
   ...shipList('po-cruises', ['Iona', 'Arvia', 'Britannia', 'Azura', 'Ventura', 'Aurora', 'Arcadia']),
+  ...shipList('carnival', [
+    'Carnival Elation',
+    'Carnival Paradise',
+    'Carnival Sunshine',
+    'Carnival Sunrise',
+    'Carnival Radiance',
+    'Carnival Spirit',
+    'Carnival Pride',
+    'Carnival Legend',
+    'Carnival Miracle',
+    'Carnival Conquest',
+    'Carnival Glory',
+    'Carnival Valor',
+    'Carnival Liberty',
+    'Carnival Freedom',
+    'Carnival Splendor',
+    'Carnival Dream',
+    'Carnival Magic',
+    'Carnival Breeze',
+    'Carnival Vista',
+    'Carnival Horizon',
+    'Carnival Panorama',
+    'Carnival Venezia',
+    'Carnival Firenze',
+    'Mardi Gras',
+    'Carnival Celebration',
+    'Carnival Jubilee',
+    'Carnival Luminosa',
+    'Carnival Adventure',
+    'Carnival Encounter',
+  ]),
+  ...shipList('virgin-voyages', ['Scarlet Lady', 'Valiant Lady', 'Resilient Lady', 'Brilliant Lady']),
+  ...shipList('azamara', ['Azamara Journey', 'Azamara Quest', 'Azamara Pursuit', 'Azamara Onward']),
+  ...shipList('seabourn', ['Seabourn Quest', 'Seabourn Encore', 'Seabourn Ovation', 'Seabourn Venture', 'Seabourn Pursuit']),
+  ...shipList('marella', ['Marella Voyager', 'Marella Explorer', 'Marella Explorer 2', 'Marella Discovery', 'Marella Discovery 2']),
+  ...shipList('fred-olsen', ['Balmoral', 'Bolette', 'Borealis']),
+  ...shipList('saga', ['Spirit of Discovery', 'Spirit of Adventure']),
+  ...shipList('ambassador', ['Ambience', 'Ambition', 'Renaissance']),
 ];
 
 // In-depth, line-specific cabin grade guides. Original writing describing
@@ -380,6 +426,119 @@ const LINE_GUIDES = {
       { name: 'Oceanview', tier: 'Standard', price: '$$', summary: 'A real window, no balcony.', includes: 'Same as Inside, plus a view out to sea.' },
       { name: 'Balcony', tier: 'Standard', price: '$$$', summary: 'A private balcony.', includes: 'Same standard dining and service, plus private outdoor space.' },
       { name: 'Suite', tier: 'Suite', price: '$$$$$', summary: 'P&O\'s top tier — more space and priority perks, without a separate dedicated restaurant.', includes: 'Priority embarkation and disembarkation, and a larger cabin and bathroom.' },
+    ],
+  },
+  carnival: {
+    about: [
+      'Carnival is the largest mainstream, value-focused cruise line in the US market — the original "Fun Ship" brand, built around high-energy entertainment, casual dress, waterparks, casinos and nightlife rather than formality. It targets first-time cruisers and budget-conscious repeat cruisers with broad affordability and an upbeat, all-American atmosphere.',
+      'Cabins run Interior through Ocean View and Balcony, with themed specialty cabins layered across those categories — Family Harbor (near a family lounge), Havana (access to an adults-leaning pool/bar enclave) and Cloud 9 Spa (spa-tier finishes and access) — before topping out in named suites on the newest ships.',
+    ],
+    grades: [
+      { name: 'Interior', tier: 'Standard', price: '$', summary: 'Windowless inside cabin, no view.', includes: 'Base fare only — full access to dining and entertainment.' },
+      { name: 'Ocean View', tier: 'Standard', price: '$$', summary: 'A window or porthole, no balcony.', includes: 'Base fare, plus a view.' },
+      { name: 'Havana', tier: 'Havana', price: '$$$', summary: 'Standard-size cabin with Havana décor, interior/oceanview/balcony options.', includes: 'Access to the adults-leaning Havana pool and bar enclave.' },
+      { name: 'Balcony', tier: 'Standard', price: '$$$', summary: 'A private balcony.', includes: 'Base fare, plus private outdoor space.' },
+      { name: 'Cloud 9 Spa', tier: 'Spa', price: '$$$', summary: 'Interior/oceanview/balcony cabin with spa-tier finishes.', includes: 'Complimentary access to the Cloud 9 Spa thermal suite.' },
+      { name: 'Suite', tier: 'Suite', price: '$$$$', summary: 'Separate sitting area and a bigger balcony.', includes: 'Priority embarkation and some suite-only perks.' },
+      { name: 'Excel-Class Presidential/Grand Suite', tier: 'Top Suite', price: '$$$$$', summary: 'The largest suites, on the newest ships, with multiple rooms and a huge balcony.', includes: 'Priority everything and the most premium perks on the ship.' },
+    ],
+  },
+  'virgin-voyages': {
+    about: [
+      'Virgin Voyages is an adults-only (18+) lifestyle-brand cruise line — a stylish, no-kids alternative to mainstream cruising, with no formal nights, no buffet, and a late-night entertainment focus. Since an October 2025 fare overhaul ("VoyageFair Choices"), what\'s included with a cabin now depends on the fare tier (Base, Essential or Premium) chosen at booking, rather than being uniform across the ship.',
+      'Standard cabins — called "staterooms" — run Insider through Sea Terrace variants, topping out in suite-level "RockStar Quarters." WiFi tier and any bar-tab credit depend on the fare tier selected, not just the cabin grade.',
+    ],
+    grades: [
+      { name: 'Insider', tier: 'Standard', price: '$', summary: 'Windowless interior stateroom.', includes: 'WiFi per the fare tier selected; no bar tab unless Premium fare.' },
+      { name: 'Sea View', tier: 'Standard', price: '$$', summary: 'A porthole or window, no balcony.', includes: 'Same fare-tier-based perks as Insider.' },
+      { name: 'Sea Terrace', tier: 'Standard', price: '$$$', summary: 'A private balcony ("terrace") — the most popular category.', includes: 'Same fare-tier-based perks as other staterooms.' },
+      { name: 'XL/Central Sea Terrace', tier: 'Standard+', price: '$$$$', summary: 'A larger terrace stateroom, often amidship.', includes: 'Same fare-tier-based perks, with extra space.' },
+      { name: 'RockStar Quarters', tier: 'Suite', price: '$$$$$', summary: 'A suite with more living space and a bigger balcony.', includes: 'Priority embarkation, Richard\'s Rooftop access, and a stocked in-room bar on arrival.' },
+      { name: 'Mega RockStar Quarters', tier: 'Suite', price: '$$$$$$', summary: 'The largest suite category, multi-room layout.', includes: 'Everything in RockStar Quarters, plus a daily bar tab, daily Thermal Suite access and a dedicated concierge.' },
+    ],
+  },
+  azamara: {
+    about: [
+      'Azamara is a boutique, destination-immersion line sailing small ships (up to around 700 guests) into ports larger ships can\'t reach, with longer stays and more overnights in port than mainstream lines. Drinks, gratuities and dining are included in every fare regardless of cabin grade.',
+      'The cabin hierarchy is simple: four room types — Interior, Oceanview, Veranda and Veranda Plus — plus several suite categories. Moving up the ladder mainly buys space and suite-level service, not different access to drinks or dining, which are standard fleet-wide.',
+    ],
+    grades: [
+      { name: 'Club Interior', tier: 'Stateroom', price: '$', summary: 'Windowless inside cabin, around 158 sq ft.', includes: 'Standard drinks, gratuities and dining for every guest, regardless of grade.' },
+      { name: 'Club Oceanview', tier: 'Stateroom', price: '$$', summary: 'A window or porthole, around 143 sq ft.', includes: 'Same standard inclusions as Club Interior.' },
+      { name: 'Club Veranda', tier: 'Stateroom', price: '$$$', summary: 'A private balcony, around 175 sq ft plus a 40 sq ft veranda.', includes: 'Same standard inclusions, plus a balcony.' },
+      { name: 'Club Veranda Plus', tier: 'Stateroom', price: '$$$$', summary: 'Same stateroom size, with a notably larger veranda.', includes: 'Same standard inclusions as Club Veranda.' },
+      { name: 'Club Ocean/Continent/Spa Suite', tier: 'Suite', price: '$$$$$', summary: 'Suite-level accommodation with more space (varies by ship).', includes: 'Concierge-level service and priority amenities on top of the standard inclusions.' },
+      { name: 'World Owner\'s Suite', tier: 'Suite', price: '$$$$$$', summary: 'The largest, top-of-ship suite.', includes: 'The fullest suite butler service and priority treatment fleet-wide.' },
+    ],
+  },
+  seabourn: {
+    about: [
+      'Seabourn is an ultra-luxury, all-suite ocean line (plus two small expedition ships) — every accommodation is a suite with a sitting area, and service is personalised and yacht-like, with premium drinks and gratuities included in the fare throughout.',
+      'The suite hierarchy runs from compact Oceanview and Veranda suites up through Penthouse-tier and owner\'s-level suites. The main differences going up are space and a private veranda — and, from Penthouse Suite upward, complimentary faster "Stream" WiFi that lower suites must pay to add.',
+    ],
+    grades: [
+      { name: 'Oceanview Suite', tier: 'Suite', price: '$$', summary: 'The smallest category, no veranda, with an ocean-view window.', includes: 'Standard drinks, gratuities and dining, plus "Surf" WiFi (1 device); faster "Stream" WiFi costs extra.' },
+      { name: 'Veranda Suite', tier: 'Suite', price: '$$$', summary: 'Around 246–302 sq ft plus a private veranda.', includes: 'Same standard inclusions as Oceanview Suite; "Stream" WiFi still costs extra.' },
+      { name: 'Penthouse Suite', tier: 'Suite', price: '$$$$', summary: 'Around 449–450 sq ft plus a veranda.', includes: 'Complimentary "Stream" WiFi (4 devices) at no extra charge.' },
+      { name: 'Penthouse Spa Suite', tier: 'Suite', price: '$$$$', summary: 'Similar to Penthouse Suite, with direct access to The Spa.', includes: 'Complimentary Stream WiFi, plus spa-access perks.' },
+      { name: 'Signature Suite', tier: 'Suite', price: '$$$$$', summary: 'Around 534–859 sq ft, with larger living and dining space.', includes: 'Complimentary Stream WiFi and enhanced butler service.' },
+      { name: 'Wintergarden/Grand/Owner\'s Suite', tier: 'Top Suite', price: '$$$$$$', summary: 'The largest suites (950+ sq ft), some with a glass-enclosed solarium.', includes: 'Full butler service, Stream WiFi, and top-priority treatment fleet-wide.' },
+    ],
+  },
+  marella: {
+    about: [
+      'Marella Cruises is the cruise arm of TUI, the UK\'s biggest package-holiday operator, and it sells cruising the way TUI sells a beach holiday: flights from UK regional airports, transfers, and an all-inclusive onboard drinks and dining package are bundled into one fare, with gratuities included too. It\'s aimed at British holidaymakers who want cruising to feel like a familiar package holiday rather than a US-style à la carte cruise.',
+      'Cabins run Inside, Outside, Balcony and Suite, each with standard and larger "Deluxe" variants, plus dedicated Family cabins. Suites step up through Junior Suite, the ship-specific Voyager Suite, and the top Royal Suite.',
+    ],
+    grades: [
+      { name: 'Inside Cabin', tier: 'Standard', price: '$', summary: 'Windowless cabin, 12–16m².', includes: 'Standard fare inclusions: flights, transfers, all-inclusive drinks and dining, and gratuities.' },
+      { name: 'Outside Cabin', tier: 'Standard', price: '$$', summary: 'A porthole or picture window, 14–16m², no balcony.', includes: 'Same as Inside Cabin, plus a view.' },
+      { name: 'Balcony Cabin', tier: 'Standard', price: '$$$', summary: 'A private furnished balcony, 13–16m².', includes: 'Same as Inside Cabin, plus a private balcony.' },
+      { name: 'Family Cabin', tier: 'Specialty', price: '$$$', summary: 'A larger inside, outside or balcony cabin sleeping up to 7.', includes: 'Same fare inclusions, sized for families.' },
+      { name: 'Junior Suite', tier: 'Suite', price: '$$$$', summary: 'Around 21m² with a separate sitting area and a sofa bed.', includes: 'Same fare inclusions, plus extra space.' },
+      { name: 'Voyager Suite', tier: 'Suite', price: '$$$$$', summary: '49m², themed décor, sleeps 4.', includes: 'Same fare inclusions, with significantly more space.' },
+      { name: 'Royal Suite', tier: 'Top Suite', price: '$$$$$$', summary: 'Up to 94m², king bed, separate living/dining area.', includes: 'Same fare inclusions, plus top-tier space and likely priority service.' },
+    ],
+  },
+  'fred-olsen': {
+    about: [
+      'Fred Olsen is a UK-based cruise line, part of Norway\'s Olsen family shipping business for five generations. It deliberately avoids the mega-ship trend, running three smaller, intimately-sized ships that can reach less-visited ports larger ships can\'t — the line\'s own pitch is "smaller is better." Since 2026, gratuities and baseline drinks with lunch and dinner are included in every fare.',
+      'Cabins run Inside, Ocean View and Balcony, plus Terrace cabins (promenade-deck cabins with reserved sunbeds and a drinks cooler), before stepping up through Junior, Premier and Marquee Suites.',
+    ],
+    grades: [
+      { name: 'Inside Cabin', tier: 'Standard', price: '$', summary: 'Around 182 sq ft, no window.', includes: 'Standard fare inclusions (gratuities and baseline drinks with meals).' },
+      { name: 'Ocean View Cabin', tier: 'Standard', price: '$$', summary: 'A porthole or picture window, around 214 sq ft.', includes: 'Same as Inside Cabin, plus a sea view.' },
+      { name: 'Balcony Cabin', tier: 'Standard', price: '$$$', summary: 'A private balcony.', includes: 'Same as Inside Cabin, plus a private balcony.' },
+      { name: 'Terrace Cabin', tier: 'Standard+', price: '$$$', summary: 'Direct access to the Promenade deck, with reserved sunbeds.', includes: 'Same fare inclusions, plus a drinks cooler and turndown service.' },
+      { name: 'Junior Suite', tier: 'Suite', price: '$$$$', summary: 'Extra living space and a larger balcony.', includes: 'Suite-level space and amenities.' },
+      { name: 'Premier/Marquee Suite', tier: 'Suite', price: '$$$$$', summary: 'The largest suites, with a separate living and sleeping area and an expansive balcony.', includes: 'Premium furnishings and priority service.' },
+    ],
+  },
+  saga: {
+    about: [
+      'Saga is a British cruise line built exclusively for the over-50s, running two purpose-built "boutique" ships (2019 and 2021) with a classically British, small-ship feel. Every single cabin on both ships has a private balcony, and around 20% of cabins are dedicated single cabins with no single supplement on most categories. The fare is fully all-inclusive — drinks, WiFi, gratuities, one included excursion per port, chauffeur transfers and insurance — with no tipping expected onboard.',
+      'Cabins run Standard, Superior and Deluxe balcony grades, plus suites — Mid Ship, Single, Aft and Forward — each adding more space and butler service.',
+    ],
+    grades: [
+      { name: 'Standard Balcony', tier: 'Standard', price: '$', summary: '18–20.75m² with a private balcony as standard.', includes: 'The full all-inclusive fare: drinks, WiFi, gratuities and one excursion per port.' },
+      { name: 'Superior Balcony', tier: 'Standard', price: '$$', summary: 'Around 20.5m², with a larger balcony.', includes: 'Same all-inclusive fare as Standard Balcony.' },
+      { name: 'Deluxe Balcony', tier: 'Standard+', price: '$$$', summary: 'Around 25.5–25.9m², with a larger balcony and a walk-in wardrobe.', includes: 'Same all-inclusive fare, on a higher deck with more space.' },
+      { name: 'Mid Ship Suite', tier: 'Suite', price: '$$$$', summary: '34.7m² with a separate lounge and a bathtub.', includes: 'Butler service, an espresso machine and champagne on arrival.' },
+      { name: 'Aft Suite', tier: 'Suite', price: '$$$$$', summary: '41m² with a separate living room and a double balcony.', includes: 'Butler service, fresh flowers and a minibar.' },
+      { name: 'Forward Suite', tier: 'Top Suite', price: '$$$$$$', summary: 'Up to 69.8m² — the largest suite.', includes: 'Butler service, a whirlpool tub, a wine fridge and in-cabin dining.' },
+    ],
+  },
+  ambassador: {
+    about: [
+      'Ambassador markets itself as "Britain\'s authentic no-fly cruise line," sailing from regional UK ports on mid-sized, older ships that create a calmer, more traditional atmosphere than mega-ships. It\'s increasingly adults-focused, moving toward a fully adults-only programme from the 2027/28 season. Fares bundle full-board dining, afternoon tea, entertainment and port taxes.',
+      'Cabins run Inside, Ocean View and Balcony, before stepping up to Suite and De-Luxe Suite — each roughly 17–52m², with the higher grades adding a separate lounge area rather than a distinctly branded service tier.',
+    ],
+    grades: [
+      { name: 'Inside Cabin', tier: 'Standard', price: '$', summary: 'Around 17–18m², no window.', includes: 'Standard fare inclusions: full-board dining, afternoon tea and entertainment.' },
+      { name: 'Ocean View Cabin', tier: 'Standard', price: '$$', summary: 'Around 18–19m² with a picture window or porthole.', includes: 'Same as Inside Cabin, plus a sea view.' },
+      { name: 'Balcony Cabin', tier: 'Standard', price: '$$$', summary: 'Around 21–25m² with a private balcony.', includes: 'Same as Inside Cabin, plus a private balcony.' },
+      { name: 'Suite', tier: 'Suite', price: '$$$$', summary: '38m² with a separate lounge and a private balcony.', includes: 'Suite-level space and design, with some added extras varying by ship.' },
+      { name: 'De-Luxe Suite', tier: 'Suite', price: '$$$$$', summary: '52m² — the largest cabin category, with a separate lounge and balcony.', includes: 'The top suite perks and the most space on the ship.' },
     ],
   },
 };
@@ -626,6 +785,78 @@ const DRINKS_PACKAGES = {
     ],
     note: "P&O has no separate service charge — gratuities are already built into the fare and drink prices, and tipping isn't expected onboard. The two All-Inclusive tiers are new for sailings of 5+ nights from March 2026; both adults sharing a cabin must buy the same tier, and kids under 17 in that cabin get the Refresh soft drinks package free when they do.",
   },
+  carnival: {
+    tiers: [
+      {
+        name: 'Cheers!',
+        price: '$83.94/person/day pre-cruise ($89.94 onboard)',
+        includes: 'Up to 15 alcoholic drinks per day, each priced $20 or less, plus unlimited soda, specialty coffee, bottled water, juice and milkshakes. Price includes the 20% service charge.',
+      },
+    ],
+    note: 'If one 21+ guest in a cabin buys Cheers!, every other 21+ guest in that cabin must buy it too. Carnival is reportedly moving to dynamic, sailing-by-sailing pricing for Cheers! from December 1, 2026, so this flat rate may not hold for every sailing.',
+  },
+  'virgin-voyages': {
+    tiers: [
+      {
+        name: 'Bar Tab (Premium fare)',
+        price: '$15/Sailor/day credit, included with a Premium fare',
+        includes: 'A daily prepaid drinks credit — not an unlimited package. Base and Essential fares get no bar tab; drinks are pay-as-you-go unless credit is purchased separately.',
+      },
+    ],
+    note: "Virgin Voyages ended its old all-inclusive-leaning drinks model on October 7, 2025 (\"VoyageFair Choices\") — what's included now depends on the fare tier chosen at booking, not just the cabin. RockStar Quarters get a stocked in-room bar on arrival; Mega RockStar Quarters get a daily bar tab. Bookings made before Oct 7, 2025 keep their original drinks-included terms.",
+  },
+  azamara: {
+    included: true,
+    note: "Every fare includes selected sparkling wine, house wines, a few beers, around 15 cocktails and 9 standard spirits, soft drinks, mocktails, specialty coffee/tea and bottled water, with no daily limit — regardless of cabin grade. As of a September 2026 overhaul, the old standalone Premium/Ultimate beverage upgrades are now only sold bundled inside the paid 'Experience More' packages (from $59/person/day), which also add WiFi and an excursion credit.",
+  },
+  seabourn: {
+    included: true,
+    note: "Premium spirits, wines, beer and champagne are included throughout the ship and in-suite, with no daily limit and no separate day-rate package to buy. Only select ultra-premium/rare wines and spirits, plus ticketed tasting events, cost extra.",
+  },
+  marella: {
+    tiers: [
+      {
+        name: 'Premium All Inclusive (upgrade)',
+        price: '~£90–120/week (~£12–14/person/day), best price pre-booked',
+        includes: 'Upgraded cocktails and mocktails, premium gins/rums/tequilas, a wider beer/wine/whisky/brandy selection and premium Lavazza coffee. Bottled wine is not included even on this tier.',
+      },
+    ],
+    note: "Marella's standard All Inclusive package — selected draught beer/cider, wine and Prosecco by the glass, spirits, cocktails and soft drinks — is already bundled into every fare at no extra cost; the Premium tier above is an optional upgrade to better brands, not a from-scratch purchase.",
+  },
+  'fred-olsen': {
+    tiers: [
+      {
+        name: 'Premium Drinks Package',
+        price: '£44/person/day (1–5 nights) down to £32/day (70+ nights); +£4/day if bought onboard',
+        includes: 'Up to 15 drinks/day — the full cocktail and mocktail range, soft drinks, all branded spirits/beer/cider, wine by the glass, sherry/port/vermouth and whisky/brandy, plus discounts on bottles (25% wine, 10% champagne/dessert wine).',
+      },
+    ],
+    note: "Since 2026, baseline house beer, wine, spirits and draught soft drinks are included with lunch and dinner on the Freedom Fare (not on the cheaper Saver Fare) — the Premium package above is an optional upgrade to anytime, full-range drinking.",
+  },
+  saga: {
+    included: true,
+    note: "Fully included in every fare, with no package to buy — selected wines at lunch and dinner, premium branded spirits, cocktails, draught beer/lager, mocktails and all soft drinks, served throughout the day. Premium wines were added as a new inclusion for the 2027 season.",
+  },
+  ambassador: {
+    tiers: [
+      {
+        name: 'Premium Drinks Package',
+        price: '£49.95/person/night pre-cruise (£55.95 onboard)',
+        includes: 'Premium spirits and wines, selected beers/ciders, eligible cocktails, specialty coffees/teas, soft drinks, juices, mocktails and water.',
+      },
+      {
+        name: 'Classic Drinks Package',
+        price: '£42.95/person/night pre-cruise (£47.95 onboard)',
+        includes: 'House wines/spirits, beers/ciders, house cocktails, soft drinks/juices/mocktails/water, plus 50% off premium items.',
+      },
+      {
+        name: 'Non-Alcoholic Package',
+        price: '£20.95/person/night pre-cruise (£22.95 onboard)',
+        includes: 'Soft drinks, juices, mocktails and water.',
+      },
+    ],
+    note: 'Gratuities are included in the price of every package above. Without a package, drinks are pay-as-you-go and a separate daily service charge applies (see the Gratuities page).',
+  },
 };
 
 // General reference only — package names, inclusions and prices change often
@@ -814,6 +1045,67 @@ const WIFI_PLANS = {
     ],
     note: 'Length-of-cruise purchase is meaningfully cheaper than paying day by day for the standalone plans. The two All-Inclusive tiers are new for sailings of 5+ nights from March 2026; both adults sharing a cabin must buy the same tier.',
   },
+  carnival: {
+    tiers: [
+      { name: 'Social', price: '$20.40/day', includes: 'Social media and airline apps only.' },
+      { name: 'Value', price: '$23.80/day', includes: 'Adds email and general web browsing.' },
+      { name: 'Premium', price: '$25.50/day', includes: 'Fastest connection (up to 3x Value speed) — supports streaming video/music and video calls.' },
+      { name: 'Premium Multi-Device', price: 'From $90/day pre-cruise (~$120/day onboard)', includes: 'Premium speed across up to 4 devices at once.' },
+    ],
+    note: 'Prices are per person/day, cheaper pre-cruise than onboard. Carnival is reportedly moving to dynamic, sailing-by-sailing pricing from December 1, 2026, so flat rates may not hold for every sailing.',
+  },
+  'virgin-voyages': {
+    tiers: [
+      { name: 'Basic WiFi (Base fare)', price: 'Included with a Base fare', includes: '1 device, throttled speed.' },
+      { name: 'Classic WiFi (Essential fare)', price: 'Included with an Essential fare', includes: '1 device, standard browsing speed.' },
+      { name: 'Premium WiFi (Premium fare)', price: 'Included with a Premium fare', includes: '2 devices, faster speed.' },
+    ],
+    note: "WiFi tier is tied to the fare chosen at booking (Base/Essential/Premium), not sold as a separate add-on. RockStar Quarters get Classic WiFi and Mega RockStar Quarters get upgraded 'Work from Sea' WiFi (2 devices) regardless of fare. Bookings made before October 7, 2025 kept Classic WiFi regardless of fare tier.",
+  },
+  azamara: {
+    tiers: [
+      { name: 'Essentials bundle', price: '$59/person/day', includes: 'Starlink Plus WiFi (1 device), bundled with a Premium beverage upgrade and a $25/day excursion credit.' },
+      { name: 'Enjoyment bundle', price: '$79/person/day', includes: 'Starlink Plus WiFi (1 device), bundled with an Ultimate beverage upgrade, a $30/day excursion credit and specialty dining every 4 nights.' },
+      { name: 'Indulgence bundle', price: '$99/person/day', includes: 'Starlink Plus WiFi (2 devices), bundled with an Ultimate beverage upgrade, unlimited specialty dining and a $35/day excursion credit.' },
+    ],
+    note: "As of a September 2026 overhaul, WiFi is only sold bundled inside these 'Experience More' packages (which also include drinks and excursion credit) rather than as a standalone purchase — we couldn't confirm whether a WiFi-only option still exists separately.",
+  },
+  seabourn: {
+    tiers: [
+      { name: '"Surf" package', price: 'Included for every guest', includes: '1 device — browsing, email and social media.' },
+      { name: '"Stream" package', price: 'Free from Penthouse Suite upward; ~$20–30/person/day to upgrade from Oceanview/Veranda suites', includes: 'Up to 4 devices — video streaming, internet calling and VPN.' },
+    ],
+    note: 'Stream is also included free for Seabourn Club Diamond-and-above loyalty members regardless of suite. The exact Oceanview/Veranda upgrade price varies by source — confirm before quoting a client.',
+  },
+  marella: {
+    tiers: [
+      { name: 'Connect With Home', price: '£20', includes: '400MB data allowance.' },
+      { name: 'Get Social', price: '£40', includes: '2,000MB data allowance.' },
+      { name: 'Browsing & More', price: '£65', includes: '4,500MB data allowance.' },
+      { name: 'Browsing & More Max', price: '£99', includes: '8,500MB data allowance.' },
+    ],
+    note: 'Sold as a data block for the whole cruise, not a daily rate — once the allowance is used up, another block must be purchased. Not included in the fare.',
+  },
+  'fred-olsen': {
+    tiers: [
+      { name: '1 day', price: '£12', includes: 'Ship-wide WiFi, single flat product (no speed tiers).' },
+      { name: '7 days', price: '£63 (~£9/day)', includes: 'Same WiFi, cheaper per day the longer you buy.' },
+      { name: '14+ days', price: '~£8/day (from £120 for 14 days)', includes: 'The cheapest per-day rate, for longer cruises.' },
+    ],
+    note: 'One WiFi product per device (switchable between devices) — there is no separate browsing-only vs streaming tier. Not included in the fare.',
+  },
+  saga: {
+    included: true,
+    note: 'Complimentary Starlink WiFi is included fleet-wide as part of the all-inclusive fare — no price, no data cap, and nothing to buy.',
+  },
+  ambassador: {
+    tiers: [
+      { name: 'Basic', price: '£8–10/day', includes: 'Email and messaging apps (WhatsApp, iMessage, Messenger) only.' },
+      { name: 'Value', price: '£10–12/day', includes: 'Adds general browsing and social media (Facebook, Instagram).' },
+      { name: 'Premium', price: '£15–17/day', includes: 'Adds video chat and SD (720p) streaming.' },
+    ],
+    note: 'Starlink-powered. Short-cruise data-cap options are also sold (1GB for £19.95, 5GB for £59.95); full-sailing packages have no stated data cap.',
+  },
 };
 
 // General reference only — rates increase periodically and vary by cabin
@@ -975,6 +1267,46 @@ const GRATUITIES = {
   'po-cruises': {
     included: true,
     note: "P&O removed onboard gratuity charges in 2019 and folded service into the fare — guests aren't expected to tip separately. Spa treatments carry their own separate 10% service charge.",
+  },
+  carnival: {
+    tiers: [
+      { name: 'Standard staterooms', price: '$17.00/person/day', includes: "Carnival's automatic 'Sail & Sign' daily service charge." },
+      { name: 'Suites', price: '$19.00/person/day', includes: 'The higher rate applied to all suite categories.' },
+    ],
+    note: 'Not included in the fare — automatically added to the onboard account unless prepaid, and can only be adjusted onboard. A separate 20% service charge applies to bar tabs and drinks packages. Rates effective since April 2, 2026.',
+  },
+  'virgin-voyages': {
+    tiers: [
+      { name: 'All guests', price: '~$20/Sailor/day prepaid (10% discount) or $22/day paid onboard', includes: "Shown as a separate line item at checkout, called a 'gratuity' charge." },
+    ],
+    note: 'No longer included by default — this changed with the October 7, 2025 fare restructure ("VoyageFair Choices"). Bookings made before that date keep gratuities bundled into the original fare. A separate 20% automatic service charge applies to individual bar and spa purchases.',
+  },
+  azamara: {
+    included: true,
+    note: 'Included in every fare — no daily service charge is added to guest accounts. Additional tipping is allowed but not expected.',
+  },
+  seabourn: {
+    included: true,
+    note: "Included in the fare — Seabourn states tipping is \"neither required nor expected,\" and no daily service charge is added.",
+  },
+  marella: {
+    included: true,
+    note: "Included in every fare — TUI's own policy states tips and service charges are built into the price, and guests aren't expected to tip unless they want to.",
+  },
+  'fred-olsen': {
+    included: true,
+    note: 'Included in both the Freedom Fare and Saver Fare for cruises departing from January 2026 onward — this is a recent policy change, so some third-party sources may still quote an old ~£5/person/day charge. Confirm current wording at the time of booking.',
+  },
+  saga: {
+    included: true,
+    note: 'Fully included in the fare — Saga runs a no-tipping-onboard policy. Only local guides/drivers on shore excursions are tipped at the guest\'s discretion, and that is not included.',
+  },
+  ambassador: {
+    tiers: [
+      { name: 'Cruises up to 14 nights', price: '£7/person/night', includes: "Ambassador's automatic daily service charge, adjustable at reception." },
+      { name: 'Cruises of 15+ nights', price: '£6/person/night', includes: 'The lower per-night rate for longer sailings.' },
+    ],
+    note: 'Not included in the base fare. If a drinks package is purchased instead, gratuities are bundled into that package price and cannot be removed separately — see the Drinks Packages page.',
   },
 };
 
@@ -1163,6 +1495,98 @@ const PROMOTIONS = {
         sourceUrl: 'https://www.pocruises.com/deals/on-board-spending-money-on-us',
       },
       // No `us` entry — P&O has no meaningful US market presence.
+    },
+    carnival: {
+      us: {
+        name: 'Get Ahead & Save / Kids Sail Free',
+        includes: 'Up to 40% off cruise rates with a reduced deposit from $50pp, a free room-location upgrade and up to $50 onboard credit per stateroom (Get Ahead & Save); separately, free fare for a 3rd/4th guest plus up to $250 onboard credit and $49 deposits (Kids Sail Free).',
+        window: 'Stated end date Oct 26, 2026 — this is today, so it may have already rolled over to a new offer. Re-check before quoting.',
+        restrictions: 'Get Ahead & Save covers sailings through April 2029; Kids Sail Free covers sailings through December 2027.',
+        sourceUrl: 'https://www.carnival.com/cruise-deals',
+      },
+      uk: {
+        notFound: true,
+        checkUrl: 'https://www.carnival.co.uk/cruise-deals.aspx',
+      },
+    },
+    'virgin-voyages': {
+      us: {
+        name: 'Instant Savings + 70% Off 2nd Sailor',
+        includes: 'Up to $1,000 instant savings (varies by cabin/voyage length) plus 70% off a second Sailor.',
+        window: 'Bookings Sept 1 – Nov 2, 2026, for sail dates Sept 2026 – Oct 2028.',
+        restrictions: '',
+        sourceUrl: 'https://www.virginvoyages.com/cruise-deals',
+      },
+      uk: {
+        name: 'Instant Savings + 70% Off 2nd Sailor',
+        includes: 'Same offer as the US, shown in GBP: up to £750 instant savings plus 70% off a second Sailor.',
+        window: 'Bookings Sept 1 – Nov 2, 2026, for sail dates Sept 2026 – Oct 2028.',
+        restrictions: '',
+        sourceUrl: 'https://www.virginvoyages.com/cruise-deals',
+      },
+    },
+    azamara: {
+      us: {
+        name: 'Make More of Every Journey',
+        includes: 'Up to $750 onboard credit per stateroom, tiered by cabin type and cruise length.',
+        window: 'Bookings Oct 1 – Dec 4, 2026, for sailings departing Nov 7, 2026 onward.',
+        restrictions: '',
+        sourceUrl: 'https://www.azamara.com/deals',
+      },
+      uk: {
+        notFound: true,
+        checkUrl: 'https://www.azamara.com/deals',
+      },
+    },
+    seabourn: {
+      us: {
+        name: 'Explore Beyond Event',
+        includes: 'Up to $2,000 shipboard credit per suite (Oceanview/Veranda get $500/suite; Penthouse-and-above get $2,000/suite).',
+        window: 'Bookings Sept 23 – Nov 16, 2026, for sailings across 2026–2029.',
+        restrictions: '',
+        sourceUrl: 'https://www.seabourn.com',
+      },
+      uk: { sameAsUs: true },
+    },
+    marella: {
+      uk: {
+        name: 'Low Deposit Offer',
+        includes: '£125pp first-stage deposit on new bookings. A separate rolling "Cruise of the Week" mechanic also takes an extra £100 off a different sailing each week.',
+        window: 'For sailings departing 1 November 2026 – 30 April 2027.',
+        restrictions: '',
+        sourceUrl: 'https://www.tui.co.uk/cruise/deals',
+      },
+      // No `us` entry — Marella has no US market.
+    },
+    'fred-olsen': {
+      uk: {
+        name: 'Freedom Fare Price Promise',
+        includes: 'If your Freedom Fare price drops after booking, Fred Olsen upgrades your cabin or gives onboard credit instead.',
+        window: 'Live until 4 November 2026.',
+        restrictions: 'Tied to newly-released sailings.',
+        sourceUrl: 'https://www.fredolsencruises.com',
+      },
+      // No `us` entry — Fred Olsen has no US market.
+    },
+    saga: {
+      uk: {
+        name: 'Save With Our Special Offers',
+        includes: 'Up to 30% off selected 2026/27 sailings (some marketing cites up to 35% on specific grades/dates).',
+        window: 'No fixed end date published — described as "limited time" and "limited availability."',
+        restrictions: '',
+        sourceUrl: 'https://travel.saga.co.uk/cruises/ocean/ocean-cruise-deals.aspx',
+      },
+      // No `us` entry — Saga Ocean Cruises has no US market.
+    },
+    ambassador: {
+      uk: {
+        name: 'Up to £800 Onboard Credit',
+        includes: 'Onboard credit for new bookings on Ambience or Ambition, amount varying by duration and cabin (some sailings reported up to £1,000); solo travellers get 50%. Usable on spa, excursions and specialty dining, not the casino.',
+        window: 'Reported as 30 July – 23 November 2026 — reconfirm the live dates before quoting, as this page rotates frequently.',
+        restrictions: '',
+        sourceUrl: 'https://www.ambassadorcruiseline.com/deals/up-to-800-onboard-credit/',
+      },
+      // No `us` entry — Ambassador has no US market.
     },
   },
 };
